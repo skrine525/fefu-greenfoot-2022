@@ -7,18 +7,18 @@ public class Spaceship extends Actor
     {
         if (Greenfoot.isKeyDown("left"))
         {
-            setLocation(getX()-2,getY());
+            setLocation(getX() - 2, getY());
         }
         else if (Greenfoot.isKeyDown("right"))
         {
-            setLocation(getX()+2,getY());
+            setLocation(getX() + 2, getY());
         }
         if (Greenfoot.isKeyDown("z"))
         {
             if (cooldown == 0) 
             {
                //Greenfoot.playSound("pew.wav");
-               getWorld().addObject(new Bullet(),getX(), getY()-25); 
+               getWorld().addObject(new Bullet(), getX(), getY() - 25); 
                cooldown = 20;
             }
         }

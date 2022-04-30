@@ -2,13 +2,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class Gameplay extends World
 {
-	private long lastTime, lastUpdateTime;
+	private long lastSpawnTime;
+
     
     public Gameplay()
     {    
         super(400, 600, 1); 
         prepare();
-        lastTime = System.currentTimeMillis();
     }
     
 
@@ -18,12 +18,11 @@ public class Gameplay extends World
     }
 
     public void act(){
-    	float deltaTime = ((float) (System.currentTimeMillis() - lastTime)) / 1000;
-    	lastTime = System.currentTimeMillis();
-    	if (System.currentTimeMillis() - lastUpdateTime >= 100)
+    	if(System.currentTimeMillis() - lastSpawnTime >= 2000)
     	{
-    		showText(""+((int) (1/deltaTime)), 90, 25);
-    		lastUpdateTime = System.currentTimeMillis();
+    		lastSpawnTime = System.currentTimeMillis();
+    		EnemyBasic enemy1 = new EnemyBasic(EnemyBasic.State.Emersion);
+    		addObject(enemy1, 40, 0);
     	}
     }
 }
