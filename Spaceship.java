@@ -1,11 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class spaceship here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class Spaceship extends Actor
 {
     int cooldown = 0;
@@ -23,7 +17,7 @@ public class Spaceship extends Actor
         {
             if (cooldown == 0) 
             {
-               Greenfoot.playSound("pew.wav");
+               //Greenfoot.playSound("pew.wav");
                getWorld().addObject(new Bullet(),getX(), getY()-25); 
                cooldown = 20;
             }
