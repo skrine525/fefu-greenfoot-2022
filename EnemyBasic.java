@@ -8,11 +8,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class EnemyBasic extends Actor
 {
-	enum State { Stay, Emersion }												// Перечисление состояний протвника
+	enum State { Stay, Enter, Destroy, Action }												// Перечисление состояний протвника
 
-	protected long actCount = 0;												// Число кадров, необходима для анимаций
-	public State currentState = State.Stay;										// Текущее состояние
-	protected State lastState = currentState;									// Последнее состояние, необходима для определения изменения состояния
+	private long actCount = 0;												                // Число кадров, необходима для анимаций
+    public State currentState;                                                              // Текущее состояние 
+	protected State lastState = currentState;								              	// Последнее состояние, необходима для определения изменения состояния
 
 	// Конструктор противника
 	public EnemyBasic(){
@@ -28,7 +28,6 @@ public class EnemyBasic extends Actor
     // Обычный act
     public void act()
     {
-    	getWorld().showText(""+getRotation(), 20, 20);
         Behavior();																// Поведение противника каждый кадр
     }
 
@@ -36,6 +35,24 @@ public class EnemyBasic extends Actor
     public void Destroy()
     {
     	getWorld().removeObject(this);
+    }
+
+    // Функция плавного поворота на определенный угол с шагом
+    public void RotateTo(int distRot, int delta){
+        distRot = distRot % 360;
+        int rot = getRotation();
+        getWorld().showText(distRot + " " + rot, 50, 20);
+
+        int r1 = (distRot - rot) % 360;
+        int r2 = (distRot + rot) % 360;
+        if (r1 < 180)
+            delta = -delta;
+        if((distRot - rot > 180) || (Math.signum(distRot - rot) == -1))
+            delta = -delta;
+        if(Math.abs(distRot - rot) <= Math.abs(delta))
+            setRotation(distRot);
+        else
+            setRotation(rot + delta);
     }
 
     // Основное поведение противника
@@ -51,42 +68,32 @@ public class EnemyBasic extends Actor
 
     	switch(currentState)
     	{
-    		case Emersion: OnEmersion(); break;
+            case Stay: OnStay(actCount); break;
+    		case Enter: OnEnter(actCount); break;
+            case Action: OnAction(actCount); break;
+            case Destroy: OnDestroy(actCount); break;
     	}
     }
 
     // Поведение "Появление"
-    protected void OnEmersion()
+    protected void OnEnter(long count)
     {
-    	if(actCount == 0)
-    	{
-    		setRotation(45);
-    		move(5);
-    	}
-    	else if(actCount <= 50)
-    	{
-    		move(5);
-    	}
-    	else if (actCount <= 130)
-    	{
-    		turn(3);
-    		move(4);
-    	}
-    	else if(getRotation() != 90)
-    		Rotate(90, 4);
-    	else
-    		currentState = State.Stay;
+        // Обработка состояния Enter
     }
 
-    // Функция плавного поворота на определенный угол с шагом
-    protected void Rotate(int distRot, int delta){
-    	distRot = distRot % 360;
-    	int rot = getRotation();
-    	if((distRot - rot > 180) || (Math.signum(distRot - rot) == -1))
-    		delta = -delta;
-    	if(Math.abs(distRot - rot) <= Math.abs(delta))
-    		setRotation(distRot);
-    	else
-    		setRotation(rot + delta);
+
+    protected void OnDestroy(long count)
+    {
+        // Обработка состояния Destroy
+    }
+
+    protected void OnStay(long count)
+    {
+        // Обработка состояния Stay
+    }
+
+    protected void OnAction(long count)
+    {
+        // Обработка состояния Action
     }
 }

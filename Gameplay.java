@@ -21,8 +21,8 @@ public class Gameplay extends World
     	if(System.currentTimeMillis() - lastSpawnTime >= 2000)
     	{
     		lastSpawnTime = System.currentTimeMillis();
-    		EnemyBasic enemy1 = new EnemyBasic(EnemyBasic.State.Emersion);
-    		addObject(enemy1, 40, 0);
+    		EnemyBasic enemy = (EnemyBasic) new EnemyType1(EnemyBasic.State.Enter);
+    		addObject(enemy, 40, 0);
     	}
     }
 }
