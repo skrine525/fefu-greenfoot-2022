@@ -2,7 +2,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class Gameplay extends World
 {
-	private long lastSpawnTime;
+    private long lastSpawnTime;
 
     
     public Gameplay()

@@ -2,12 +2,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class Bullet extends Actor
 {
-
-
-    public void act()
-    {
+    public void act(){
         setLocation(getX(),getY() - 8);
-
+        
         EnemyBasic enemy = (EnemyBasic) getOneIntersectingObject(EnemyBasic.class);
         if(enemy != null)
         {
@@ -19,4 +16,5 @@ public class Bullet extends Actor
             getWorld().removeObject(this);
         }
     }
+    
 }
