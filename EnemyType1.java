@@ -28,11 +28,17 @@ public class EnemyType1 extends EnemyBasic
     	else if (count <= 130)
     	{
     		turn(3);
-    		move(4);
+    		move(5);
     	}
     	else if(getRotation() != 90)
     		RotateTo(90, 4);
     	else
     		currentState = State.Stay;
+    }
+
+    @Override
+    protected void OnStay(long count)
+    {
+    	RotateTo(90, 4);
     }
 }

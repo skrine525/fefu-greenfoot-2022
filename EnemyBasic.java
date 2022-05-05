@@ -41,14 +41,10 @@ public class EnemyBasic extends Actor
     public void RotateTo(int distRot, int delta){
         distRot = distRot % 360;
         int rot = getRotation();
-        getWorld().showText(distRot + " " + rot, 50, 20);
 
-        int r1 = (distRot - rot) % 360;
-        int r2 = (distRot + rot) % 360;
-        if (r1 < 180)
+        if ((distRot >= rot && distRot - rot > 180) || (distRot < rot && rot - distRot < 180))
             delta = -delta;
-        if((distRot - rot > 180) || (Math.signum(distRot - rot) == -1))
-            delta = -delta;
+
         if(Math.abs(distRot - rot) <= Math.abs(delta))
             setRotation(distRot);
         else
