@@ -7,6 +7,7 @@ public class Gameplay extends World
     private int spawnCount = 0;																	// Переменная количества итераций спавна
 
     private EnemyMatrix enemyMatrix;															// Матрица врагов
+    public static Gameplay instance;                                                            // Синглтон мира
 
     // Конструктор мира
     public Gameplay()
@@ -14,14 +15,13 @@ public class Gameplay extends World
         super(400, 600, 1);																		// Создание мира 400x600
         prepare();																				// Стандартный метод подготовки объектов в мире
         enemyMatrix = new EnemyMatrix(47, 47);													// Инициализация матрицы врагов
+        instance = this;
     }
 
     // Стандартный метод подготовки объектов мира
     private void prepare()
     {
         addObject(new Spaceship(), 200, 560);
-        EnemyTest enemyTest = new EnemyTest();
-        addObject(enemyTest,344,473);
     }
 
     // Занимается инициализированным спавном
@@ -33,9 +33,19 @@ public class Gameplay extends World
         	{
         		if(spawnType == 1)
         		{
+                    EnemyBasic enemy1, enemy2;
 
-        			EnemyBasic enemy1 = (EnemyBasic) new EnemyType1(EnemyBasic.State.Enter);
-        			EnemyBasic enemy2 = (EnemyBasic) new EnemyType1A(EnemyBasic.State.Enter);
+                    if(Greenfoot.getRandomNumber(100) <= 49)
+                        enemy1 = (EnemyBasic) new EnemyType1(EnemyBasic.State.Enter);
+                    else
+                        enemy1 = (EnemyBasic) new EnemyType2(EnemyBasic.State.Enter);
+
+                    if(Greenfoot.getRandomNumber(100) <= 49)
+                        enemy2 = (EnemyBasic) new EnemyType1A(EnemyBasic.State.Enter);
+                    else
+                        enemy2 = (EnemyBasic) new EnemyType2A(EnemyBasic.State.Enter);
+
+
         			enemyMatrix.AddEnemy(enemy1);
         			enemyMatrix.AddEnemy(enemy2);
         			addObject(enemy1, 40, 0);
@@ -73,6 +83,7 @@ public class Gameplay extends World
     public void act(){
         Spawn();																// Обрабатывает инициализированный спавн
         SpawnTest();															// Тестовый запуск спавна через клавиатуру
+        enemyMatrix.Act();                                                      // Обрабатывает логику матрицы
     }
 
     public void SpawnTest()

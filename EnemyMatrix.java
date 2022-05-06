@@ -28,6 +28,10 @@ public class EnemyMatrix
 
     private Cell[][] matrix;
 
+    private long actCount = 0;
+    private int animationPosX = 0;
+    private int animationDirX = 1;
+
     public EnemyMatrix(int beginX, int beginY)
     {
         matrix = new Cell[5][10];
@@ -77,14 +81,25 @@ public class EnemyMatrix
         }
     }
 
-    public void moveCells(int deltaX, int deltaY)
+    public void Act()
     {
-        for(int i = 0; i < 5; i++)
+        actCount++;
+
+        // Обновление анимации каждый 3 кадр
+        if(actCount % 5 == 0)
         {
-            for(int j = 0; j < 10; j++)
+            if(animationDirX == 1 && animationPosX == 35)
+                animationDirX = -1;
+            else if(animationDirX == -1 && animationPosX == -35)
+                animationDirX = 1;
+
+            animationPosX += animationDirX;
+            for(int i = 0; i < 5; i++)
             {
-                matrix[i][j].x += deltaX;
-                matrix[i][j].y += deltaY;
+                for(int j = 0; j < 10; j++)
+                {
+                    matrix[i][j].x += animationDirX;
+                }
             }
         }
     }

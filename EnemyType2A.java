@@ -1,13 +1,13 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class EnemyType1A extends EnemyType1
+public class EnemyType2A extends EnemyType2
 {
-	public EnemyType1A()
+    public EnemyType2A()
 	{
 		super();
 	}
 
-	public EnemyType1A(State startingState)
+	public EnemyType2A(State startingState)
     {
     	super(startingState);
     }

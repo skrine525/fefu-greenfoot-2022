@@ -1,10 +1,7 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-
 public class EnemyType1 extends EnemyBasic
 {
-	private int tx, ty;
-
     public EnemyType1()
 	{
 		super();
@@ -43,6 +40,7 @@ public class EnemyType1 extends EnemyBasic
     			}
     			else if(getRotation() != 90)
     			{
+    				MoveTo(cell.x, cell.y, 5);
     				RotateTo(90, 5);
     			}
     			else
@@ -50,13 +48,11 @@ public class EnemyType1 extends EnemyBasic
     		}
     	}
     }
-    
-    // @Override
-    // protected void OnStay(long count)
-    // {
-    // 	if(cell != null)
-    // 	{
-    // 		setLocation(cell.x, cell.y);
-    // 	}
-    // }
+
+    @Override
+    protected void OnStay(long count)
+    {
+    	if(cell != null)
+    		MoveTo(cell.x, cell.y, 1);
+    }
 }
