@@ -1,18 +1,13 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class EnemyBasic here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class EnemyBasic extends Actor
 {
 	enum State { Stay, Enter, Destroy, Action }												// Перечисление состояний протвника
 
 	private long actCount = 0;												                // Число кадров, необходима для анимаций
-    public State currentState;                                                              // Текущее состояние 
-	protected State lastState = currentState;								              	// Последнее состояние, необходима для определения изменения состояния
+    public State currentState;                                                              // Текущее состояние
+	private State lastState = currentState;								              	// Последнее состояние, необходима для определения изменения состояния
+    protected EnemyMatrix.Cell cell;
 
 	// Конструктор противника
 	public EnemyBasic(){
@@ -25,20 +20,21 @@ public class EnemyBasic extends Actor
     	currentState = startingState;
     }
 
+    // Устанавливает ячейку матрицы для врага
+    public void SetCell(EnemyMatrix.Cell connectingCell)
+    {
+        cell = connectingCell;
+    }
+
     // Обычный act
     public void act()
     {
-        Behavior();																// Поведение противника каждый кадр
-    }
-
-    // Сигнал на уничтожение противника
-    public void Destroy()
-    {
-    	getWorld().removeObject(this);
+        Behavior();																             // Поведение противника каждый кадр
     }
 
     // Функция плавного поворота на определенный угол с шагом
-    public void RotateTo(int distRot, int delta){
+    public void RotateTo(int distRot, int delta)
+    {
         distRot = distRot % 360;
         int rot = getRotation();
 
@@ -49,6 +45,48 @@ public class EnemyBasic extends Actor
             setRotation(distRot);
         else
             setRotation(rot + delta);
+    }
+
+    // Функции движения к заданной точке каждый вызов с шагом
+    public void MoveTo(int distX, int distY, int delta)
+    {
+        if(GameSystem.GetDistance(getX(), getY(), distX, distY) <= delta)
+            setLocation(distX, distY);
+        else
+        {
+            double vX = distX - getX();
+            double vY = distY - getY();
+            double angle = Math.atan2(vY, vX);
+
+            vX = Math.cos(angle) * delta;
+            vY = Math.sin(angle) * delta;
+
+            //getWorld().showText(String.format("%.3f", vX) + " " + String.format("%.3f", vY), 200, 20);
+
+            //vX = Math.signum(vX) * Math.round(Math.abs(vX));
+            //vY = Math.signum(vY) * Math.round(Math.abs(vY));
+            //getWorld().showText(String.format("%.3f", vX) + " " + String.format("%.3f", vY), 200, 50);
+
+            int x = getX() + (int) (Math.signum(vX) * Math.round(Math.abs(vX)));
+            int y = getY() + (int) (Math.signum(vY) * Math.round(Math.abs(vY)));
+
+            if(GameSystem.GetDistance(x, y, distX, distY) <= delta)
+                setLocation(distX, distY);
+            else
+                setLocation(x, y);
+        }
+    }
+
+    public void Destroy()
+    {
+        getWorld().removeObject(this);
+        if(cell != null)
+            cell.enemy = null;
+    }
+
+    public void Hit()
+    {
+        currentState = State.Destroy;
     }
 
     // Основное поведение противника
@@ -71,25 +109,28 @@ public class EnemyBasic extends Actor
     	}
     }
 
-    // Поведение "Появление"
+    // Обработка состояния Enter каждый кадр
     protected void OnEnter(long count)
     {
-        // Обработка состояния Enter
+        // Да-да, он без кода. Необходима переопределять в субклассах
     }
 
-
+    // Обработка состояния Destroy каждый кадр
     protected void OnDestroy(long count)
     {
-        // Обработка состояния Destroy
+        Destroy();
+        // К слову тоже надо переопределять для каждого субкласса
     }
 
+    // Обработка состояния Stay каждый кадр
     protected void OnStay(long count)
     {
-        // Обработка состояния Stay
+        // Да-да, он без кода. Необходима переопределять в субклассах
     }
 
+    // Обработка состояния Action каждый кадр
     protected void OnAction(long count)
     {
-        // Обработка состояния Action
+        // Да-да, он без кода. Необходима переопределять в субклассах
     }
 }

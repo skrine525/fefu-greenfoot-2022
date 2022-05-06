@@ -1,14 +1,16 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class EnemyType1 here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
+
 public class EnemyType1 extends EnemyBasic
 {
-    public EnemyType1(State startingState)
+	private int tx, ty;
+
+    public EnemyType1()
+	{
+		super();
+	}
+
+	public EnemyType1(State startingState)
     {
     	super(startingState);
     }
@@ -21,24 +23,40 @@ public class EnemyType1 extends EnemyBasic
     		setRotation(45);
     		move(5);
     	}
-    	else if(count <= 50)
+    	else if(count <= 70)
     	{
     		move(5);
     	}
-    	else if (count <= 130)
+    	else if (count <= 270)
     	{
     		turn(3);
     		move(5);
     	}
-    	else if(getRotation() != 90)
-    		RotateTo(90, 4);
     	else
-    		currentState = State.Stay;
+    	{
+    		if(cell != null)
+    		{
+    			if(getX() != cell.x && getY() != cell.y)
+    			{
+    				RotateTo((int) GameSystem.GetAngle(getX(), getY(), cell.x, cell.y), 3);
+    				MoveTo(cell.x, cell.y, 5);
+    			}
+    			else if(getRotation() != 90)
+    			{
+    				RotateTo(90, 5);
+    			}
+    			else
+    				currentState = State.Stay;
+    		}
+    	}
     }
-
-    @Override
-    protected void OnStay(long count)
-    {
-    	RotateTo(90, 4);
-    }
+    
+    // @Override
+    // protected void OnStay(long count)
+    // {
+    // 	if(cell != null)
+    // 	{
+    // 		setLocation(cell.x, cell.y);
+    // 	}
+    // }
 }

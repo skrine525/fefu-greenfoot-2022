@@ -9,7 +9,7 @@ public class Bullet extends Actor
         if(enemy != null)
         {
             getWorld().removeObject(this);
-            enemy.Destroy();
+            enemy.Hit();
         }
         else if (isAtEdge())
         {
