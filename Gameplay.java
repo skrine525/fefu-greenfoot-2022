@@ -14,7 +14,7 @@ public class Gameplay extends World
     {    
         super(400, 600, 1);																		// Создание мира 400x600
         prepare();																				// Стандартный метод подготовки объектов в мире
-        enemyMatrix = new EnemyMatrix(47, 47);													// Инициализация матрицы врагов
+        enemyMatrix = new EnemyMatrix(3, 8, 59, 59, 40);										// Инициализация матрицы врагов
         instance = this;
     }
 

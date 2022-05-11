@@ -27,20 +27,27 @@ public class EnemyMatrix
     }
 
     private Cell[][] matrix;
-
+    private int rows, columns, beginX, beginY;
     private long actCount = 0;
-    private int animationPosX = 0;
-    private int animationDirX = 1;
 
-    public EnemyMatrix(int beginX, int beginY)
+    private int animationDeltaX, animationPosX = 0, animationDirX = 1;
+
+    public EnemyMatrix(int rows, int columns, int beginX, int beginY, int distance)
     {
-        matrix = new Cell[5][10];
-        for(int i = 0; i < 5; i++)
+        this.rows = rows;
+        this.columns = columns;
+        this.beginX = beginX;
+        this.beginY = beginY;
+        matrix = new Cell[rows][columns];
+
+        animationDeltaX = beginX - 16;
+
+        for(int i = 0; i < rows; i++)
         {
-            for(int j = 0; j < 10; j++)
+            for(int j = 0; j < columns; j++)
             {
-                int xPos = beginX + 34 * j;
-                int yPos = beginY + 34 * i;
+                int xPos = beginX + distance * j;
+                int yPos = beginY + distance * i;
                 
                 matrix[i][j] = new Cell(xPos, yPos);
             }
@@ -50,9 +57,9 @@ public class EnemyMatrix
     public int GetEmptyCellCount()
     {
         int count = 0;
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < rows; i++)
         {
-            for(int j = 0; j < 10; j++)
+            for(int j = 0; j < columns; j++)
             {
                 if(matrix[i][j].enemy == null)
                     count++;
@@ -69,8 +76,8 @@ public class EnemyMatrix
             boolean isAdding = true;
             while(isAdding)
             {
-                int i = Greenfoot.getRandomNumber(5);
-                int j = Greenfoot.getRandomNumber(10);
+                int i = Greenfoot.getRandomNumber(rows);
+                int j = Greenfoot.getRandomNumber(columns);
                 if(matrix[i][j].enemy == null)
                 {
                     matrix[i][j].enemy = enemy;
@@ -88,15 +95,15 @@ public class EnemyMatrix
         // Обновление анимации каждый 3 кадр
         if(actCount % 5 == 0)
         {
-            if(animationDirX == 1 && animationPosX == 35)
+            if(animationDirX == 1 && animationPosX == animationDeltaX)
                 animationDirX = -1;
-            else if(animationDirX == -1 && animationPosX == -35)
+            else if(animationDirX == -1 && animationPosX == -animationDeltaX)
                 animationDirX = 1;
 
             animationPosX += animationDirX;
-            for(int i = 0; i < 5; i++)
+            for(int i = 0; i < rows; i++)
             {
-                for(int j = 0; j < 10; j++)
+                for(int j = 0; j < columns; j++)
                 {
                     matrix[i][j].x += animationDirX;
                 }

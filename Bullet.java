@@ -2,8 +2,10 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class Bullet extends Actor
 {
+	final int speed = 15;
+
     public void act(){
-        setLocation(getX(),getY() - 8);
+        setLocation(getX(),getY() - speed);
         
         EnemyBasic enemy = (EnemyBasic) getOneIntersectingObject(EnemyBasic.class);
         if(enemy != null)
