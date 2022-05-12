@@ -1,13 +1,13 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class EnemyType1B extends EnemyType1
+public class EnemyType1E extends EnemyType1
 {
-    public EnemyType1B()
+    public EnemyType1E()
     {
         super();
     }
 
-    public EnemyType1B(State startingState)
+    public EnemyType1E(State startingState)
     {
         super(startingState);
     }
@@ -15,30 +15,35 @@ public class EnemyType1B extends EnemyType1
     @Override
     protected void OnEnter(long count)
     {
-        if (count == 0)
-        {    
-            setRotation(42);
+        if(count == 0)
+        {
+            setRotation(135);
+            move(5);
         }
         else if (count <= 20)
         {
             move(5);
+            turn(1);
         }
-        else if (count <= 60)
+        else if (count <= 47)
         {
             move(5);
             turn(2);
         }
-        else if (count <= 80)
+        else if (count <= 50)
         {
             move(5);
-            turn(5);
         }
-        else if (count <= 88)
+        else if (count <= 90)
         {
             move(5);
-            turn(7);
+            turn(1);
         }
-        else if (count <= 110)
+        else if (count <= 100)
+        {
+            move(5);
+        }
+        else if (count <= 120)
         {
             move(5);
             turn(2);
