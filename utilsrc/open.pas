@@ -25,7 +25,7 @@ begin
   filecounter := 1;
   for var i := 0 to length(files)-1 do begin
     filename := files[i].Split('\')[2];
-    if(filename <> '.\greenfoot\project.greenfoot') then begin
+    if(filename <> 'project.greenfoot') then begin
       writeln(filecounter, ': ', filename);
       inc(filecounter);
     end;
