@@ -20,31 +20,31 @@ var
   filename: string;
 
 begin
-  files := Directory.GetFiles('.', '*.greenfoot', SearchOption.TopDirectoryOnly);
+  files := Directory.GetFiles('.\greenfoot\', '*.greenfoot', SearchOption.TopDirectoryOnly);
   
   filecounter := 1;
   for var i := 0 to length(files)-1 do begin
-    filename := files[i].Split('\')[1];
-    if(filename <> 'project.greenfoot') then begin
+    filename := files[i].Split('\')[2];
+    if(filename <> '.\greenfoot\project.greenfoot') then begin
       writeln(filecounter, ': ', filename);
       inc(filecounter);
     end;
   end;
   
-  if FileExist('project.greenfoot') then begin
-    &File.Delete('project.greenfoot');
+  if FileExist('.\greenfoot\project.greenfoot') then begin
+    &File.Delete('.\greenfoot\project.greenfoot');
   end;
   
   writeln;
   write('Enter project number: ');
   readln(n);
   
-  if not FileExist('project' + n + '.greenfoot') then begin
+  if not FileExist('.\greenfoot\project' + n + '.greenfoot') then begin
     writeln('project', n, '.greenfoot');
     exit;
   end;
   
-  &File.Copy('project' + n + '.greenfoot', 'project.greenfoot');
+  &File.Copy('.\greenfoot\project' + n + '.greenfoot', '.\greenfoot\project.greenfoot');
   writeln('Opening');
-  Execute('project.greenfoot');
+  Execute('.\greenfoot\project.greenfoot');
 end.

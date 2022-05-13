@@ -22,18 +22,18 @@ begin
   counter := 1;
   finding := true;
   
-  if not FileExist('project.greenfoot') then begin
+  if not FileExist('.\greenfoot\project.greenfoot') then begin
     writeln('project.greenfoot not found');
     exit;
   end;
   
   while finding do
   begin
-    if FileExist('project' + counter + '.greenfoot') then
+    if FileExist('.\greenfoot\project' + counter + '.greenfoot') then
       inc(counter)
     else
       finding := false;
   end;
-  &File.Move('project.greenfoot', 'project' + counter + '.greenfoot');
+  &File.Move('.\greenfoot\project.greenfoot', '.\greenfoot\project' + counter + '.greenfoot');
   writeln('project.greenfoot -> project', counter, '.greenfoot');
 end.
