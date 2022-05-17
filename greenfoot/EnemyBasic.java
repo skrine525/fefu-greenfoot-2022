@@ -6,18 +6,22 @@ public class EnemyBasic extends Actor
 
 	private long actCount = 0;												                // Число кадров, необходима для анимаций
     public State currentState;                                                              // Текущее состояние
-	private State lastState = currentState;								              	// Последнее состояние, необходима для определения изменения состояния
+	private State lastState = currentState;								              		// Последнее состояние, необходима для определения изменения состояния
     protected EnemyMatrix.Cell cell;
+
+    private GreenfootImage blastImages[];
 
 	// Конструктор противника
 	public EnemyBasic(){
 		currentState = State.Stay;
+		LoadBlastImages();
 	}
 
 	// Расширенный конструктор противника
     public EnemyBasic(State startingState)
     {
     	currentState = startingState;
+    	LoadBlastImages();
     }
 
     // Устанавливает ячейку матрицы для врага
@@ -61,12 +65,6 @@ public class EnemyBasic extends Actor
             vX = Math.cos(angle) * delta;
             vY = Math.sin(angle) * delta;
 
-            //getWorld().showText(String.format("%.3f", vX) + " " + String.format("%.3f", vY), 200, 20);
-
-            //vX = Math.signum(vX) * Math.round(Math.abs(vX));
-            //vY = Math.signum(vY) * Math.round(Math.abs(vY));
-            //getWorld().showText(String.format("%.3f", vX) + " " + String.format("%.3f", vY), 200, 50);
-
             int x = getX() + (int) (Math.signum(vX) * Math.round(Math.abs(vX)));
             int y = getY() + (int) (Math.signum(vY) * Math.round(Math.abs(vY)));
 
@@ -109,6 +107,16 @@ public class EnemyBasic extends Actor
     	}
     }
 
+    // Подгружает изображения взрыва в массив
+    private void LoadBlastImages()
+    {
+    	blastImages = new GreenfootImage[4];
+    	for(int i = 0; i < 4; i++)
+    	{
+    		blastImages[i] = new GreenfootImage("Blast" + (i + 1) + ".png");
+    	}
+    }
+
     // Обработка состояния Enter каждый кадр
     protected void OnEnter(long count)
     {
@@ -118,15 +126,20 @@ public class EnemyBasic extends Actor
     // Обработка состояния Destroy каждый кадр
     protected void OnDestroy(long count)
     {
-        Destroy();
-        // К слову тоже надо переопределять для каждого субкласса
+    	// Вау, уже с кодом. Можно переопределять в субклассах, но зачем этом ¯\_(ツ)_/¯
+
+    	int imageIndex = (int) (count / 5);
+    	if(imageIndex < 4)
+    		setImage(blastImages[imageIndex]);
+    	else
+        	Destroy();
     }
 
     // Обработка состояния Stay каждый кадр
     protected void OnStay(long count)
     {
         // Да-да, он без кода. Необходима переопределять в субклассах
-    }
+    } 
 
     // Обработка состояния Action каждый кадр
     protected void OnAction(long count)
