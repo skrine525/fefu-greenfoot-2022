@@ -17,13 +17,6 @@ public class EnemyBasic extends Actor
 		LoadBlastImages();
 	}
 
-	// Расширенный конструктор противника
-    public EnemyBasic(State startingState)
-    {
-    	currentState = startingState;
-    	LoadBlastImages();
-    }
-
     // Устанавливает ячейку матрицы для врага
     public void SetCell(EnemyMatrix.Cell connectingCell)
     {

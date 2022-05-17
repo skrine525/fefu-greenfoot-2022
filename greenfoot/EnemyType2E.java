@@ -7,11 +7,6 @@ public class EnemyType2E extends EnemyType2
         super();
     }
 
-    public EnemyType2E(State startingState)
-    {
-        super(startingState);
-    }
-
     @Override
     protected void OnEnter(long count)
     {

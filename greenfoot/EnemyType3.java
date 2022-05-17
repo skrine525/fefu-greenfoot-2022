@@ -1,8 +1,8 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class EnemyType2A extends EnemyType2
+public class EnemyType3 extends EnemyBasic
 {
-    public EnemyType2A()
+    public EnemyType3()
 	{
 		super();
 	}
@@ -12,7 +12,7 @@ public class EnemyType2A extends EnemyType2
     {
     	if(count == 0)
     	{
-    		setRotation(135);
+    		setRotation(45);
     		move(5);
     	}
     	else if(count <= 70)
@@ -21,7 +21,7 @@ public class EnemyType2A extends EnemyType2
     	}
     	else if (count <= 270)
     	{
-    		turn(-3);
+    		turn(3);
     		move(5);
     	}
     	else
@@ -42,5 +42,12 @@ public class EnemyType2A extends EnemyType2
     				currentState = State.Stay;
     		}
     	}
+    }
+
+    @Override
+    protected void OnStay(long count)
+    {
+    	if(cell != null)
+    		MoveTo(cell.x, cell.y, 1);
     }
 }

@@ -1,8 +1,8 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-public class EnemyType2B extends EnemyType2
+public class EnemyType3C extends EnemyType3
 {
-    public EnemyType2B()
+    public EnemyType3C()
     {
         super();
     }
@@ -12,7 +12,7 @@ public class EnemyType2B extends EnemyType2
     {
         if (count == 0)
         {    
-            setRotation(42);
+            setRotation(138);
         }
         else if (count <= 20)
         {
@@ -21,22 +21,22 @@ public class EnemyType2B extends EnemyType2
         else if (count <= 60)
         {
             move(5);
-            turn(2);
+            turn(-2);
         }
         else if (count <= 80)
         {
             move(5);
-            turn(5);
+            turn(-5);
         }
         else if (count <= 88)
         {
             move(5);
-            turn(7);
+            turn(-7);
         }
         else if (count <= 110)
         {
             move(5);
-            turn(2);
+            turn(-2);
         }
         else
         {
