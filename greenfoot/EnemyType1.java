@@ -2,6 +2,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class EnemyType1 extends EnemyBasic
 {
+    private int actionActNumber;                                                             // Номер кадра, при котором меняется состояние Stay -> Action
+
     public EnemyType1()
 	{
 		super();
@@ -49,5 +51,28 @@ public class EnemyType1 extends EnemyBasic
     {
     	if(cell != null)
     		MoveTo(cell.x, cell.y, 1);
+
+        // Тестовый переход в Action
+        if(count == 0)
+        {
+            actionActNumber = 500 + Greenfoot.getRandomNumber(65535) % 501;
+        }
+        else if(count >= actionActNumber)
+            currentState = State.Action;
+    }
+
+    @Override
+    protected void OnAction(long count)
+    {
+        if(count < 60)
+            move(3);
+        else
+        {
+            if(cell != null)
+            {
+                setLocation(cell.x, cell.y);
+                currentState = State.Stay;
+            }
+        }
     }
 }

@@ -7,9 +7,8 @@ public class EnemyBasic extends Actor
 	private long actCount = 0;												                // Число кадров, необходима для анимаций
     public State currentState;                                                              // Текущее состояние
 	private State lastState = currentState;								              		// Последнее состояние, необходима для определения изменения состояния
-    protected EnemyMatrix.Cell cell;
-
-    private GreenfootImage blastImages[];
+    protected EnemyMatrix.Cell cell;                                                        // Ячейка в матрице
+    private GreenfootImage blastImages[];                                                   // Массив изображений для анимации взрыва
 
 	// Конструктор противника
 	public EnemyBasic(){
@@ -119,7 +118,7 @@ public class EnemyBasic extends Actor
     // Обработка состояния Destroy каждый кадр
     protected void OnDestroy(long count)
     {
-    	// Вау, уже с кодом. Можно переопределять в субклассах, но зачем этом ¯\_(ツ)_/¯
+    	// Вау, уже с кодом. Можно переопределять в субклассах, но зачем это ¯\_(ツ)_/¯
 
     	int imageIndex = (int) (count / 5);
     	if(imageIndex < 4)
