@@ -31,70 +31,6 @@ public class Gameplay extends World
         {
             if(spawnCount > 0)
             {
-                // if(spawnType == 1)
-                // {
-                //     EnemyBasic enemy1, enemy2;
-
-                //     if(Greenfoot.getRandomNumber(100) <= 49)
-                //         enemy1 = (EnemyBasic) new EnemyType1(EnemyBasic.State.Enter);
-                //     else
-                //         enemy1 = (EnemyBasic) new EnemyType2(EnemyBasic.State.Enter);
-
-                //     if(Greenfoot.getRandomNumber(100) <= 49)
-                //         enemy2 = (EnemyBasic) new EnemyType1A(EnemyBasic.State.Enter);
-                //     else
-                //         enemy2 = (EnemyBasic) new EnemyType2A(EnemyBasic.State.Enter);
-
-
-                //     enemyMatrix.AddEnemy(enemy1);
-                //     enemyMatrix.AddEnemy(enemy2);
-                //     addObject(enemy1, 40, 0);
-                //     addObject(enemy2, 360, 0);
-                //     spawnCooldown = 5;
-                //     spawnCount--;
-                // }
-                // else if(spawnType == 2)
-                // {
-                //     EnemyBasic enemy1, enemy2;
-                    
-                //     if(Greenfoot.getRandomNumber(100) <= 49)
-                //         enemy1 = (EnemyBasic) new EnemyType1B(EnemyBasic.State.Enter);
-                //     else
-                //         enemy1 = (EnemyBasic) new EnemyType2B(EnemyBasic.State.Enter);
-
-                //     if(Greenfoot.getRandomNumber(100) <= 49)
-                //         enemy2 = (EnemyBasic) new EnemyType1C(EnemyBasic.State.Enter);
-                //     else
-                //         enemy2 = (EnemyBasic) new EnemyType2C(EnemyBasic.State.Enter);
-
-                //     enemyMatrix.AddEnemy(enemy1);
-                //     enemyMatrix.AddEnemy(enemy2);
-                //     addObject(enemy1, 0, 50);
-                //     addObject(enemy2, 399, 50);
-                //     spawnCooldown = 5;
-                //     spawnCount--;
-                // }
-                // else if(spawnType == 3)
-                // {
-                //     EnemyBasic enemy1, enemy2;
-                    
-                //     if(Greenfoot.getRandomNumber(100) <= 49)
-                //         enemy1 = (EnemyBasic) new EnemyType1D(EnemyBasic.State.Enter);
-                //     else
-                //         enemy1 = (EnemyBasic) new EnemyType2D(EnemyBasic.State.Enter);
-
-                //     if(Greenfoot.getRandomNumber(100) <= 49)
-                //         enemy2 = (EnemyBasic) new EnemyType1E(EnemyBasic.State.Enter);
-                //     else
-                //         enemy2 = (EnemyBasic) new EnemyType2E(EnemyBasic.State.Enter);
-
-                //     enemyMatrix.AddEnemy(enemy1);
-                //     enemyMatrix.AddEnemy(enemy2);
-                //     addObject(enemy1, 0, 420);
-                //     addObject(enemy2, 399, 420);
-                //     spawnCooldown = 5;
-                //     spawnCount--;
-                // }
                 if(spawnType == 1)
                 {
                     EnemySpawner spawner = new EnemySpawner(4, 100);
@@ -119,6 +55,56 @@ public class Gameplay extends World
                     addObject(enemy2, 360, 0);
                     spawnCooldown = 5;
                     spawnCount--;
+                }
+                else if(spawnType == 2)
+                {
+                    EnemySpawner spawner = new EnemySpawner(4, 100);
+                    spawner.AddEnemyClass(EnemyType1B.class, 35);
+                    spawner.AddEnemyClass(EnemyType2B.class, 35);
+                    spawner.AddEnemyClass(EnemyType3B.class, 20);
+                    spawner.AddEnemyClass(EnemyType4B.class, 10);
+                    EnemyBasic enemy1 = spawner.Spawn();
+                    enemy1.currentState = EnemyBasic.State.Enter;
+
+                    spawner = new EnemySpawner(4, 100);
+                    spawner.AddEnemyClass(EnemyType1C.class, 35);
+                    spawner.AddEnemyClass(EnemyType2C.class, 35);
+                    spawner.AddEnemyClass(EnemyType3C.class, 20);
+                    spawner.AddEnemyClass(EnemyType4C.class, 10);
+                    EnemyBasic enemy2 = spawner.Spawn();
+                    enemy2.currentState = EnemyBasic.State.Enter;
+
+                    enemyMatrix.AddEnemy(enemy1);
+                    enemyMatrix.AddEnemy(enemy2);
+                    addObject(enemy1, 0, 50);
+                    addObject(enemy2, 399, 50);
+                    spawnCooldown = 5;
+                    spawnCount--;
+                }
+                else if(spawnType == 3)
+                {
+                    EnemySpawner spawner = new EnemySpawner(4, 100);
+                    spawner.AddEnemyClass(EnemyType1D.class, 35);
+                    spawner.AddEnemyClass(EnemyType2D.class, 35);
+                    spawner.AddEnemyClass(EnemyType3D.class, 20);
+                    spawner.AddEnemyClass(EnemyType4D.class, 10);
+                    EnemyBasic enemy1 = spawner.Spawn();
+                    enemy1.currentState = EnemyBasic.State.Enter;
+
+                    spawner = new EnemySpawner(4, 100);
+                    spawner.AddEnemyClass(EnemyType1E.class, 35);
+                    spawner.AddEnemyClass(EnemyType2E.class, 35);
+                    spawner.AddEnemyClass(EnemyType3E.class, 20);
+                    spawner.AddEnemyClass(EnemyType4E.class, 10);
+                    EnemyBasic enemy2 = spawner.Spawn();
+                    enemy2.currentState = EnemyBasic.State.Enter;
+
+                     enemyMatrix.AddEnemy(enemy1);
+                     enemyMatrix.AddEnemy(enemy2);
+                     addObject(enemy1, 0, 420);
+                     addObject(enemy2, 399, 420);
+                     spawnCooldown = 5;
+                     spawnCount--;
                 }
                 else
                 {
