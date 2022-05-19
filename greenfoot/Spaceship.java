@@ -23,7 +23,7 @@ public class Spaceship extends Actor
         } 
        else cooldown = 10;
     }
-    private void Control(){
+    public void Control(){
        if (Greenfoot.isKeyDown("left")){
             if (getX() > 25)
             setLocation(getX() - 2, getY());
