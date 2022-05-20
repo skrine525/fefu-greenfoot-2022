@@ -5,10 +5,11 @@ public class Gameplay extends World
     private int spawnCooldown = 0;                                                                // Переменная интервала между спавнами
     private int spawnType = 0;                                                                    // Перменная вида созданного спавна
     private int spawnCount = 0;                                                                    // Переменная количества итераций спавна
-
+    private long animCount = 0;                                                                    //Переменная для анимации фона
     private EnemyMatrix enemyMatrix;                                                            // Матрица врагов
-    public static Gameplay instance;                                                            // Синглтон мира
-
+    public static Gameplay instance;  
+    private GreenfootImage backImages[];
+    // Синглтон мира
     // Конструктор мира
     public Gameplay()
     {    
@@ -22,6 +23,8 @@ public class Gameplay extends World
     private void prepare()
     {
         addObject(new Spaceship(), 200, 560);
+        BackLoad();
+        setBackground("Background1.png");
     }
 
     // Занимается инициализированным спавном
@@ -137,8 +140,22 @@ public class Gameplay extends World
         Spawn();                                                                // Обрабатывает инициализированный спавн
         SpawnTest();                                                            // Тестовый запуск спавна через клавиатуру
         enemyMatrix.Act();                                                      // Обрабатывает логику матрицы
+        BackAnimation();
     }
-
+    public void BackAnimation(){
+        int imageIndex = (int) (animCount / 7);
+        animCount++;
+        if(imageIndex < 6)
+            setBackground(backImages[imageIndex]);
+        else animCount = 0;
+    }
+    public void BackLoad(){
+        backImages = new GreenfootImage[6];
+        for(int i = 0; i < 6; i++)
+        {
+            backImages[i] = new GreenfootImage("Background" + (i + 1) + ".png");
+        }
+    }
     public void SpawnTest()
     {
         if (Greenfoot.isKeyDown("1"))

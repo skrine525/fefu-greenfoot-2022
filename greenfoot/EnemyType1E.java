@@ -60,6 +60,13 @@ public class EnemyType1E extends EnemyType1
                 else
                     currentState = State.Stay;
             }
+            else
+            {
+                if (isAtEdge()) 
+                    getWorld().removeObject(this);
+                move(5);
+                turn(-2);
+            }
         }
     }
 }

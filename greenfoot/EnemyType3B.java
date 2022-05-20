@@ -55,6 +55,18 @@ public class EnemyType3B extends EnemyType3
                 else
                     currentState = State.Stay;
             }
+            else if (count <= 143)
+            {
+                move(5);
+                turn(5);
+            }
+            else
+            {
+                move(5);
+                turn(1);
+                if (isAtEdge()) 
+                    getWorld().removeObject(this);
+            }
         }
     }
 }

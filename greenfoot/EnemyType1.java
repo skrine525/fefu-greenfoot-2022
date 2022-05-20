@@ -46,6 +46,17 @@ public class EnemyType1 extends EnemyBasic
                 else
                     currentState = State.Stay;
             }
+            else if (count <= 283)
+            {
+                move(5);
+                turn(5);
+            }
+            else
+            {
+                move(5);
+                if (isAtEdge()) 
+                    getWorld().removeObject(this);
+            }
         }
     }
 
