@@ -102,12 +102,12 @@ public class Gameplay extends World
                     EnemyBasic enemy2 = spawner.Spawn();
                     enemy2.currentState = EnemyBasic.State.Enter;
 
-                     enemyMatrix.AddEnemy(enemy1);
-                     enemyMatrix.AddEnemy(enemy2);
-                     addObject(enemy1, 0, 420);
-                     addObject(enemy2, 399, 420);
-                     spawnCooldown = 5;
-                     spawnCount--;
+                    enemyMatrix.AddEnemy(enemy1);
+                    enemyMatrix.AddEnemy(enemy2);
+                    addObject(enemy1, 0, 420);
+                    addObject(enemy2, 399, 420);
+                    spawnCooldown = 5;
+                    spawnCount--;
                 }
                 else
                 {

@@ -29,8 +29,7 @@ public class EnemyMatrix
     private Cell[][] matrix;
     private int rows, columns, beginX, beginY;
     private long actCount = 0;
-
-    private int animationDeltaX, animationPosX = 0, animationDirX = 1;
+    private int animationType, animationDelta, animationPos, animationDir;
 
     public EnemyMatrix(int rows, int columns, int beginX, int beginY, int distance)
     {
@@ -39,8 +38,6 @@ public class EnemyMatrix
         this.beginX = beginX;
         this.beginY = beginY;
         matrix = new Cell[rows][columns];
-
-        animationDeltaX = beginX - 16;
 
         for(int i = 0; i < rows; i++)
         {
@@ -52,6 +49,11 @@ public class EnemyMatrix
                 matrix[i][j] = new Cell(xPos, yPos);
             }
         }
+
+        animationType = 1;
+        animationDelta = beginX - 16;
+        animationDir = 1;
+        animationPos = 0;
     }
 
     public int GetEmptyCellCount()
@@ -92,21 +94,72 @@ public class EnemyMatrix
     {
         actCount++;
 
-        // Обновление анимации каждый 3 кадр
+        switch(animationType)
+        {
+            case 1: Animation1(); break;
+            case 2: Animation2(); break;
+        }
+    }
+
+    // Анимация перемещения по горизонтали
+    private void Animation1()
+    {
+        // Обновление анимации каждый 5 кадр
         if(actCount % 5 == 0)
         {
-            if(animationDirX == 1 && animationPosX == animationDeltaX)
-                animationDirX = -1;
-            else if(animationDirX == -1 && animationPosX == -animationDeltaX)
-                animationDirX = 1;
+            if(animationDir == 1 && animationPos == animationDelta)
+                animationDir = -1;
+            else if(animationDir == -1 && animationPos == -animationDelta)
+                animationDir = 1;
+            animationPos += animationDir;
 
-            animationPosX += animationDirX;
             for(int i = 0; i < rows; i++)
             {
                 for(int j = 0; j < columns; j++)
                 {
-                    matrix[i][j].x += animationDirX;
+                    matrix[i][j].x += animationDir;
                 }
+            }
+
+            if(animationPos == 0 && Greenfoot.getRandomNumber(100) % 2 == 0)
+            {
+                animationType = 2;
+                animationDir = 1;
+                animationDelta = beginX - 44;
+            }
+        }
+    }
+
+    // Анимация "Гармошки"
+    private void Animation2()
+    {
+        // Обновление анимации каждый 5 кадр
+        if(actCount % 5 == 0)
+        {
+            if(animationDir == 1 && animationPos == animationDelta)
+                animationDir = -1;
+            else if(animationDir == -1 && animationPos == 0)
+                animationDir = 1;
+            animationPos += animationDir;
+
+            int halfColumns = columns / 2;
+            for(int i = 0; i < rows; i++)
+            {
+                for(int j = 0; j < columns; j++)
+                {
+                    if(j < halfColumns)
+                        matrix[i][j].x -= animationDir * (i + 1);
+                    else
+                        matrix[i][j].x += animationDir * (i + 1);
+                    matrix[i][j].y += animationDir * (i + 1);
+                }
+            }
+
+            if(animationPos == 0 && Greenfoot.getRandomNumber(100) % 2 == 0)
+            {
+                animationType = 1;
+                animationDir = 1;
+                animationDelta = beginX - 16;
             }
         }
     }
