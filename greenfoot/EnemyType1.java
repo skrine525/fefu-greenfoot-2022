@@ -7,6 +7,7 @@ public class EnemyType1 extends EnemyBasic
     private int cooldown;
     private int LR;
     private int count1;
+
     public EnemyType1()
     {
         super();
@@ -60,8 +61,8 @@ public class EnemyType1 extends EnemyBasic
         {
             actionActNumber = 500 + Greenfoot.getRandomNumber(65535) % 501;
         }
-        else if(count >= actionActNumber)
-            currentState = State.Action;
+        else if(count >= actionActNumber);
+            //currentState = State.Action;
     }
 
     @Override
@@ -118,6 +119,7 @@ public class EnemyType1 extends EnemyBasic
             }
         }
     }
+
     private void Shoot()
     {
        if (cooldown == 0)
@@ -126,6 +128,7 @@ public class EnemyType1 extends EnemyBasic
        }
        Cool();
     }
+
     private void Cool()
     {
        if (cooldown != 0){
