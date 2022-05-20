@@ -1,6 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-class EnemySpawner
+public class ChanceSpawner
 {
   private class ClassData
   {
@@ -8,26 +8,26 @@ class EnemySpawner
     public int chanceStart, chanceEnd;
   }
   
-  private int maxChance; // Переменная значения максимального шанса
-  private int classChanceStart;   // Начальное значение шанса
+  private int maxChance;
+  private int classChanceStart;
   private ClassData[] classes;
   private int currentClassIndex, classCount;
   
-  public EnemySpawner(int count, int maxChance)
+  public ChanceSpawner(int count, int maxChance)
   {
     this.maxChance = maxChance;
-    this.classChanceStart = 0;
-    this.currentClassIndex = 0;
+    classChanceStart = 0;
+    currentClassIndex = 0;
     classCount = count;
-    this.classes = new ClassData[count];
+    classes = new ClassData[count];
   }
   
-  public void AddEnemyClass(Class<?> enemyClass, int chance)
+  public void AddSpawnClass(Class<?> spawnClass, int chance)
   {
     if(currentClassIndex < classCount)
     {
       classes[currentClassIndex] = new ClassData();
-      classes[currentClassIndex].spawnClass = enemyClass;
+      classes[currentClassIndex].spawnClass = spawnClass;
       classes[currentClassIndex].chanceStart = classChanceStart;
       classChanceStart = classChanceStart + chance;
       classes[currentClassIndex].chanceEnd = classChanceStart - 1;
@@ -35,7 +35,7 @@ class EnemySpawner
     }
   }
 
-  public EnemyBasic Spawn()
+  public Object Spawn()
   {
     int randomNumber = Greenfoot.getRandomNumber(maxChance);
     for(int i = 0; i < classCount; i++)
@@ -44,7 +44,7 @@ class EnemySpawner
         {
             try
             {
-                return (EnemyBasic) classes[i].spawnClass.newInstance();
+                return classes[i].spawnClass.newInstance();
             }
             catch(InstantiationException e)
             {

@@ -4,10 +4,10 @@ public class EnemyBasic extends Actor
 {
 	enum State { Stay, Enter, Destroy, Action }												// Перечисление состояний протвника
 
-	private long actCount = 0;												                // Число кадров, необходима для анимаций
+	private long frame = 0;                                                                // Число кадров, необходима для анимаций
     public State currentState;                                                              // Текущее состояние
-	private State lastState = currentState;								              		// Последнее состояние, необходима для определения изменения состояния
-    protected EnemyMatrix.Cell cell;                                                        // Ячейка в матрице
+	private State lastState = currentState;                                                // Последнее состояние, необходима для определения изменения состояния
+    protected EnemyMatrix.Cell matrixCell;                                                  // Ячейка в матрице
     private GreenfootImage blastImages[];                                                   // Массив изображений для анимации взрыва
 
 	// Конструктор противника
@@ -19,7 +19,7 @@ public class EnemyBasic extends Actor
     // Устанавливает ячейку матрицы для врага
     public void SetCell(EnemyMatrix.Cell connectingCell)
     {
-        cell = connectingCell;
+        matrixCell = connectingCell;
     }
 
     // Обычный act
@@ -70,8 +70,8 @@ public class EnemyBasic extends Actor
     public void Destroy()
     {
         getWorld().removeObject(this);
-        if(cell != null)
-            cell.enemy = null;
+        if(matrixCell != null)
+            matrixCell.enemy = null;
     }
 
     public void Hit()
@@ -84,28 +84,18 @@ public class EnemyBasic extends Actor
     {
     	if(currentState != lastState)
     	{
-    		actCount = 0;
+    		frame = 0;
     		lastState = currentState;
     	}
     	else
-    		actCount++;
+    		frame++;
 
     	switch(currentState)
     	{
-            case Stay: OnStay(actCount); break;
-    		case Enter: OnEnter(actCount); break;
-            case Action: OnAction(actCount); break;
-            case Destroy: OnDestroy(actCount); break;
-    	}
-    }
-
-    // Подгружает изображения взрыва в массив
-    private void LoadBlastImages()
-    {
-    	blastImages = new GreenfootImage[4];
-    	for(int i = 0; i < 4; i++)
-    	{
-    		blastImages[i] = new GreenfootImage("Blast" + (i + 1) + ".png");
+            case Stay: OnStay(frame); break;
+    		case Enter: OnEnter(frame); break;
+            case Action: OnAction(frame); break;
+            case Destroy: OnDestroy(frame); break;
     	}
     }
 
@@ -137,5 +127,15 @@ public class EnemyBasic extends Actor
     protected void OnAction(long count)
     {
         // Да-да, он без кода. Необходима переопределять в субклассах
+    }
+
+    // Подгружает изображения взрыва в массив
+    private void LoadBlastImages()
+    {
+        blastImages = new GreenfootImage[4];
+        for(int i = 0; i < 4; i++)
+        {
+            blastImages[i] = new GreenfootImage("Blast" + (i + 1) + ".png");
+        }
     }
 }

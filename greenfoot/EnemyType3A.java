@@ -8,40 +8,40 @@ public class EnemyType3A extends EnemyType3
     }
 
     @Override
-    protected void OnEnter(long count)
+    protected void OnEnter(long frame)
     {
-        if(count == 0)
+        if(frame == 0)
         {
             setRotation(135);
             move(5);
         }
-        else if(count <= 70)
+        else if(frame <= 70)
         {
             move(5);
         }
-        else if (count <= 270)
+        else if (frame <= 270)
         {
             turn(-3);
             move(5);
         }
         else
         {
-            if(cell != null)
+            if(matrixCell != null)
             {
-                if(getX() != cell.x && getY() != cell.y)
+                if(getX() != matrixCell.x && getY() != matrixCell.y)
                 {
-                    RotateTo((int) GameSystem.GetAngle(getX(), getY(), cell.x, cell.y), 3);
-                    MoveTo(cell.x, cell.y, 5);
+                    RotateTo((int) GameSystem.GetAngle(getX(), getY(), matrixCell.x, matrixCell.y), 3);
+                    MoveTo(matrixCell.x, matrixCell.y, 5);
                 }
                 else if(getRotation() != 90)
                 {
-                    MoveTo(cell.x, cell.y, 5);
+                    MoveTo(matrixCell.x, matrixCell.y, 5);
                     RotateTo(90, 5);
                 }
                 else
                     currentState = State.Stay;
             }
-            else if (count <= 283)
+            else if (frame <= 283)
             {
                 move(5);
                 turn(-5);

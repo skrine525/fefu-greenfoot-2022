@@ -6,7 +6,7 @@ public class EnemyType1 extends EnemyBasic
     private boolean IsDone;
     private int cooldown;
     private int LR;
-    private int count1;
+    private int frame1;
 
     public EnemyType1()
     {
@@ -14,40 +14,40 @@ public class EnemyType1 extends EnemyBasic
     }
 
     @Override
-    protected void OnEnter(long count)
+    protected void OnEnter(long frame)
     {
-        if(count == 0)
+        if(frame == 0)
         {
             setRotation(45);
             move(5);
         }
-        else if(count <= 70)
+        else if(frame <= 70)
         {
             move(5);
         }
-        else if (count <= 270)
+        else if (frame <= 270)
         {
             turn(3);
             move(5);
         }
         else
         {
-            if(cell != null)
+            if(matrixCell != null)
             {
-                if(getX() != cell.x && getY() != cell.y)
+                if(getX() != matrixCell.x && getY() != matrixCell.y)
                 {
-                    RotateTo((int) GameSystem.GetAngle(getX(), getY(), cell.x, cell.y), 3);
-                    MoveTo(cell.x, cell.y, 5);
+                    RotateTo((int) GameSystem.GetAngle(getX(), getY(), matrixCell.x, matrixCell.y), 3);
+                    MoveTo(matrixCell.x, matrixCell.y, 5);
                 }
                 else if(getRotation() != 90)
                 {
-                    MoveTo(cell.x, cell.y, 5);
+                    MoveTo(matrixCell.x, matrixCell.y, 5);
                     RotateTo(90, 5);
                 }
                 else
                     currentState = State.Stay;
             }
-            else if (count <= 283)
+            else if (frame <= 283)
             {
                 move(5);
                 turn(5);
@@ -62,24 +62,24 @@ public class EnemyType1 extends EnemyBasic
     }
 
     @Override
-    protected void OnStay(long count)
+    protected void OnStay(long frame)
     {
-        if(cell != null)
-            MoveTo(cell.x, cell.y, 1);
+        if(matrixCell != null)
+            MoveTo(matrixCell.x, matrixCell.y, 1);
 
         // Тестовый переход в Action
-        if(count == 0)
+        if(frame == 0)
         {
             actionActNumber = 500 + Greenfoot.getRandomNumber(65535) % 501;
         }
-        else if(count >= actionActNumber)
+        else if(frame >= actionActNumber)
             currentState = State.Action;
     }
 
     @Override
-    protected void OnAction(long count)
+    protected void OnAction(long frame)
     {
-        if(count == 0)
+        if(frame == 0)
         {
             IsDone = false;
             if (getX() <= 199)
@@ -98,31 +98,31 @@ public class EnemyType1 extends EnemyBasic
         {
             move(4);
         }
-        else if((count1 <= 50) || (!IsDone))
+        else if((frame1 <= 50) || (!IsDone))
         {     
             if (!IsDone) 
             {
                 IsDone = true;
-                count1 = 0;
+                frame1 = 0;
             }
             move(4);
-            if (count1 <= 20) 
+            if (frame1 <= 20) 
                 Shoot();
-            count1++;
+            frame1++;
             turn(LR * 4);
         }
         else
         {
-            if(cell != null)
+            if(matrixCell != null)
             {
-                if(getX() != cell.x && getY() != cell.y)
+                if(getX() != matrixCell.x && getY() != matrixCell.y)
                 {
-                    RotateTo((int) GameSystem.GetAngle(getX(), getY(), cell.x, cell.y), 3);
-                    MoveTo(cell.x, cell.y, 5);
+                    RotateTo((int) GameSystem.GetAngle(getX(), getY(), matrixCell.x, matrixCell.y), 3);
+                    MoveTo(matrixCell.x, matrixCell.y, 5);
                 }
                 else if(getRotation() != 90)
                 {
-                    MoveTo(cell.x, cell.y, 5);
+                    MoveTo(matrixCell.x, matrixCell.y, 5);
                     RotateTo(90, 5);
                 }
                 else

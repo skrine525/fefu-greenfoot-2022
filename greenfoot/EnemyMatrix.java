@@ -28,7 +28,7 @@ public class EnemyMatrix
 
     private Cell[][] matrix;
     private int rows, columns, beginX, beginY;
-    private long actCount = 0;
+    private long frame = 0;
     private int animationType, animationDelta, animationPos, animationDir;
 
     public EnemyMatrix(int rows, int columns, int beginX, int beginY, int distance)
@@ -92,20 +92,20 @@ public class EnemyMatrix
 
     public void Act()
     {
-        actCount++;
-
         switch(animationType)
         {
             case 1: Animation1(); break;
             case 2: Animation2(); break;
         }
+
+        frame++;
     }
 
     // Анимация перемещения по горизонтали
     private void Animation1()
     {
         // Обновление анимации каждый 5 кадр
-        if(actCount % 5 == 0)
+        if(frame % 5 == 0)
         {
             if(animationDir == 1 && animationPos == animationDelta)
                 animationDir = -1;
@@ -134,7 +134,7 @@ public class EnemyMatrix
     private void Animation2()
     {
         // Обновление анимации каждый 5 кадр
-        if(actCount % 5 == 0)
+        if(frame % 5 == 0)
         {
             if(animationDir == 1 && animationPos == animationDelta)
                 animationDir = -1;
