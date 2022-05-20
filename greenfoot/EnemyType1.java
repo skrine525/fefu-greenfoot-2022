@@ -61,8 +61,8 @@ public class EnemyType1 extends EnemyBasic
         {
             actionActNumber = 500 + Greenfoot.getRandomNumber(65535) % 501;
         }
-        else if(count >= actionActNumber);
-            //currentState = State.Action;
+        else if(count >= actionActNumber)
+            currentState = State.Action;
     }
 
     @Override

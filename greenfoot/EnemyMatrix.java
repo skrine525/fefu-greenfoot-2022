@@ -52,8 +52,8 @@ public class EnemyMatrix
 
         animationType = 1;
         animationDelta = beginX - 16;
+        animationDir = 1;
         animationPos = 0;
-        animationDir = 0;
     }
 
     public int GetEmptyCellCount()
@@ -94,62 +94,72 @@ public class EnemyMatrix
     {
         actCount++;
 
-        if(animationType == 1)
+        switch(animationType)
         {
-            // Обновление анимации каждый 3 кадр
-            if(actCount % 5 == 0)
+            case 1: Animation1(); break;
+            case 2: Animation2(); break;
+        }
+    }
+
+    // Анимация перемещения по горизонтали
+    private void Animation1()
+    {
+        // Обновление анимации каждый 5 кадр
+        if(actCount % 5 == 0)
+        {
+            if(animationDir == 1 && animationPos == animationDelta)
+                animationDir = -1;
+            else if(animationDir == -1 && animationPos == -animationDelta)
+                animationDir = 1;
+            animationPos += animationDir;
+
+            for(int i = 0; i < rows; i++)
             {
-                if(animationDir == 1 && animationPos == animationDelta)
-                    animationDir = -1;
-                else if(animationDir == -1 && animationPos == -animationDelta)
-                    animationDir = 1;
-                animationPos += animationDir;
-
-                for(int i = 0; i < rows; i++)
+                for(int j = 0; j < columns; j++)
                 {
-                    for(int j = 0; j < columns; j++)
-                    {
-                        matrix[i][j].x += animationDir;
-                    }
-                }
-
-                if(animationPos == 0 && Greenfoot.getRandomNumber(100) % 5 == 0);
-                {
-                    System.out.println("1");
-                    animationType = 2;
-                    animationDir = 1;
-                    animationDelta = 10;
+                    matrix[i][j].x += animationDir;
                 }
             }
-        }
-        else if(animationType == 2)
-        {
-            if(actCount % 5 == 0)
+
+            if(animationPos == 0 && Greenfoot.getRandomNumber(100) % 2 == 0)
             {
-                if(animationDir == 1 && animationPos == animationDelta)
-                    animationDir = -1;
-                else if(animationDir == -1 && animationPos == -animationDelta)
-                    animationDir = 1;
-                animationPos += animationDir;
+                animationType = 2;
+                animationDir = 1;
+                animationDelta = beginX - 44;
+            }
+        }
+    }
 
-                for(int i = 0; i < rows; i++)
-                {
-                    for(int j = 0; j < columns; j++)
-                    {
-                        if(j < rows / 2)
-                            matrix[i][j].x -= animationDir * (i + 1);
-                        else
-                            matrix[i][j].x += animationDir * (i + 1);
-                        matrix[i][j].y += animationDir * (i + 1);
-                    }
-                }
+    // Анимация "Гармошки"
+    private void Animation2()
+    {
+        // Обновление анимации каждый 5 кадр
+        if(actCount % 5 == 0)
+        {
+            if(animationDir == 1 && animationPos == animationDelta)
+                animationDir = -1;
+            else if(animationDir == -1 && animationPos == 0)
+                animationDir = 1;
+            animationPos += animationDir;
 
-                if(animationPos == 0 && Greenfoot.getRandomNumber(100) % 2 == 0);
+            int halfColumns = columns / 2;
+            for(int i = 0; i < rows; i++)
+            {
+                for(int j = 0; j < columns; j++)
                 {
-                    animationType = 1;
-                    animationDir = 1;
-                    animationDelta = beginX - 16;
+                    if(j < halfColumns)
+                        matrix[i][j].x -= animationDir * (i + 1);
+                    else
+                        matrix[i][j].x += animationDir * (i + 1);
+                    matrix[i][j].y += animationDir * (i + 1);
                 }
+            }
+
+            if(animationPos == 0 && Greenfoot.getRandomNumber(100) % 2 == 0)
+            {
+                animationType = 1;
+                animationDir = 1;
+                animationDelta = beginX - 16;
             }
         }
     }
