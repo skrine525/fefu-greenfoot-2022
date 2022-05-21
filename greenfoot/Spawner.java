@@ -1,7 +1,7 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 import java.util.*;
 
-public class SpawnController  
+public class Spawner  
 {
     enum SpawnType { Type1Left, Type1Right, Type2Left, Type2Right, Type3Left, Type3Right }
 
@@ -9,6 +9,7 @@ public class SpawnController
     {
         public long frameStart;
         public int frameCooldown, count;
+        public boolean addToMatrix;
         SpawnType spawnType;
     }
 
@@ -26,7 +27,7 @@ public class SpawnController
 
     public int chanceEnemyType1, chanceEnemyType2, chanceEnemyType3, chanceEnemyType4;
     
-    public SpawnController(World world, EnemyMatrix enemyMatrix)
+    public Spawner(World world, EnemyMatrix enemyMatrix)
     {
         this.world = world;
         this.enemyMatrix = enemyMatrix;
@@ -38,13 +39,14 @@ public class SpawnController
         chanceEnemyType4 = DEFAULT_CHANCE_ENEMYTYPE4;
     }
 
-    public void StartSpawn(SpawnType type, int count, int cooldown)
+    public void StartSpawn(SpawnType type, int count, int cooldown, boolean addToMatrix)
     {
         SpawnQueue queue = new SpawnQueue();
         queue.frameStart = frame;
         queue.frameCooldown = cooldown;
         queue.count = count;
         queue.spawnType = type;
+        queue.addToMatrix = addToMatrix;
         spawnQueue.add(queue);
     }
 
@@ -58,12 +60,12 @@ public class SpawnController
                 {
                     switch(spawn.spawnType)
                     {
-                        case Type1Left: SpawnType1Left(); break;
-                        case Type1Right: SpawnType1Right(); break;
-                        case Type2Left: SpawnType2Left(); break;
-                        case Type2Right: SpawnType2Right(); break;
-                        case Type3Left: SpawnType3Left(); break;
-                        case Type3Right: SpawnType3Right(); break;
+                        case Type1Left: SpawnType1Left(spawn.addToMatrix); break;
+                        case Type1Right: SpawnType1Right(spawn.addToMatrix); break;
+                        case Type2Left: SpawnType2Left(spawn.addToMatrix); break;
+                        case Type2Right: SpawnType2Right(spawn.addToMatrix); break;
+                        case Type3Left: SpawnType3Left(spawn.addToMatrix); break;
+                        case Type3Right: SpawnType3Right(spawn.addToMatrix); break;
                     }
 
                     spawn.count--;
@@ -76,7 +78,7 @@ public class SpawnController
         frame++;
     }
 
-    private void SpawnType1Left()
+    private void SpawnType1Left(boolean addToMatrix)
     {
         ChanceSpawner spawner = new ChanceSpawner(4, 100);
         spawner.AddSpawnClass(EnemyType1.class, chanceEnemyType1);
@@ -86,11 +88,13 @@ public class SpawnController
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
-        enemyMatrix.AddEnemy(enemy);
+
+        if(addToMatrix)
+            enemyMatrix.AddEnemy(enemy);
         world.addObject(enemy, 40, 0);
     }
 
-    private void SpawnType1Right()
+    private void SpawnType1Right(boolean addToMatrix)
     {
         ChanceSpawner spawner = new ChanceSpawner(4, 100);
         spawner.AddSpawnClass(EnemyType1A.class, chanceEnemyType1);
@@ -100,11 +104,12 @@ public class SpawnController
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
-        enemyMatrix.AddEnemy(enemy);
+        if(addToMatrix)
+            enemyMatrix.AddEnemy(enemy);
         world.addObject(enemy, 360, 0);
     }
 
-    private void SpawnType2Left()
+    private void SpawnType2Left(boolean addToMatrix)
     {
         ChanceSpawner spawner = new ChanceSpawner(4, 100);
         spawner.AddSpawnClass(EnemyType1B.class, chanceEnemyType1);
@@ -118,7 +123,7 @@ public class SpawnController
         world.addObject(enemy, 0, 50);
     }
 
-    private void SpawnType2Right()
+    private void SpawnType2Right(boolean addToMatrix)
     {
         ChanceSpawner spawner = new ChanceSpawner(4, 100);
         spawner.AddSpawnClass(EnemyType1C.class, chanceEnemyType1);
@@ -128,11 +133,12 @@ public class SpawnController
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
-        enemyMatrix.AddEnemy(enemy);
+        if(addToMatrix)
+            enemyMatrix.AddEnemy(enemy);
         world.addObject(enemy, 399, 50);
     }
 
-    private void SpawnType3Left()
+    private void SpawnType3Left(boolean addToMatrix)
     {
         ChanceSpawner spawner = new ChanceSpawner(4, 100);
         spawner.AddSpawnClass(EnemyType1D.class, chanceEnemyType1);
@@ -142,11 +148,12 @@ public class SpawnController
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
-        enemyMatrix.AddEnemy(enemy);
+        if(addToMatrix)
+            enemyMatrix.AddEnemy(enemy);
         world.addObject(enemy, 0, 420);
     }
 
-    private void SpawnType3Right()
+    private void SpawnType3Right(boolean addToMatrix)
     {
         ChanceSpawner spawner = new ChanceSpawner(4, 100);
         spawner.AddSpawnClass(EnemyType1E.class, chanceEnemyType1);
@@ -156,7 +163,8 @@ public class SpawnController
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
-        enemyMatrix.AddEnemy(enemy);
+        if(addToMatrix)
+            enemyMatrix.AddEnemy(enemy);
         world.addObject(enemy, 399, 420);
     }
 }

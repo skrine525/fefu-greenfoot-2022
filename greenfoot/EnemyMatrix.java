@@ -1,4 +1,5 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
+import java.util.*;
 
 public class EnemyMatrix
 {
@@ -68,6 +69,35 @@ public class EnemyMatrix
             }
         }
         return count;
+    }
+
+    public ArrayList<EnemyBasic> GetEnemies()
+    {
+        ArrayList<EnemyBasic> enemies = new ArrayList<EnemyBasic>();
+        for(int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < columns; j++)
+            {
+                if(matrix[i][j].enemy != null)
+                    enemies.add(matrix[i][j].enemy);
+            }
+        }
+        return enemies;
+    }
+
+    public Cell getCell(int row, int column)
+    {
+        return matrix[row][column];
+    }
+
+    public int getRows()
+    {
+        return rows;
+    }
+
+    public int getColumns()
+    {
+        return columns;
     }
 
     public void AddEnemy(EnemyBasic enemy)

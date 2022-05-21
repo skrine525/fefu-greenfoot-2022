@@ -1,12 +1,11 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 public class EnemyType1 extends EnemyBasic
 {
-    private int actionActNumber;                                                             // Номер кадра, при котором меняется состояние Stay -> Action
     private boolean isDone;
     private int cooldown;
-    private int leftright;
-    private int frame1;
+    private int direction;
+    private int shootingFrame;
 
     public EnemyType1()
     {
@@ -66,14 +65,6 @@ public class EnemyType1 extends EnemyBasic
     {
         if(matrixCell != null)
             MoveTo(matrixCell.x, matrixCell.y, 1);
-
-        // Тестовый переход в Action
-        if(frame == 0)
-        {
-            actionActNumber = 500 + Greenfoot.getRandomNumber(65535) % 501;
-        }
-        else if(frame >= actionActNumber)
-            currentState = State.Action;
     }
 
     @Override
@@ -85,12 +76,12 @@ public class EnemyType1 extends EnemyBasic
             if (getX() <= 199)
             {
                 setRotation(60);
-                leftright = 1;
+                direction = 1;
             }
             else
             {
                 setRotation(120);
-                leftright = -1;
+                direction = -1;
             }
             move(4);
         }
@@ -98,18 +89,18 @@ public class EnemyType1 extends EnemyBasic
         {
             move(4);
         }
-        else if((frame1 <= 50) || (!isDone))
+        else if((shootingFrame <= 50) || (!isDone))
         {     
             if (!isDone) 
             {
                 isDone = true;
-                frame1 = 0;
+                shootingFrame = 0;
             }
             move(4);
-            if (frame1 <= 20) 
+            if (shootingFrame <= 20) 
                 Shoot();
-            frame1++;
-            turn(leftright * 4);
+            shootingFrame++;
+            turn(direction * 4);
         }
         else
         {
@@ -137,10 +128,10 @@ public class EnemyType1 extends EnemyBasic
        {
            getWorld().addObject(new EnemyBullet(getRotation()), getX(), getY());     
        }
-       Cool();
+       Cooldown();
     }
 
-    private void Cool()
+    private void Cooldown()
     {
        if (cooldown != 0){
             cooldown--;

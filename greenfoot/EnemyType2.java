@@ -1,4 +1,4 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 public class EnemyType2 extends EnemyBasic
 {
@@ -64,13 +64,6 @@ public class EnemyType2 extends EnemyBasic
     {
         if(matrixCell != null)
             MoveTo(matrixCell.x, matrixCell.y, 1);
-            
-        if(frame == 0)
-        {
-            actionActNumber = 500 + Greenfoot.getRandomNumber(65535) % 501;
-        }
-        else if(frame >= actionActNumber)
-            currentState = State.Action;
     }
     
     @Override

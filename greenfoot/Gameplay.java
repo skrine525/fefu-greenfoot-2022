@@ -1,15 +1,17 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 public class Gameplay extends World
 {
     private long frame = 0;                                                                      // Переменная количества кадров
-    protected EnemyMatrix enemyMatrix;                                                              // Матрица врагов
-    protected GreenfootImage backgroundImages[];                                                    // Массив изображений фона
-    protected SpawnController spawnController;                                                      // Контроллер спавна
-    protected int score = 0;
-    public Spaceship player;
+    protected EnemyMatrix enemyMatrix;                                                           // Матрица врагов
+    protected GreenfootImage backgroundImages[];                                                 // Массив изображений фона
+    protected Spawner spawner;                                                                   // Контроллер спавна
+    public Spaceship player;                                                                     // Ссылка на игрока
+    protected int score = 0;                                                                     // Количество очков
+
     // Пока без отображения
     protected int lives = 3;
+
     // Переменная для теста спавна
     private boolean isKeyDown = false;
     
@@ -18,15 +20,16 @@ public class Gameplay extends World
     {    
         super(400, 600, 1);                                                                     // Создание мира 400x600
         prepare();                                                                              // Стандартный метод подготовки объектов в мире
+        ShowScore();                                                                            // Отображаем очки на экране
         enemyMatrix = new EnemyMatrix(3, 8, 59, 59, 40);                                        // Инициализация матрицы врагов
-        spawnController = new SpawnController(this, enemyMatrix);
+        spawner = new Spawner(this, enemyMatrix);
     }
 
     public void act(){
-        BackgroundAnimation();                                                  // Обрабатывает задний фон мира
-        OnSpawn(frame);                                                      // Обрабатывает логику спавна
-        spawnController.Act();                                                  // Обрабатывает систему спавна
-        enemyMatrix.Act();                                                      // Обрабатывает логику матрицы
+        BackgroundAnimation();                                                                  // Обрабатывает задний фон мира
+        OnSpawn(frame);                                                                         // Обрабатывает логику спавна
+        spawner.Act();                                                                          // Обрабатывает систему спавна
+        enemyMatrix.Act();                                                                      // Обрабатывает логику матрицы
         ShowScore();
         frame++;
     }
@@ -35,6 +38,28 @@ public class Gameplay extends World
     {
         return player;
     }
+
+    // Если будем выдавать разное кол-во очков за пртивников, ?бонусы? и т.д.
+    public void AddScore(int score)
+    {
+        this.score += score;
+    }
+    
+    // Предположим, отнимать будем за смерть
+    public void RemoveScore()
+    {
+        if (score >= 100)
+            score -= 100;
+        else 
+            score = 0;
+    }
+    
+    public void Hit()
+    {
+        if (lives >=0)
+            lives--;
+        //Пока без остановки
+    }
     
     protected void OnSpawn(long frame)
     {
@@ -42,24 +67,24 @@ public class Gameplay extends World
         if (Greenfoot.isKeyDown("1"))
         {
             if(!isKeyDown){
-                spawnController.StartSpawn(SpawnController.SpawnType.Type1Left, 5, 8);
-                spawnController.StartSpawn(SpawnController.SpawnType.Type1Right, 5, 8);
+                spawner.StartSpawn(Spawner.SpawnType.Type1Left, 5, 8, true);
+                spawner.StartSpawn(Spawner.SpawnType.Type1Right, 5, 8, true);
                 isKeyDown = true;
             }
         }
         else if (Greenfoot.isKeyDown("2"))
         {
             if(!isKeyDown){
-                spawnController.StartSpawn(SpawnController.SpawnType.Type2Left, 4, 8);
-                spawnController.StartSpawn(SpawnController.SpawnType.Type2Right, 4, 8);
+                spawner.StartSpawn(Spawner.SpawnType.Type2Left, 4, 8, true);
+                spawner.StartSpawn(Spawner.SpawnType.Type2Right, 4, 8, true);
                 isKeyDown = true;
             }
         }
         else if (Greenfoot.isKeyDown("3"))
         {
             if(!isKeyDown){
-                spawnController.StartSpawn(SpawnController.SpawnType.Type3Left, 4, 8);
-                spawnController.StartSpawn(SpawnController.SpawnType.Type3Right, 4, 8);
+                spawner.StartSpawn(Spawner.SpawnType.Type3Left, 4, 8, true);
+                spawner.StartSpawn(Spawner.SpawnType.Type3Right, 4, 8, true);
                 isKeyDown = true;
             }
         }
@@ -76,11 +101,8 @@ public class Gameplay extends World
 
     // Обработка анимации фона
     private void BackgroundAnimation(){
-        int imageIndex = (int) (frame / 7);
-        if(imageIndex < 6)
-            setBackground(backgroundImages[imageIndex]);
-        else
-            frame = 0;
+        int imageIndex = (int) ((frame % 42) / 7);
+        setBackground(backgroundImages[imageIndex]);
     }
     
     // Подгрузка изображений фона
@@ -92,30 +114,9 @@ public class Gameplay extends World
         }
     }
     
+    // Отображение очков на экране
     private void ShowScore()
     {
         showText("SCORE: "+score,60,10);
-    }
-    
-    // Если будем выдавать разное кол-во очков за пртивников, ?бонусы? и т.д.
-    public void AddScore(int points)
-    {
-        score += points;
-    }
-    
-    // Предположим, отнимать будем за смерть
-    public void RemoveScore()
-    {
-        if (score >= 100)
-            score -= 100;
-        else 
-            score = 0;
-    }
-    
-    public void Hit()
-    {
-        if (lives >=0)
-            lives --;
-        //Пока без остановки
     }
 }

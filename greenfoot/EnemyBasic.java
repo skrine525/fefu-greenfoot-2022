@@ -1,4 +1,4 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 public class EnemyBasic extends Actor
 {
@@ -101,17 +101,17 @@ public class EnemyBasic extends Actor
     }
 
     // Обработка состояния Enter каждый кадр
-    protected void OnEnter(long count)
+    protected void OnEnter(long frame)
     {
         // Да-да, он без кода. Необходима переопределять в субклассах
     }
 
     // Обработка состояния Destroy каждый кадр
-    protected void OnDestroy(long count)
+    protected void OnDestroy(long frame)
     {
         // Вау, уже с кодом. Можно переопределять в субклассах, но зачем это ¯\_(ツ)_/¯
 
-        int imageIndex = (int) (count / 5);
+        int imageIndex = (int) (frame / 5);
         if(imageIndex < 4)
             setImage(blastImages[imageIndex]);
         else
@@ -119,15 +119,26 @@ public class EnemyBasic extends Actor
     }
 
     // Обработка состояния Stay каждый кадр
-    protected void OnStay(long count)
+    protected void OnStay(long frame)
     {
         // Да-да, он без кода. Необходима переопределять в субклассах
     } 
 
     // Обработка состояния Action каждый кадр
-    protected void OnAction(long count)
+    protected void OnAction(long frame)
     {
         // Да-да, он без кода. Необходима переопределять в субклассах
+
+        // Для теста
+        if(frame <= 100)
+        {
+            move(5);
+        }
+        else{
+            currentState = State.Stay;
+            setRotation(90);
+            setLocation(matrixCell.x, matrixCell.y);
+        }
     }
 
     // Подгружает изображения взрыва в массив

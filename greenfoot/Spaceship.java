@@ -1,4 +1,4 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
 public class Spaceship extends Actor
 {
@@ -15,9 +15,9 @@ public class Spaceship extends Actor
                
             }
         }   
-       Cool();
+       Cooldown();
     }
-    private void Cool(){
+    private void Cooldown(){
        if (cooldown != 0){
             cooldown--;
         } 
