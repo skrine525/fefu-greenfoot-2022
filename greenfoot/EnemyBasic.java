@@ -2,19 +2,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class EnemyBasic extends Actor
 {
-	enum State { Stay, Enter, Destroy, Action }												// Перечисление состояний протвника
+    enum State { Stay, Enter, Destroy, Action }                                                // Перечисление состояний протвника
 
-	private long frame = 0;                                                                // Число кадров, необходима для анимаций
+    private long frame = 0;                                                                // Число кадров, необходима для анимаций
     public State currentState;                                                              // Текущее состояние
-	private State lastState = currentState;                                                // Последнее состояние, необходима для определения изменения состояния
+    private State lastState = currentState;                                                // Последнее состояние, необходима для определения изменения состояния
     protected EnemyMatrix.Cell matrixCell;                                                  // Ячейка в матрице
     private GreenfootImage blastImages[];                                                   // Массив изображений для анимации взрыва
-
-	// Конструктор противника
-	public EnemyBasic(){
-		currentState = State.Stay;
-		LoadBlastImages();
-	}
+    // Конструктор противника
+    public EnemyBasic(){
+        currentState = State.Stay;
+        LoadBlastImages();
+    }
 
     // Устанавливает ячейку матрицы для врага
     public void SetCell(EnemyMatrix.Cell connectingCell)
@@ -25,7 +24,7 @@ public class EnemyBasic extends Actor
     // Обычный act
     public void act()
     {
-        Behavior();																             // Поведение противника каждый кадр
+        Behavior();                                                                             // Поведение противника каждый кадр
     }
 
     // Функция плавного поворота на определенный угол с шагом
@@ -76,27 +75,29 @@ public class EnemyBasic extends Actor
 
     public void Hit()
     {
+        Gameplay gameplay = (Gameplay) getWorld();
+        gameplay.AddScore(10);
         currentState = State.Destroy;
     }
 
     // Основное поведение противника
     private void Behavior()
     {
-    	if(currentState != lastState)
-    	{
-    		frame = 0;
-    		lastState = currentState;
-    	}
-    	else
-    		frame++;
+        if(currentState != lastState)
+        {
+            frame = 0;
+            lastState = currentState;
+        }
+        else
+            frame++;
 
-    	switch(currentState)
-    	{
+        switch(currentState)
+        {
             case Stay: OnStay(frame); break;
-    		case Enter: OnEnter(frame); break;
+            case Enter: OnEnter(frame); break;
             case Action: OnAction(frame); break;
             case Destroy: OnDestroy(frame); break;
-    	}
+        }
     }
 
     // Обработка состояния Enter каждый кадр
@@ -108,13 +109,13 @@ public class EnemyBasic extends Actor
     // Обработка состояния Destroy каждый кадр
     protected void OnDestroy(long count)
     {
-    	// Вау, уже с кодом. Можно переопределять в субклассах, но зачем это ¯\_(ツ)_/¯
+        // Вау, уже с кодом. Можно переопределять в субклассах, но зачем это ¯\_(ツ)_/¯
 
-    	int imageIndex = (int) (count / 5);
-    	if(imageIndex < 4)
-    		setImage(blastImages[imageIndex]);
-    	else
-        	Destroy();
+        int imageIndex = (int) (count / 5);
+        if(imageIndex < 4)
+            setImage(blastImages[imageIndex]);
+        else
+            Destroy();
     }
 
     // Обработка состояния Stay каждый кадр

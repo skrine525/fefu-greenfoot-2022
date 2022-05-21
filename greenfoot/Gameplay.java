@@ -6,11 +6,13 @@ public class Gameplay extends World
     protected EnemyMatrix enemyMatrix;                                                              // Матрица врагов
     protected GreenfootImage backgroundImages[];                                                    // Массив изображений фона
     protected SpawnController spawnController;                                                      // Контроллер спавна
-
+    protected int score = 0;
+    public Spaceship player;
+    // Пока без отображения
+    protected int lives = 3;
     // Переменная для теста спавна
     private boolean isKeyDown = false;
-
-
+    
     // Конструктор мира
     public Gameplay()
     {    
@@ -25,10 +27,15 @@ public class Gameplay extends World
         OnSpawn(frame);                                                      // Обрабатывает логику спавна
         spawnController.Act();                                                  // Обрабатывает систему спавна
         enemyMatrix.Act();                                                      // Обрабатывает логику матрицы
-
+        ShowScore();
         frame++;
     }
-
+    
+    public Spaceship GetPlayer()
+    {
+        return player;
+    }
+    
     protected void OnSpawn(long frame)
     {
         // Логика тестирования спавна
@@ -63,7 +70,7 @@ public class Gameplay extends World
     // Стандартный метод подготовки объектов мира
     private void prepare()
     {
-        addObject(new Spaceship(), 200, 560);
+        addObject(player = new Spaceship(), 200, 560);
         LoadBackgroundImages();
     }
 
@@ -75,7 +82,7 @@ public class Gameplay extends World
         else
             frame = 0;
     }
-
+    
     // Подгрузка изображений фона
     private void LoadBackgroundImages(){
         backgroundImages = new GreenfootImage[6];
@@ -83,5 +90,32 @@ public class Gameplay extends World
         {
             backgroundImages[i] = new GreenfootImage("Background" + (i + 1) + ".png");
         }
+    }
+    
+    private void ShowScore()
+    {
+        showText("SCORE: "+score,60,10);
+    }
+    
+    // Если будем выдавать разное кол-во очков за пртивников, ?бонусы? и т.д.
+    public void AddScore(int points)
+    {
+        score += points;
+    }
+    
+    // Предположим, отнимать будем за смерть
+    public void RemoveScore()
+    {
+        if (score >= 100)
+            score -= 100;
+        else 
+            score = 0;
+    }
+    
+    public void Hit()
+    {
+        if (lives >=0)
+            lives --;
+        //Пока без остановки
     }
 }

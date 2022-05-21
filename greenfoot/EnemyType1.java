@@ -3,9 +3,9 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class EnemyType1 extends EnemyBasic
 {
     private int actionActNumber;                                                             // Номер кадра, при котором меняется состояние Stay -> Action
-    private boolean IsDone;
+    private boolean isDone;
     private int cooldown;
-    private int LR;
+    private int leftright;
     private int frame1;
 
     public EnemyType1()
@@ -81,35 +81,35 @@ public class EnemyType1 extends EnemyBasic
     {
         if(frame == 0)
         {
-            IsDone = false;
+            isDone = false;
             if (getX() <= 199)
             {
                 setRotation(60);
-                LR = 1;
+                leftright = 1;
             }
             else
             {
                 setRotation(120);
-                LR = -1;
+                leftright = -1;
             }
             move(4);
         }
-        else if((getY() <= 300) && (!IsDone))
+        else if((getY() <= 300) && (!isDone))
         {
             move(4);
         }
-        else if((frame1 <= 50) || (!IsDone))
+        else if((frame1 <= 50) || (!isDone))
         {     
-            if (!IsDone) 
+            if (!isDone) 
             {
-                IsDone = true;
+                isDone = true;
                 frame1 = 0;
             }
             move(4);
             if (frame1 <= 20) 
                 Shoot();
             frame1++;
-            turn(LR * 4);
+            turn(leftright * 4);
         }
         else
         {
