@@ -8,7 +8,7 @@ public class Bullet extends Actor
         setLocation(getX(),getY() - speed);
         
         EnemyBasic enemy = (EnemyBasic) getOneIntersectingObject(EnemyBasic.class);
-        if(enemy != null)
+        if(enemy != null && enemy.currentState != EnemyBasic.State.Destroy)
         {
             getWorld().removeObject(this);
             enemy.Hit();

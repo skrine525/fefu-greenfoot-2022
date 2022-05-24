@@ -4,7 +4,7 @@ public class EnemyType4 extends EnemyBasic
 {
     public EnemyType4()
     {
-        super();
+        super(10);
     }
 
     @Override

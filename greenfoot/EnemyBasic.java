@@ -9,10 +9,21 @@ public class EnemyBasic extends Actor
     private State lastState = currentState;                                                // Последнее состояние, необходима для определения изменения состояния
     protected EnemyMatrix.Cell matrixCell;                                                  // Ячейка в матрице
     private GreenfootImage blastImages[];                                                   // Массив изображений для анимации взрыва
+    private int pointsForHit;
+
     // Конструктор противника
-    public EnemyBasic(){
-        currentState = State.Stay;
+    public EnemyBasic()
+    {
         LoadBlastImages();
+        currentState = State.Stay;
+        pointsForHit = 0;
+    }
+
+    public EnemyBasic(int pointsForHit)
+    {
+        LoadBlastImages();
+        currentState = State.Stay;
+        this.pointsForHit = pointsForHit;
     }
 
     // Устанавливает ячейку матрицы для врага
@@ -75,8 +86,7 @@ public class EnemyBasic extends Actor
 
     public void Hit()
     {
-        Gameplay gameplay = (Gameplay) getWorld();
-        gameplay.AddScore(10);
+        ((Gameplay) getWorld()).AddScore(pointsForHit);
         currentState = State.Destroy;
     }
 

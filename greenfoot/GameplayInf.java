@@ -7,11 +7,13 @@ public class GameplayInf extends Gameplay
 
     // Стадия
     private int stageNumber = 1;								// Номер стадии
+    private int stageStartFrame = 60;							// Номер кадра, с которого начинается стадия
     private boolean canHandleStage = false;						// Переменная, разрешащая обрабатывать стадию
 
     // Спавн
-    private int spawnCount = 0;									// Количество врагов, которое осталось заспавнить
-    private int spawnStartFrame = 0;							// Норме кадра, с которого начинается спавно конвоя
+    private int spawnCount = 0;									// Количество конвоев, которое осталось заспавнить
+    private int spawnCountInStage = 0;							// Общее количество конвоев, которое необходимо заспавнить в стадии
+    private int spawnStartFrame = 0;							// Номер кадра, с которого начинается спавно конвоя
     private boolean canSpawn = true;							// Переменная, разрешающая спавн конвоя
     private boolean canAddToMatrix = true;						// Переменная, указывающая на возможность добавление в матрицу
     private boolean isPairedSpawn = false;						// Переменная, указывающая на парность спавна
@@ -19,7 +21,7 @@ public class GameplayInf extends Gameplay
     // Действие
     private int actionCount = 0;								// Количество врагов, которое осталось перевести в Action
     private int actionStartFrame = 0;							// Номер кадра, с которого начинается Action врагов
-     private boolean canAction = false;							// Переменная, разрешающая изменение состояния на Action
+    private boolean canAction = false;							// Переменная, разрешающая изменение состояния на Action
 
     public GameplayInf()
     {
@@ -41,20 +43,42 @@ public class GameplayInf extends Gameplay
 	            			stayingEnemies.add(enemy);
 	            	}
 	            	
-	            	int enemyIndex = Greenfoot.getRandomNumber(stayingEnemies.size());
-	            	stayingEnemies.get(enemyIndex).currentState = EnemyBasic.State.Action;
-	            	actionStartFrame = (int) frame + 30;
+	            	if(stayingEnemies.size() > 0)
+	            	{
+	            		int enemyIndex = Greenfoot.getRandomNumber(stayingEnemies.size());
+	            		stayingEnemies.get(enemyIndex).currentState = EnemyBasic.State.Action;
+	            		actionStartFrame = (int) frame + 30;
+	            	}
 
 	            	actionCount--;
 	            	if(actionCount <= 0)
 	            		canAction = false;
 	            }
         	}
+        	else if(spawnCount <= 0)
+        	{
+        		boolean enemiesDontExist = true;
+        		for(EnemyBasic enemy : enemyMatrix.GetEnemies())
+            	{
+            		if(enemy != null)
+            		{
+            			enemiesDontExist = false;
+            			break;
+            		}
+            	}
+
+            	if(enemiesDontExist)
+            	{
+            		canHandleStage = false;
+            		stageNumber++;
+            		stageStartFrame = (int) frame + 60;
+            	}
+        	}
             else if(canSpawn)
             {
             	if(frame >= spawnStartFrame)
             	{
-            		if(!SpawnCanvoy()){
+            		if(!SpawnConvoy()){
             			canAction = true;
             			actionStartFrame = (int) frame + 60;
             			actionCount = 3;
@@ -87,19 +111,19 @@ public class GameplayInf extends Gameplay
         }
         else
         {
-            if(frame == 0)
+            if(frame == stageStartFrame)
             {
                 textObject = new TextObject();
                 GreenfootImage image = new GreenfootImage(100, 100);
                 image.setFont(new Font("Arial", false, false , 20));
                 image.setColor(Color.RED);
-                image.drawString("Starting", 1, 50);
+                image.drawString("Stage " + stageNumber, 1, 50);
                 textObject.setImage(image);
                 addObject(textObject, getWidth() / 2, getHeight() / 2);
             }
-            else if(frame >= 180){
+            else if(frame >= stageStartFrame + 120){
                 spawnStartFrame = (int) frame + 20;
-                spawnCount = 30;
+                spawnCount = 12 + 4 * (stageNumber - 1);
                 isPairedSpawn = (Greenfoot.getRandomNumber(2) == 0) ? true : false;
                 canHandleStage = true;
 
@@ -108,7 +132,7 @@ public class GameplayInf extends Gameplay
         }
     }
 
-    private boolean SpawnCanvoy()
+    private boolean SpawnConvoy()
     {
     	int emptyCellCount = enemyMatrix.GetEmptyCellCount();
 
@@ -117,7 +141,7 @@ public class GameplayInf extends Gameplay
         	if(emptyCellCount >= 8)
         	{
 	        	int spawnType = Greenfoot.getRandomNumber(3);
-	        	spawnCount -= 8;
+	        	spawnCount -= 2;
 		        switch(spawnType)
 		        {
 		            case 0:
@@ -143,7 +167,7 @@ public class GameplayInf extends Gameplay
         	if(emptyCellCount >= 4)
         	{
         		int spawnType = Greenfoot.getRandomNumber(6);
-	        	spawnCount -= 4;
+	        	spawnCount--;
 		        switch(spawnType)
 		        {
 		            case 0: spawner.StartSpawn(Spawner.SpawnType.Type1Left, 4, 8, canAddToMatrix); break;

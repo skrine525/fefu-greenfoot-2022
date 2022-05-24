@@ -9,7 +9,7 @@ public class EnemyType1 extends EnemyBasic
 
     public EnemyType1()
     {
-        super();
+        super(10);
     }
 
     @Override

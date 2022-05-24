@@ -8,7 +8,7 @@ public class EnemyType2 extends EnemyBasic
     private int frame1;
     public EnemyType2()
     {
-        super();
+        super(20);
     }
 
     @Override
