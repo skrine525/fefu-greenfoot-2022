@@ -73,39 +73,25 @@ public class GameplayInf extends Gameplay
             		stageNumber++;
             		stageStartFrame = (int) frame + 60;
             	}
+                else if(AreAllMatrixEnemiesStanding())
+                    DoAction(frame);
         	}
             else if(canSpawn)
             {
             	if(frame >= spawnStartFrame)
             	{
-            		if(!SpawnConvoy()){
-            			canAction = true;
-            			actionStartFrame = (int) frame + 60;
-            			actionCount = 3;
-            		}
+            		if(!SpawnConvoy())
+                        DoAction(frame);
                 	canSpawn = false;
             	}
             }
             else
             {
-                boolean canStartSpawnConvoy = true;
-
-                int rows = enemyMatrix.getRows();
-                int columns = enemyMatrix.getColumns();
-                for(int i = 0; i < rows; i++)
-                {
-                    for(int j = 0; j < columns; j++)
-                    {
-                        EnemyMatrix.Cell cell = enemyMatrix.getCell(i, j);
-                        if(cell.enemy != null && cell.enemy.currentState != EnemyBasic.State.Stay)
-                            canStartSpawnConvoy = false;
-                    }
-                }
-
-                if(canStartSpawnConvoy)
+                if(AreAllMatrixEnemiesStanding())
                 {
                     canSpawn = true;
                     spawnStartFrame = (int) frame + 20;
+                    isPairedSpawn = (Greenfoot.getRandomNumber(2) == 0) ? true : false;
                 }
             }
         }
@@ -183,5 +169,31 @@ public class GameplayInf extends Gameplay
         }
 
         return false;
+    }
+
+    // Запускает Action
+    private void DoAction(long frame)
+    {
+        canAction = true;
+        actionStartFrame = (int) frame + 60;
+        actionCount = 3;
+    }
+
+    // Проверяет, все ли враги в матрице имеют состояние покоя, если да - true, иначе - false
+    private boolean AreAllMatrixEnemiesStanding()
+    {
+        int rows = enemyMatrix.getRows();
+        int columns = enemyMatrix.getColumns();
+        for(int i = 0; i < rows; i++)
+        {
+            for(int j = 0; j < columns; j++)
+            {
+                EnemyMatrix.Cell cell = enemyMatrix.getCell(i, j);
+                if(cell.enemy != null && cell.enemy.currentState != EnemyBasic.State.Stay)
+                    return false;
+            }
+        }
+
+        return true;
     }
 }
