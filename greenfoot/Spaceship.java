@@ -26,11 +26,11 @@ public class Spaceship extends Actor
     public void Control(){
        if (Greenfoot.isKeyDown("left")){
             if (getX() > 25)
-            setLocation(getX() - 2, getY());
+            setLocation(getX() - 3, getY());
         }
         else if (Greenfoot.isKeyDown("right")){
             if (getX() < 375)
-            setLocation(getX() + 2, getY());
+            setLocation(getX() + 3, getY());
         } 
     }
 }

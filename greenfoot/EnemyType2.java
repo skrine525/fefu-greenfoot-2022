@@ -3,9 +3,10 @@ import greenfoot.*;
 public class EnemyType2 extends EnemyBasic
 {
     private int actionActNumber; 
-    private int leftright;
+    private int direction;
     private boolean isDone;
     private int frame1;
+    Spaceship player;
     public EnemyType2()
     {
         super(20);
@@ -74,36 +75,36 @@ public class EnemyType2 extends EnemyBasic
             turnTowards(200,300);
             move(5);
             isDone = false;
+            Gameplay gameplay = (Gameplay) getWorld();
+            player = gameplay.GetPlayer();
             if (getX() <= 199)
-                leftright = -1;
+                direction = -1;
             else
-                leftright = 1;
+                direction = 1;
         }
         else if (frame <= 30)
         {
-            turn(leftright);
+            turn(direction);
             move(6);
         }
         else if (frame <= 72 && !isDone)
         {
-            turn(leftright*7);
+            turn(direction*7);
             move(5);
         }
         else 
         {
             if (!isDone)
             {
-                isDone = true;
-                turnTowards(Greenfoot.getRandomNumber(339)+30,599);            }
-            if (frame1 >= 20)
-            {
-              leftright *= -1;
-              frame1 = 0;
+                isDone = true; 
+            }
+            if (getY() <= 400)
+            { 
+                turnTowards(player.getX(), player.getY());
+                move(6);
             }
             else 
-                frame1 ++;
-            move(6);
-            turn(leftright*3);
+                move(6);
             if (isTouching(Spaceship.class))
             {
                 currentState = State.Destroy;

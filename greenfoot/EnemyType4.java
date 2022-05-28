@@ -2,6 +2,10 @@ import greenfoot.*;
 
 public class EnemyType4 extends EnemyBasic
 {
+    private int frame1 = 0;
+    private int leftright = -1;
+    private int frame2 = 0;
+    Spaceship player;
     public EnemyType4()
     {
         super(10);
@@ -55,6 +59,66 @@ public class EnemyType4 extends EnemyBasic
         }
     }
 
+    @Override
+    protected void OnAction(long frame)
+    {
+        if (getY() <= 250)
+        {
+            CurlyMove();
+        }
+        else if (frame1 == 0)
+        {
+            Gameplay gameplay = (Gameplay) getWorld();
+            player = gameplay.GetPlayer();
+            turnTowards(player.getX(), player.getY());
+            frame1++;
+        }
+        else if (frame1 <= 140)
+        {
+            frame1++;
+            turnTowards(player.getX(), player.getY());
+        }
+        else if (frame1 < 155)
+        {
+            frame1++;
+        }
+        else if (frame1 == 155)
+        {
+            getWorld().addObject(new EnemyLaser(getRotation()+90), getX(), getY());
+            frame1++;
+        }
+        else if (frame1 <= 305)
+        {
+            frame1++;
+        }
+        else
+        {           
+            CurlyMove();
+            if (isTouching(Spaceship.class))
+            {
+                currentState = State.Destroy;
+            }
+            if (isAtEdge())
+            {
+                getWorld().removeObject(this);
+                if(matrixCell != null)
+                    matrixCell.enemy = null;
+            }
+        }
+    }
+    
+    private void CurlyMove()
+    {
+            frame2++;
+            if(frame2 == 10)
+            {
+                frame2 = 0;
+                leftright *= -1;
+            }
+            move(5);
+            turn(2*leftright);
+    }
+    
     @Override
     protected void OnStay(long frame)
     {
