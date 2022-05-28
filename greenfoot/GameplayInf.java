@@ -12,16 +12,21 @@ public class GameplayInf extends Gameplay
 
     // Спавн
     private int spawnCount = 0;									// Количество конвоев, которое осталось заспавнить
-    private int spawnCountInStage = 0;							// Общее количество конвоев, которое необходимо заспавнить в стадии
+    private int spawnCountMax = 0;								// Количество конвоев, которое необходимо заспавнить
+    private int spawnCountToDoAction = 0;						// Количество конвоев, которое осталось заспавнить
     private int spawnStartFrame = 0;							// Номер кадра, с которого начинается спавно конвоя
     private boolean canSpawn = true;							// Переменная, разрешающая спавн конвоя
     private boolean canAddToMatrix = true;						// Переменная, указывающая на возможность добавление в матрицу
     private boolean isPairedSpawn = false;						// Переменная, указывающая на парность спавна
 
     // Действие
-    private int actionCount = 0;								// Количество врагов, которое осталось перевести в Action
+    private int actionEnymyCount = 0;							// Количество врагов, которое осталось перевести в Action
     private int actionStartFrame = 0;							// Номер кадра, с которого начинается Action врагов
     private boolean canAction = false;							// Переменная, разрешающая изменение состояния на Action
+
+    // Константы
+    private final int ACTION_COUNT_IN_STAGE_MIN = 2;			// Константа минимального числа Action в стадии
+    private final int ACTION_COUNT_IN_STAGE_MAX = 8;			// Константа максимального числа Action в стадии
 
     public GameplayInf()
     {
@@ -34,26 +39,29 @@ public class GameplayInf extends Gameplay
         if(canHandleStage){
         	if(canAction)
         	{
-        		if(frame >= actionStartFrame)
-	            {
-	            	ArrayList<EnemyBasic> stayingEnemies = new ArrayList<EnemyBasic>();
-	            	for(EnemyBasic enemy : enemyMatrix.GetEnemies())
-	            	{
-	            		if(enemy.currentState == EnemyBasic.State.Stay)
-	            			stayingEnemies.add(enemy);
-	            	}
-	            	
-	            	if(stayingEnemies.size() > 0)
-	            	{
+        		ArrayList<EnemyBasic> stayingEnemies = new ArrayList<EnemyBasic>();
+            	for(EnemyBasic enemy : enemyMatrix.GetEnemies())
+            	{
+            		if(enemy.currentState == EnemyBasic.State.Stay)
+            			stayingEnemies.add(enemy);
+            	}
+
+            	if(stayingEnemies.size() > 0)
+            	{
+            		if(frame >= actionStartFrame)
+		            {
+		            	
 	            		int enemyIndex = Greenfoot.getRandomNumber(stayingEnemies.size());
 	            		stayingEnemies.get(enemyIndex).currentState = EnemyBasic.State.Action;
 	            		actionStartFrame = (int) frame + 30;
-	            	}
 
-	            	actionCount--;
-	            	if(actionCount <= 0)
-	            		canAction = false;
-	            }
+		            	actionEnymyCount--;
+		            	if(actionEnymyCount <= 0)
+		            		canAction = false;
+		            }
+            	}
+            	else
+            		canAction = false;
         	}
         	else if(spawnCount <= 0)
         	{
@@ -80,7 +88,9 @@ public class GameplayInf extends Gameplay
             {
             	if(frame >= spawnStartFrame)
             	{
-            		if(!SpawnConvoy())
+            		if(SpawnConvoy())
+				        spawnCountToDoAction--;	// Уменьшаем на единицу каждый спавн
+				    else
                         DoAction(frame);
                 	canSpawn = false;
             	}
@@ -89,9 +99,17 @@ public class GameplayInf extends Gameplay
             {
                 if(AreAllMatrixEnemiesStanding())
                 {
-                    canSpawn = true;
-                    spawnStartFrame = (int) frame + 20;
-                    isPairedSpawn = (Greenfoot.getRandomNumber(2) == 0) ? true : false;
+                    if(spawnCountToDoAction <= 0)
+                    {
+                    	DoAction(frame);
+                    	spawnCountToDoAction = spawnCountMax / (ACTION_COUNT_IN_STAGE_MIN + Greenfoot.getRandomNumber(65536) % (ACTION_COUNT_IN_STAGE_MAX - ACTION_COUNT_IN_STAGE_MIN + 1));
+                    }
+                    else
+                    {
+                    	canSpawn = true;
+                    	spawnStartFrame = (int) frame + 20;
+                    	isPairedSpawn = (Greenfoot.getRandomNumber(2) == 0) ? true : false;
+                    }
                 }
             }
         }
@@ -109,15 +127,21 @@ public class GameplayInf extends Gameplay
             }
             else if(frame >= stageStartFrame + 120){
                 spawnStartFrame = (int) frame + 20;
-                spawnCount = 12 + 4 * (stageNumber - 1);
+                spawnCountMax = 12 + 4 * (stageNumber - 1);
+                spawnCount = spawnCountMax;
+                spawnCountToDoAction = spawnCountMax / (ACTION_COUNT_IN_STAGE_MIN + Greenfoot.getRandomNumber(65536) % (ACTION_COUNT_IN_STAGE_MAX - ACTION_COUNT_IN_STAGE_MIN + 1));
                 isPairedSpawn = (Greenfoot.getRandomNumber(2) == 0) ? true : false;
                 canHandleStage = true;
 
                 removeObject(textObject);
             }
         }
+
+        // Для тестирования
+    	showText(String.valueOf(spawnCountToDoAction), getWidth() - 20, 20);
     }
 
+    // Спавнит рандомный конвой
     private boolean SpawnConvoy()
     {
     	int emptyCellCount = enemyMatrix.GetEmptyCellCount();
@@ -176,7 +200,7 @@ public class GameplayInf extends Gameplay
     {
         canAction = true;
         actionStartFrame = (int) frame + 60;
-        actionCount = 3;
+        actionEnymyCount = 3;
     }
 
     // Проверяет, все ли враги в матрице имеют состояние покоя, если да - true, иначе - false
