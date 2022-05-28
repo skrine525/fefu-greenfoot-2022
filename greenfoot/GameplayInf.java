@@ -138,7 +138,7 @@ public class GameplayInf extends Gameplay
         }
 
         // Для тестирования
-    	showText(String.valueOf(spawnCountToDoAction), getWidth() - 20, 20);
+    	showText(String.valueOf(spawnCountToDoAction), getWidth() - 20, getHeight() - 20);
     }
 
     // Спавнит рандомный конвой

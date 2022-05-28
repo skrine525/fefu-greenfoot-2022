@@ -13,9 +13,6 @@ public class ScoreLabel extends Actor
 
         LoadImages();   // Подгружаем изображения цифр
         imageWidth = length * images[0].getWidth();
-        System.out.println(imageWidth);
-
-        // Создаем объект в мире
 
         Show(0);
     }

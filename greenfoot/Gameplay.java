@@ -8,21 +8,29 @@ public class Gameplay extends World
     protected Spawner spawner;                                                                   // Контроллер спавна
     public Spaceship player;                                                                     // Ссылка на игрока
     protected int score = 0;                                                                     // Количество очков
-
-    // Пока без отображения
-    protected int lives = 3;
-
-    // Переменная для теста спавна
-    private boolean isKeyDown = false;
+    private ScoreLabel scoreLabel;                                                               // Метка счетчика очков
+    private HitpointLabel hitpointLabel;                                                         // Метка жизней игрока
     
     // Конструктор мира
     public Gameplay()
     {    
         super(400, 600, 1);                                                                     // Создание мира 400x600
         prepare();                                                                              // Стандартный метод подготовки объектов в мире
-        ShowScore();                                                                            // Отображаем очки на экране
+
+        // Очередь отрисовки объектов
+        setPaintOrder(ScoreLabel.class, HitpointLabel.class);
+
+        LoadBackgroundImages();                                                                 // Подгружаем изображения фона
+        setBackground(backgroundImages[0]);                                                     // Устанавливаем фон мира
         enemyMatrix = new EnemyMatrix(3, 8, 59, 59, 40);                                        // Инициализация матрицы врагов
-        spawner = new Spawner(this, enemyMatrix);
+        spawner = new Spawner(this, enemyMatrix);                                               // Инициализация спавнера
+
+        scoreLabel = new ScoreLabel(8);                                                         // Инициализируем метку очков
+        addObject(scoreLabel, 50, 10);                                                          // Добавляем метку очков в мир
+        ShowScore();                                                                            // Отображаем очки на экране
+
+        hitpointLabel = new HitpointLabel(Spaceship.hitpointsMax);                              // Инициализируем метку жизней
+        addObject(hitpointLabel, 359, 10);                                                      // Добавляем метку жизней в мир
     }
 
     public void act(){
@@ -34,15 +42,22 @@ public class Gameplay extends World
         frame++;
     }
     
+    // Возвращает объект игрока
     public Spaceship GetPlayer()
     {
         return player;
     }
 
-    // Если будем выдавать разное кол-во очков за пртивников, ?бонусы? и т.д.
+    // Если будем выдавать разное кол-во очков за противников, ?бонусы? и т.д.
     public void AddScore(int score)
     {
         this.score += score;
+    }
+
+    // Выводит на экран количество очков пользователя
+    public void ShowPlayerHP(int hp)
+    {
+        hitpointLabel.Show(hp);
     }
     
     // Предположим, отнимать будем за смерть
@@ -54,49 +69,15 @@ public class Gameplay extends World
             score = 0;
     }
     
-    public void Hit()
-    {
-        if (lives >=0)
-            lives--;
-        //Пока без остановки
-    }
-    
     protected void OnSpawn(long frame)
     {
-        // Логика тестирования спавна
-        if (Greenfoot.isKeyDown("1"))
-        {
-            if(!isKeyDown){
-                spawner.StartSpawn(Spawner.SpawnType.Type1Left, 5, 8, true);
-                spawner.StartSpawn(Spawner.SpawnType.Type1Right, 5, 8, true);
-                isKeyDown = true;
-            }
-        }
-        else if (Greenfoot.isKeyDown("2"))
-        {
-            if(!isKeyDown){
-                spawner.StartSpawn(Spawner.SpawnType.Type2Left, 4, 8, true);
-                spawner.StartSpawn(Spawner.SpawnType.Type2Right, 4, 8, true);
-                isKeyDown = true;
-            }
-        }
-        else if (Greenfoot.isKeyDown("3"))
-        {
-            if(!isKeyDown){
-                spawner.StartSpawn(Spawner.SpawnType.Type3Left, 4, 8, true);
-                spawner.StartSpawn(Spawner.SpawnType.Type3Right, 4, 8, true);
-                isKeyDown = true;
-            }
-        }
-        else
-            isKeyDown = false;
+        // Обработка логики спавна каждый кадр
     }
 
     // Стандартный метод подготовки объектов мира
     private void prepare()
     {
         addObject(player = new Spaceship(), 200, 560);
-        LoadBackgroundImages();
     }
 
     // Обработка анимации фона
@@ -110,13 +91,13 @@ public class Gameplay extends World
         backgroundImages = new GreenfootImage[6];
         for(int i = 0; i < 6; i++)
         {
-            backgroundImages[i] = new GreenfootImage("Background" + (i + 1) + ".png");
+            backgroundImages[i] = new GreenfootImage("Background/Background" + (i + 1) + ".png");
         }
     }
     
     // Отображение очков на экране
     private void ShowScore()
     {
-        showText("SCORE: "+score,60,10);
+       scoreLabel.Show(score);
     }
 }

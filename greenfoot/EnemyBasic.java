@@ -119,8 +119,6 @@ public class EnemyBasic extends Actor
     // Обработка состояния Destroy каждый кадр
     protected void OnDestroy(long frame)
     {
-        // Вау, уже с кодом. Можно переопределять в субклассах, но зачем это ¯\_(ツ)_/¯
-
         int imageIndex = (int) (frame / 5);
         if(imageIndex < 4)
             setImage(blastImages[imageIndex]);
@@ -157,7 +155,14 @@ public class EnemyBasic extends Actor
         blastImages = new GreenfootImage[4];
         for(int i = 0; i < 4; i++)
         {
-            blastImages[i] = new GreenfootImage("Blast" + (i + 1) + ".png");
+            blastImages[i] = new GreenfootImage("EnemyBlast/Blast" + (i + 1) + ".png");
         }
+    }
+
+    // Анимации появления
+
+    private void EnterType1Left()
+    {
+        
     }
 }

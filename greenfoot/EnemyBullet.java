@@ -9,10 +9,11 @@ public class EnemyBullet extends Actor
     public void act()
     {
         move(5);
-        if(isTouching(Spaceship.class))
+        Spaceship player = (Spaceship) getOneIntersectingObject(Spaceship.class);
+        if(player != null)
         {
+            player.Hit();
             getWorld().removeObject(this);
-            
         }
         else if (isAtEdge())
         {
