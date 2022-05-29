@@ -26,8 +26,8 @@ public class GameplayInf extends Gameplay
     private StageLabel stageLabel;                              // Метка номера стадии
 
     // Константы
-    private final int ACTION_COUNT_IN_STAGE_MIN = 2;			// Константа минимального числа Action в стадии
-    private final int ACTION_COUNT_IN_STAGE_MAX = 8;			// Константа максимального числа Action в стадии
+    private final int ACTION_COUNT_IN_STAGE_MIN = 5;			// Константа минимального числа Action в стадии
+    private final int ACTION_COUNT_IN_STAGE_MAX = 10;			// Константа максимального числа Action в стадии
 
     public GameplayInf()
     {
@@ -106,7 +106,7 @@ public class GameplayInf extends Gameplay
                     if(spawnCountToDoAction <= 0)
                     {
                     	DoAction(frame);
-                    	spawnCountToDoAction = spawnCountMax / (ACTION_COUNT_IN_STAGE_MIN + Greenfoot.getRandomNumber(65536) % (ACTION_COUNT_IN_STAGE_MAX - ACTION_COUNT_IN_STAGE_MIN + 1));
+                    	spawnCountToDoAction = ACTION_COUNT_IN_STAGE_MIN + Greenfoot.getRandomNumber(65536) % (ACTION_COUNT_IN_STAGE_MAX - ACTION_COUNT_IN_STAGE_MIN + 1);
                     }
                     else
                     {
@@ -125,7 +125,7 @@ public class GameplayInf extends Gameplay
                 spawnStartFrame = (int) frame + 20;
                 spawnCountMax = 12 + 4 * (stageNumber - 1);
                 spawnCount = spawnCountMax;
-                spawnCountToDoAction = spawnCountMax / (ACTION_COUNT_IN_STAGE_MIN + Greenfoot.getRandomNumber(65536) % (ACTION_COUNT_IN_STAGE_MAX - ACTION_COUNT_IN_STAGE_MIN + 1));
+                spawnCountToDoAction = ACTION_COUNT_IN_STAGE_MIN + Greenfoot.getRandomNumber(65536) % (ACTION_COUNT_IN_STAGE_MAX - ACTION_COUNT_IN_STAGE_MIN + 1);
                 isPairedSpawn = (Greenfoot.getRandomNumber(2) == 0) ? true : false;
                 canHandleStage = true;
 
