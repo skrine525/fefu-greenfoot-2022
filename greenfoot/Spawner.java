@@ -19,10 +19,10 @@ public class Spawner
     private ArrayList<SpawnQueue> spawnQueue;
 
     // Константы стандартного шанса появления типа врага
-    public final int DEFAULT_CHANCE_ENEMYTYPE1 = 50;       // EnemyType1
-    public final int DEFAULT_CHANCE_ENEMYTYPE2 = 30;       // EnemyType2
-    public final int DEFAULT_CHANCE_ENEMYTYPE3 = 18;       // EnemyType3
-    public final int DEFAULT_CHANCE_ENEMYTYPE4 = 2;        // EnemyType4
+    public static final int DEFAULT_CHANCE_ENEMYTYPE1 = 25;       // EnemyType1
+    public static final int DEFAULT_CHANCE_ENEMYTYPE2 = 20;       // EnemyType2
+    public static final int DEFAULT_CHANCE_ENEMYTYPE3 = 30;       // EnemyType3
+    public static final int DEFAULT_CHANCE_ENEMYTYPE4 = 25;       // EnemyType4
 
 
     public int chanceEnemyType1, chanceEnemyType2, chanceEnemyType3, chanceEnemyType4;
@@ -166,5 +166,62 @@ public class Spawner
         if(addToMatrix)
             enemyMatrix.AddEnemy(enemy);
         world.addObject(enemy, 399, 420);
+    }
+}
+
+class ChanceSpawner {
+
+    private class ClassData {
+        public Class <?> spawnClass;
+        public int chanceStart, chanceEnd;
+    }
+
+    private int maxChance;
+    private int classChanceStart;
+    private ClassData[] classes;
+    private int currentClassIndex, classCount;
+
+    public ChanceSpawner(int count, int maxChance)
+    {
+        this.maxChance = maxChance;
+        classChanceStart = 0;
+        currentClassIndex = 0;
+        classCount = count;
+        classes = new ClassData[count];
+    }
+
+    public void AddSpawnClass(Class <?> spawnClass, int chance)
+    {
+        if(currentClassIndex < classCount)
+        {
+            classes[currentClassIndex] = new ClassData();
+            classes[currentClassIndex].spawnClass = spawnClass;
+            classes[currentClassIndex].chanceStart = classChanceStart;
+            classChanceStart = classChanceStart + chance;
+            classes[currentClassIndex].chanceEnd = classChanceStart - 1;
+            currentClassIndex++;
+        }
+    }
+
+    public Object Spawn()
+    {
+        int randomNumber = Greenfoot.getRandomNumber(maxChance);
+        for(int i = 0; i < classCount; i++)
+        {
+            if(classes[i].chanceStart <= randomNumber && randomNumber <= classes[i].chanceEnd)
+            {
+                try
+                {
+                    return classes[i].spawnClass.newInstance();
+                }
+                catch (InstantiationException e) {
+                    return null;
+                }
+                catch (IllegalAccessException iae) {
+                    return null;
+                }
+            }
+        }
+        return null;
     }
 }

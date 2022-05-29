@@ -1,14 +1,9 @@
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.*;
 
-/**
- * Write a description of class CorruptedBullet here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class CorruptedBullet extends Actor
 {
     private int fallingDir;
+
     public CorruptedBullet(int rot)
     {
         fallingDir = Greenfoot.getRandomNumber(91)+45;
@@ -27,12 +22,10 @@ public class CorruptedBullet extends Actor
         }
         else
             move(6);
+
         Spaceship player = (Spaceship) getOneIntersectingObject(Spaceship.class);
-        if(player != null)
-        {
-            player.Hit();
+        if(player != null && player.Hit())
             getWorld().removeObject(this);
-        }
         else if (isAtEdge())
         {
             getWorld().removeObject(this);

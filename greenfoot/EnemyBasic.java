@@ -2,14 +2,18 @@ import greenfoot.*;
 
 public class EnemyBasic extends Actor
 {
-    enum State { Stay, Enter, Destroy, Action }                                                // Перечисление состояний протвника
+    enum State { Stay, Enter, Destroy, Action }                                              // Перечисление состояний протвника
 
-    private long frame = 0;                                                                // Число кадров, необходима для анимаций
-    public State currentState;                                                              // Текущее состояние
-    private State lastState = currentState;                                                // Последнее состояние, необходима для определения изменения состояния
-    protected EnemyMatrix.Cell matrixCell;                                                  // Ячейка в матрице
-    private GreenfootImage blastImages[];                                                   // Массив изображений для анимации взрыва
+    private long frame = 0;                                                                  // Число кадров, необходима для анимаций
+    public State currentState;                                                               // Текущее состояние
+    private State lastState = currentState;                                                  // Последнее состояние, необходима для определения изменения состояния
+    protected EnemyMatrix.Cell matrixCell;                                                   // Ячейка в матрице
+    private GreenfootImage blastImages[];                                                    // Массив изображений для анимации взрыва
     private int pointsForHit;
+
+    // Константы
+    private static final int BLAST_IMAGE_COUNT = 4;                                          // Количество кадров в анимации взрыва
+    private static final int BLAST_ANIMATION_SPEED = 5;                                      // Скорость смены кадров анимации взрыва
 
     // Конструктор противника
     public EnemyBasic()
@@ -119,8 +123,8 @@ public class EnemyBasic extends Actor
     // Обработка состояния Destroy каждый кадр
     protected void OnDestroy(long frame)
     {
-        int imageIndex = (int) (frame / 5);
-        if(imageIndex < 4)
+        int imageIndex = (int) (frame / (BLAST_IMAGE_COUNT + 1));
+        if(imageIndex < BLAST_IMAGE_COUNT)
             setImage(blastImages[imageIndex]);
         else
             Destroy();
@@ -152,8 +156,8 @@ public class EnemyBasic extends Actor
     // Подгружает изображения взрыва в массив
     private void LoadBlastImages()
     {
-        blastImages = new GreenfootImage[4];
-        for(int i = 0; i < 4; i++)
+        blastImages = new GreenfootImage[BLAST_IMAGE_COUNT];
+        for(int i = 0; i < BLAST_IMAGE_COUNT; i++)
         {
             blastImages[i] = new GreenfootImage("EnemyBlast/Blast" + (i + 1) + ".png");
         }

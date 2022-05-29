@@ -29,7 +29,7 @@ public class Gameplay extends World
         addObject(scoreLabel, 50, 10);                                                          // Добавляем метку очков в мир
         ShowScore();                                                                            // Отображаем очки на экране
 
-        hitpointLabel = new HitpointLabel(Spaceship.hitpointsMax);                              // Инициализируем метку жизней
+        hitpointLabel = new HitpointLabel(Spaceship.HITPOINT_MAX);                              // Инициализируем метку жизней
         addObject(hitpointLabel, 359, 10);                                                      // Добавляем метку жизней в мир
     }
 
@@ -68,6 +68,13 @@ public class Gameplay extends World
         else 
             score = 0;
     }
+
+    // Останавливает игру
+    public void StopGame()
+    {
+        Menu menu = new Menu(score);
+        Greenfoot.setWorld(menu);
+    }
     
     protected void OnSpawn(long frame)
     {
@@ -77,7 +84,7 @@ public class Gameplay extends World
     // Стандартный метод подготовки объектов мира
     private void prepare()
     {
-        addObject(player = new Spaceship(), 200, 560);
+        addObject(player = new Spaceship(), 199, 560);
     }
 
     // Обработка анимации фона

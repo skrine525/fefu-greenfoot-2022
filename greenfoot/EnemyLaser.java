@@ -23,11 +23,8 @@ public class EnemyLaser extends Actor
         else if (frame <= 50)
         {
             Spaceship player = (Spaceship) getOneIntersectingObject(Spaceship.class);
-            if(canHit && player != null)
-            {
-                player.Hit();
+            if(canHit && player != null && player.Hit())
                 canHit = false;
-            }
         }
         else if (frame <= 150)
         {

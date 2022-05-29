@@ -37,7 +37,8 @@ public class StageLabel extends Actor
         // Добавляем цифры на экран из массива
         for(int i = 0; i < digits.size(); i++)
         {
-        	int digitX = stageImage.getWidth() + digitImages[0].getWidth() * (i + 1);
+        	//int digitX = stageImage.getWidth() + digitImages[0].getWidth() * (i + 1);
+        	int digitX = stageImage.getWidth() + digitImages[0].getWidth() * (i + 1) - 1;
         	image.drawImage(digitImages[digits.get(i)], digitX, 0);
         }
         

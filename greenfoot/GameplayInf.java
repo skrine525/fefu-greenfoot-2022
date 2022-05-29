@@ -26,8 +26,8 @@ public class GameplayInf extends Gameplay
     private StageLabel stageLabel;                              // Метка номера стадии
 
     // Константы
-    private final int ACTION_COUNT_IN_STAGE_MIN = 5;			// Константа минимального числа Action в стадии
-    private final int ACTION_COUNT_IN_STAGE_MAX = 10;			// Константа максимального числа Action в стадии
+    private static final int ACTION_COUNT_IN_STAGE_MIN = 5;		// Константа минимального числа Action в стадии
+    private static final int ACTION_COUNT_IN_STAGE_MAX = 10;	// Константа максимального числа Action в стадии
 
     public GameplayInf()
     {
