@@ -4,8 +4,7 @@ public class EnemyType2 extends EnemyBasic
 {
     private int actionActNumber; 
     private int direction;
-    private boolean isDone;
-    private int frame1;
+    private int frame1 = 0;
     Spaceship player;
     public EnemyType2()
     {
@@ -74,7 +73,6 @@ public class EnemyType2 extends EnemyBasic
         {
             turnTowards(200,300);
             move(5);
-            isDone = false;
             Gameplay gameplay = (Gameplay) getWorld();
             player = gameplay.GetPlayer();
             if (getX() <= 199)
@@ -87,17 +85,13 @@ public class EnemyType2 extends EnemyBasic
             turn(direction);
             move(6);
         }
-        else if (frame <= 72 && !isDone)
+        else if (frame <= 72)
         {
             turn(direction*7);
             move(5);
         }
         else 
         {
-            if (!isDone)
-            {
-                isDone = true; 
-            }
             if (getY() <= 400)
             { 
                 turnTowards(player.getX(), player.getY());

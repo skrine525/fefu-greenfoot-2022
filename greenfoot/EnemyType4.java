@@ -3,7 +3,7 @@ import greenfoot.*;
 public class EnemyType4 extends EnemyBasic
 {
     private int frame1 = 0;
-    private int leftright = -1;
+    private int direction = -1;
     private int frame2 = 0;
     private Spaceship player;
     
@@ -114,10 +114,10 @@ public class EnemyType4 extends EnemyBasic
             if(frame2 == 10)
             {
                 frame2 = 0;
-                leftright *= -1;
+                direction *= -1;
             }
             move(5);
-            turn(2*leftright);
+            turn(2*direction);
     }
     
     @Override
