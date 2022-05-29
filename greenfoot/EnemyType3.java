@@ -58,7 +58,6 @@ public class EnemyType3 extends EnemyBasic
     @Override
     protected void OnStay(long frame)
     {
-        if(matrixCell != null)
-            MoveTo(matrixCell.x, matrixCell.y, 1);
+        
     }
 }

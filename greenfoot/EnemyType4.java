@@ -5,7 +5,8 @@ public class EnemyType4 extends EnemyBasic
     private int frame1 = 0;
     private int leftright = -1;
     private int frame2 = 0;
-    Spaceship player;
+    private Spaceship player;
+    
     public EnemyType4()
     {
         super(10);

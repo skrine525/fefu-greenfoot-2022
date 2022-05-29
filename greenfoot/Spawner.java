@@ -114,7 +114,7 @@ public class Spawner
         ChanceSpawner spawner = new ChanceSpawner(4, 100);
         spawner.AddSpawnClass(EnemyType1B.class, chanceEnemyType1);
         spawner.AddSpawnClass(EnemyType2B.class, chanceEnemyType2);
-        spawner.AddSpawnClass(EnemyType3B.class, chanceEnemyType2);
+        spawner.AddSpawnClass(EnemyType3B.class, chanceEnemyType3);
         spawner.AddSpawnClass(EnemyType4B.class, chanceEnemyType4);
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;

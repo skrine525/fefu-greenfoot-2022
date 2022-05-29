@@ -2,10 +2,11 @@ import greenfoot.*;
 
 public class EnemyBullet extends Actor
 {
-    EnemyBullet(int Rot)
+    public EnemyBullet(int rot)
     {
-        setRotation(Rot);
+        setRotation(rot);
     }
+
     public void act()
     {
         move(5);

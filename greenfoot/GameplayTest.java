@@ -5,6 +5,16 @@ public class GameplayTest extends Gameplay
     // Переменная для теста спавна
     private boolean isKeyDown = false;
 
+    public GameplayTest()
+    {
+    	super();
+
+    	spawner.chanceEnemyType1 = 0;
+    	spawner.chanceEnemyType2 = 0;
+    	spawner.chanceEnemyType3 = 0;
+    	spawner.chanceEnemyType4 = 100;
+    }
+
     @Override
     protected void OnSpawn(long frame)
     {

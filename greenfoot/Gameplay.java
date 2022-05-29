@@ -2,14 +2,14 @@ import greenfoot.*;
 
 public class Gameplay extends World
 {
-    private long frame = 0;                                                                      // Переменная количества кадров
+    public Spaceship player;                                                                     // Ссылка на игрока
     protected EnemyMatrix enemyMatrix;                                                           // Матрица врагов
     protected GreenfootImage backgroundImages[];                                                 // Массив изображений фона
     protected Spawner spawner;                                                                   // Контроллер спавна
-    public Spaceship player;                                                                     // Ссылка на игрока
     protected int score = 0;                                                                     // Количество очков
-    private ScoreLabel scoreLabel;                                                               // Метка счетчика очков
-    private HitpointLabel hitpointLabel;                                                         // Метка жизней игрока
+    protected ScoreLabel scoreLabel;                                                             // Метка счетчика очков
+    protected HitpointLabel hitpointLabel;                                                       // Метка жизней игрока
+    private long frame = 0;                                                                      // Переменная количества кадров
     
     // Конструктор мира
     public Gameplay()
@@ -18,7 +18,7 @@ public class Gameplay extends World
         prepare();                                                                              // Стандартный метод подготовки объектов в мире
 
         // Очередь отрисовки объектов
-        setPaintOrder(ScoreLabel.class, HitpointLabel.class);
+        setPaintOrder(ScoreLabel.class, HitpointLabel.class, StageLabel.class);
 
         LoadBackgroundImages();                                                                 // Подгружаем изображения фона
         setBackground(backgroundImages[0]);                                                     // Устанавливаем фон мира

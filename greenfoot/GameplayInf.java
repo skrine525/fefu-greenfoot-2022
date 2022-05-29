@@ -3,8 +3,6 @@ import java.util.*;
 
 public class GameplayInf extends Gameplay
 {
-    private TextObject textObject;
-
     // Стадия
     private int stageNumber = 1;								// Номер стадии
     private int stageStartFrame = 60;							// Номер кадра, с которого начинается стадия
@@ -14,7 +12,7 @@ public class GameplayInf extends Gameplay
     private int spawnCount = 0;									// Количество конвоев, которое осталось заспавнить
     private int spawnCountMax = 0;								// Количество конвоев, которое необходимо заспавнить
     private int spawnCountToDoAction = 0;						// Количество конвоев, которое осталось заспавнить
-    private int spawnStartFrame = 0;							// Номер кадра, с которого начинается спавно конвоя
+    private int spawnStartFrame = 0;							// Номер кадра, с которого начинается спавн конвоя
     private boolean canSpawn = true;							// Переменная, разрешающая спавн конвоя
     private boolean canAddToMatrix = true;						// Переменная, указывающая на возможность добавление в матрицу
     private boolean isPairedSpawn = false;						// Переменная, указывающая на парность спавна
@@ -24,6 +22,9 @@ public class GameplayInf extends Gameplay
     private int actionStartFrame = 0;							// Номер кадра, с которого начинается Action врагов
     private boolean canAction = false;							// Переменная, разрешающая изменение состояния на Action
 
+    // Прочее
+    private StageLabel stageLabel;                              // Метка номера стадии
+
     // Константы
     private final int ACTION_COUNT_IN_STAGE_MIN = 2;			// Константа минимального числа Action в стадии
     private final int ACTION_COUNT_IN_STAGE_MAX = 8;			// Константа максимального числа Action в стадии
@@ -31,6 +32,9 @@ public class GameplayInf extends Gameplay
     public GameplayInf()
     {
         super();
+
+        stageLabel = new StageLabel();                                                          // Инициализируем метку номера стадии
+        addObject(stageLabel, getWidth() / 2, getHeight() / 2);                                 // Добавляем метку номера стадии в мир
     }
 
     @Override
@@ -116,15 +120,7 @@ public class GameplayInf extends Gameplay
         else
         {
             if(frame == stageStartFrame)
-            {
-                textObject = new TextObject();
-                GreenfootImage image = new GreenfootImage(100, 100);
-                image.setFont(new Font("Arial", false, false , 20));
-                image.setColor(Color.RED);
-                image.drawString("Stage " + stageNumber, 1, 50);
-                textObject.setImage(image);
-                addObject(textObject, getWidth() / 2, getHeight() / 2);
-            }
+            	stageLabel.Show(stageNumber);							// Отображаем метку стадии
             else if(frame >= stageStartFrame + 120){
                 spawnStartFrame = (int) frame + 20;
                 spawnCountMax = 12 + 4 * (stageNumber - 1);
@@ -133,7 +129,7 @@ public class GameplayInf extends Gameplay
                 isPairedSpawn = (Greenfoot.getRandomNumber(2) == 0) ? true : false;
                 canHandleStage = true;
 
-                removeObject(textObject);
+                stageLabel.Hide();										// Скрываем метку стадии
             }
         }
 
