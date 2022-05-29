@@ -5,7 +5,8 @@ public class EnemyType2 extends EnemyBasic
     private int actionActNumber; 
     private int direction;
     private int frame1 = 0;
-    Spaceship player;
+    private Spaceship player;
+
     public EnemyType2()
     {
         super(20);
@@ -99,16 +100,15 @@ public class EnemyType2 extends EnemyBasic
             }
             else 
                 move(6);
-            if (isTouching(Spaceship.class))
+
+            Spaceship player = (Spaceship) getOneIntersectingObject(Spaceship.class);
+            if (player != null)
             {
                 currentState = State.Destroy;
+                player.Hit();
             }
-            if (isAtEdge()) 
-            {
-                getWorld().removeObject(this);
-                if(matrixCell != null)
-                    matrixCell.enemy = null;
-            }
+            else if (isAtEdge()) 
+                Destroy();
         }
     }
 }
