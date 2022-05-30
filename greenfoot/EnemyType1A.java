@@ -19,7 +19,7 @@ public class EnemyType1A extends EnemyType1
         {
             move(5);
         }
-        else if (frame <= 270)
+        else if (frame <= 150)
         {
             turn(-3);
             move(5);

@@ -61,7 +61,7 @@ public class Spaceship extends Actor {
         {
             Greenfoot.playSound("Pew.wav");
             getWorld().addObject(new Bullet(), getX(), getY() - 25);
-            shootCooldown = 10;
+            shootCooldown = 20;
         }
     }
 

@@ -24,7 +24,7 @@ public class EnemyType1 extends EnemyBasic
         {
             move(5);
         }
-        else if (frame <= 270)
+        else if (frame <= 150)
         {
             turn(3);
             move(5);
@@ -125,17 +125,16 @@ public class EnemyType1 extends EnemyBasic
     private void Shoot()
     {
        if (cooldown == 0)
-       {
            getWorld().addObject(new EnemyBullet(getRotation()), getX(), getY());     
-       }
        Cooldown();
     }
 
     private void Cooldown()
     {
-       if (cooldown != 0){
-            cooldown--;
-        } 
-       else cooldown = 5;
+
+        if(cooldown != 0)
+            cooldown--; 
+        else
+            cooldown = 5;
     }
 }

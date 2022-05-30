@@ -2,19 +2,23 @@ import greenfoot.*;
 
 public class Bullet extends Actor
 {
-    final int speed = 15;
     public EnemyType3 owner;            // Определяет, кто притягивает пулю
-    Bullet()
+
+    // Константы
+    final static int SPEED = 10;        // Скорость полета
+
+    public Bullet()
     {
         setRotation(270);
     }
+
     public void act()
     {
-        if (owner != null)
-         if (owner.currentState != EnemyBasic.State.Action)
-             owner = null;
+        if (owner != null && owner.currentState != EnemyBasic.State.Action)
+            owner = null;
+
         if (owner == null)
-            move(15);
+            move(SPEED);
         else 
         {
             move(5);
@@ -30,7 +34,8 @@ public class Bullet extends Actor
         {
             getWorld().removeObject(this);
         }
-    }    
+    }
+
     private void RotateTo(int distRot, int delta)
     {
         distRot = distRot % 360;
