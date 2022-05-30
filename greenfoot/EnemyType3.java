@@ -26,7 +26,7 @@ public class EnemyType3 extends EnemyBasic
         {
             move(5);
         }
-        else if (frame <= 270)
+        else if (frame <= 150)
         {
             turn(3);
             move(5);

@@ -144,24 +144,24 @@ public class GameplayInf extends Gameplay
 
         if(isPairedSpawn)
         {
-        	if(emptyCellCount >= 8)
+        	if(emptyCellCount >= 16)
         	{
 	        	int spawnType = Greenfoot.getRandomNumber(3);
 	        	spawnCount -= 2;
 		        switch(spawnType)
 		        {
 		            case 0:
-		            spawner.StartSpawn(Spawner.SpawnType.Type1Left, 4, 8, canAddToMatrix);
-		            spawner.StartSpawn(Spawner.SpawnType.Type1Right, 4, 8, canAddToMatrix);
+		            spawner.StartSpawn(Spawner.SpawnType.Type1Left, 8, 8, canAddToMatrix);
+		            spawner.StartSpawn(Spawner.SpawnType.Type1Right, 8, 8, canAddToMatrix);
 		            break;
 
 		            case 1:
-		            spawner.StartSpawn(Spawner.SpawnType.Type2Left, 4, 8, canAddToMatrix);
-		            spawner.StartSpawn(Spawner.SpawnType.Type2Right, 4, 8, canAddToMatrix);
+		            spawner.StartSpawn(Spawner.SpawnType.Type2Left, 8, 8, canAddToMatrix);
+		            spawner.StartSpawn(Spawner.SpawnType.Type2Right, 8, 8, canAddToMatrix);
 		            break;
 		            case 3:
-		            spawner.StartSpawn(Spawner.SpawnType.Type3Left, 4, 8, canAddToMatrix);
-		            spawner.StartSpawn(Spawner.SpawnType.Type3Right, 4, 8, canAddToMatrix);
+		            spawner.StartSpawn(Spawner.SpawnType.Type3Left, 8, 8, canAddToMatrix);
+		            spawner.StartSpawn(Spawner.SpawnType.Type3Right, 8, 8, canAddToMatrix);
 		            break;
 		        }
 
@@ -170,18 +170,18 @@ public class GameplayInf extends Gameplay
         }
         else
         {
-        	if(emptyCellCount >= 4)
+        	if(emptyCellCount >= 8)
         	{
         		int spawnType = Greenfoot.getRandomNumber(6);
 	        	spawnCount--;
 		        switch(spawnType)
 		        {
-		            case 0: spawner.StartSpawn(Spawner.SpawnType.Type1Left, 4, 8, canAddToMatrix); break;
-		            case 1: spawner.StartSpawn(Spawner.SpawnType.Type1Right, 4, 8, canAddToMatrix); break;
-		            case 2: spawner.StartSpawn(Spawner.SpawnType.Type2Left, 4, 8, canAddToMatrix); break;
-		            case 3: spawner.StartSpawn(Spawner.SpawnType.Type2Right, 4, 8, canAddToMatrix); break;
-		            case 4: spawner.StartSpawn(Spawner.SpawnType.Type3Left, 4, 8, canAddToMatrix); break;
-		            case 5: spawner.StartSpawn(Spawner.SpawnType.Type3Right, 4, 8, canAddToMatrix); break;
+		            case 0: spawner.StartSpawn(Spawner.SpawnType.Type1Left, 8, 8, canAddToMatrix); break;
+		            case 1: spawner.StartSpawn(Spawner.SpawnType.Type1Right, 8, 8, canAddToMatrix); break;
+		            case 2: spawner.StartSpawn(Spawner.SpawnType.Type2Left, 8, 8, canAddToMatrix); break;
+		            case 3: spawner.StartSpawn(Spawner.SpawnType.Type2Right, 8, 8, canAddToMatrix); break;
+		            case 4: spawner.StartSpawn(Spawner.SpawnType.Type3Left, 8, 8, canAddToMatrix); break;
+		            case 5: spawner.StartSpawn(Spawner.SpawnType.Type3Right, 8, 8, canAddToMatrix); break;
 		        }
 
 		        return true;
