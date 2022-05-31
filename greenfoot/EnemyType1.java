@@ -125,13 +125,15 @@ public class EnemyType1 extends EnemyBasic
     private void Shoot()
     {
        if (cooldown == 0)
+       {
            getWorld().addObject(new EnemyBullet(getRotation(),5), getX(), getY());     
+           Greenfoot.playSound("EnemyShoot.wav");
+       }
        Cooldown();
     }
 
     private void Cooldown()
     {
-
         if(cooldown != 0)
             cooldown--; 
         else

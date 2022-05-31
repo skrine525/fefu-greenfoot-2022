@@ -70,18 +70,60 @@ public class GameplayInf extends Gameplay
             	else
             		canAction = false;
         	}
+            else if(canSpawn)
+            {
+                if(GetPlayer().IsDestroyed())
+                    spawnStartFrame = (int) frame + 20;
+                else if(frame >= spawnStartFrame)
+                {
+                    if(SpawnConvoy())
+                        spawnCountToDoAction--; // Уменьшаем на единицу каждый спавн
+                    else
+                        DoAction(frame, 3, false);
+                    canSpawn = false;
+                }
+            }
         	else if(spawnCount <= 0)
         	{
-        		EnemyMatrix.SortedEnemiesByState sortedEnemies = enemyMatrix.GetSortedEnemiesByState();
-
-            	if(sortedEnemies.GetEnemiesCount() == 0)
-            	{
-            		canHandleStage = false;
-            		stageNumber++;
-            		stageStartFrame = (int) frame + 60;
-            	}
-                else
+                if(!GetPlayer().IsDestroyed())
                 {
+                    EnemyMatrix.SortedEnemiesByState sortedEnemies = enemyMatrix.GetSortedEnemiesByState();
+                    if(sortedEnemies.GetEnemiesCount() == 0)
+                    {
+                        canHandleStage = false;
+                        stageNumber++;
+                        stageStartFrame = (int) frame + 60;
+                    }
+                    else
+                    {
+                        if(sortedEnemies.GetEnemiesInAction().size() > 0)
+                        {
+                            boolean canDoAction = true;
+                            for(EnemyBasic enemy : sortedEnemies.GetEnemiesInAction())
+                            {
+                                if(!(enemy instanceof EnemyType3))
+                                {
+                                    canDoAction = false;
+                                    break;
+                                }
+                            }
+
+                            if(canDoAction)
+                            {
+                                DoAction(frame, 1, true);
+                            }
+                        }
+                        else if(sortedEnemies.GetEnemiesInStay().size() == sortedEnemies.GetEnemiesCount())
+                            DoAction(frame, 3, false);
+                    }   
+                }
+        	}
+            else
+            {
+                if(!GetPlayer().IsDestroyed())
+                {
+                    EnemyMatrix.SortedEnemiesByState sortedEnemies = enemyMatrix.GetSortedEnemiesByState();
+
                     if(sortedEnemies.GetEnemiesInAction().size() > 0)
                     {
                         boolean canDoAction = true;
@@ -100,53 +142,18 @@ public class GameplayInf extends Gameplay
                         }
                     }
                     else if(sortedEnemies.GetEnemiesInStay().size() == sortedEnemies.GetEnemiesCount())
-                        DoAction(frame, 3, false);
-                }   
-        	}
-            else if(canSpawn)
-            {
-            	if(frame >= spawnStartFrame)
-            	{
-            		if(SpawnConvoy())
-				        spawnCountToDoAction--;	// Уменьшаем на единицу каждый спавн
-				    else
-                        DoAction(frame, 3, false);
-                	canSpawn = false;
-            	}
-            }
-            else
-            {
-                EnemyMatrix.SortedEnemiesByState sortedEnemies = enemyMatrix.GetSortedEnemiesByState();
-
-                if(sortedEnemies.GetEnemiesInAction().size() > 0)
-                {
-                    boolean canDoAction = true;
-                    for(EnemyBasic enemy : sortedEnemies.GetEnemiesInAction())
                     {
-                        if(!(enemy instanceof EnemyType3))
+                        if(spawnCountToDoAction <= 0)
                         {
-                            canDoAction = false;
-                            break;
+                            DoAction(frame, 3, false);
+                            spawnCountToDoAction = ACTION_COUNT_IN_STAGE_MIN + Greenfoot.getRandomNumber(65536) % (ACTION_COUNT_IN_STAGE_MAX - ACTION_COUNT_IN_STAGE_MIN + 1);
                         }
-                    }
-
-                    if(canDoAction)
-                    {
-                        DoAction(frame, 1, true);
-                    }
-                }
-                else if(sortedEnemies.GetEnemiesInStay().size() == sortedEnemies.GetEnemiesCount())
-                {
-                    if(spawnCountToDoAction <= 0)
-                    {
-                    	DoAction(frame, 3, false);
-                    	spawnCountToDoAction = ACTION_COUNT_IN_STAGE_MIN + Greenfoot.getRandomNumber(65536) % (ACTION_COUNT_IN_STAGE_MAX - ACTION_COUNT_IN_STAGE_MIN + 1);
-                    }
-                    else
-                    {
-                    	canSpawn = true;
-                    	spawnStartFrame = (int) frame + 20;
-                    	isPairedSpawn = (Greenfoot.getRandomNumber(2) == 0) ? true : false;
+                        else
+                        {
+                            canSpawn = true;
+                            spawnStartFrame = (int) frame + 20;
+                            isPairedSpawn = (Greenfoot.getRandomNumber(2) == 0) ? true : false;
+                        }
                     }
                 }
             }
@@ -169,6 +176,7 @@ public class GameplayInf extends Gameplay
 
         // Для тестирования
     	showText(String.valueOf(spawnCountToDoAction), getWidth() - 20, getHeight() - 20);
+        showText(String.valueOf(spawnCount), 20, getHeight() - 20);
     }
 
     // Спавнит рандомный конвой
@@ -176,7 +184,7 @@ public class GameplayInf extends Gameplay
     {
     	int emptyCellCount = enemyMatrix.GetEmptyCellCount();
 
-        if(isPairedSpawn)
+        if(isPairedSpawn && spawnCount >= 2)
         {
         	if(emptyCellCount >= 16)
         	{
@@ -193,7 +201,8 @@ public class GameplayInf extends Gameplay
 		            spawner.StartSpawn(Spawner.SpawnType.Type2Left, 8, 8, canAddToMatrix);
 		            spawner.StartSpawn(Spawner.SpawnType.Type2Right, 8, 8, canAddToMatrix);
 		            break;
-		            case 3:
+
+		            case 2:
 		            spawner.StartSpawn(Spawner.SpawnType.Type3Left, 8, 8, canAddToMatrix);
 		            spawner.StartSpawn(Spawner.SpawnType.Type3Right, 8, 8, canAddToMatrix);
 		            break;

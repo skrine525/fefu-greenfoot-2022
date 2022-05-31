@@ -159,7 +159,10 @@ public class EnemyType3 extends EnemyBasic
     private void Shoot()
     {
        if (cooldown == 0)
-           getWorld().addObject(new EnemyBullet(getRotation(), 3), getX(), getY());     
+       {
+           getWorld().addObject(new EnemyBullet(getRotation(), 3), getX(), getY());
+           Greenfoot.playSound("EnemyShoot.wav");
+       }
        Cooldown();
     }
 

@@ -123,6 +123,9 @@ public class EnemyBasic extends Actor
     // Обработка состояния Destroy каждый кадр
     protected void OnDestroy(long frame)
     {
+        if(frame == 0)
+            Greenfoot.playSound("EnemyBlast.wav");
+
         int imageIndex = (int) (frame / (BLAST_IMAGE_COUNT + 1));
         if(imageIndex < BLAST_IMAGE_COUNT)
             setImage(blastImages[imageIndex]);

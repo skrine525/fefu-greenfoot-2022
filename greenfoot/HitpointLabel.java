@@ -24,7 +24,7 @@ public class HitpointLabel extends Actor
         for(int i = 0; i < length; i++)
         {
             if((i + 1) <= number)
-            	image.drawImage(hpImage, (length - i - 1) * hpImage.getWidth(), 0);
+            	image.drawImage(hpImage, (length - i - 1) * (hpImage.getWidth() - 1), 0);
         }
         
         setImage(image);  // Применяем сформированное изображение

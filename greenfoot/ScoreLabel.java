@@ -31,7 +31,7 @@ public class ScoreLabel extends Actor
         GreenfootImage image = new GreenfootImage(imageWidth, images[0].getHeight());
         for(int i = 0; i < length; i++)
         {
-            image.drawImage(images[digits[i]], i * images[0].getWidth(), 0);
+            image.drawImage(images[digits[i]], i * (images[0].getWidth() - 1), 0);
         }
         
         setImage(image);  // Применяем сформированное изображение

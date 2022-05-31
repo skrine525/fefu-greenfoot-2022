@@ -28,15 +28,18 @@ public class EnemyLaser extends Actor
         {
         frame++;
         if (frame == 1)
+        {
             setImage(laserSmallImage);
+            Greenfoot.playSound("Laser.wav");
+        }
         else if (frame == 6)
         {
             setImage(laserMiddleImage);
         }
         else if (frame <= 51)
         {
-            Spaceship player = (Spaceship) getOneIntersectingObject(Spaceship.class);
-            if(canHit && player != null && player.Hit())
+            Spaceship.Hitbox spaceshipHitbox = (Spaceship.Hitbox) getOneIntersectingObject(Spaceship.Hitbox.class);
+            if(canHit && spaceshipHitbox != null && spaceshipHitbox.GetSpaceship().Hit())
                 canHit = false;
         }
         else if (frame <= 102)

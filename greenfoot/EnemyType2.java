@@ -134,8 +134,8 @@ public class EnemyType2 extends EnemyBasic
             else 
                 move(6);
 
-            Spaceship player = (Spaceship) getOneIntersectingObject(Spaceship.class);
-            if (player != null && player.Hit())
+            Spaceship.Hitbox spaceshipHitbox = (Spaceship.Hitbox) getOneIntersectingObject(Spaceship.Hitbox.class);
+            if (spaceshipHitbox != null && spaceshipHitbox.GetSpaceship().Hit())
                 currentState = State.Destroy;
             else if (isAtEdge())
             {

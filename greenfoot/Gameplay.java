@@ -15,7 +15,6 @@ public class Gameplay extends World
     public Gameplay()
     {    
         super(400, 600, 1);                                                                     // Создание мира 400x600
-        prepare();                                                                              // Стандартный метод подготовки объектов в мире
 
         // Очередь отрисовки объектов
         setPaintOrder(ScoreLabel.class, HitpointLabel.class, StageLabel.class);
@@ -26,11 +25,13 @@ public class Gameplay extends World
         spawner = new Spawner(this, enemyMatrix);                                               // Инициализация спавнера
 
         scoreLabel = new ScoreLabel(8);                                                         // Инициализируем метку очков
-        addObject(scoreLabel, 50, 10);                                                          // Добавляем метку очков в мир
+        addObject(scoreLabel, scoreLabel.getImage().getWidth() / 2, 10);                                                          // Добавляем метку очков в мир
         scoreLabel.Show(score);                                                                 // Отображаем очки на экране
 
         hitpointLabel = new HitpointLabel(Spaceship.HITPOINT_MAX);                              // Инициализируем метку жизней
-        addObject(hitpointLabel, 359, 10);                                                      // Добавляем метку жизней в мир
+        addObject(hitpointLabel, getWidth() - hitpointLabel.getImage().getWidth() / 2, 10);     // Добавляем метку жизней в мир
+
+        player = new Spaceship(this, 199, 560);                                                 // Инициализируем игрока
     }
 
     public void act(){
@@ -79,12 +80,6 @@ public class Gameplay extends World
     protected void OnSpawn(long frame)
     {
         // Обработка логики спавна каждый кадр
-    }
-
-    // Стандартный метод подготовки объектов мира
-    private void prepare()
-    {
-        addObject(player = new Spaceship(), 199, 560);
     }
 
     // Обработка анимации фона
