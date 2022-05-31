@@ -165,10 +165,7 @@ public class EnemyType3 extends EnemyBasic
     {
         capBullets = getObjectsInRange(200, Bullet.class);
         for (int i = 0; i < capBullets.size(); i++)
-        {
-            if (capBullets.get(i).corruptOwner == null)
-                capBullets.get(i).corruptOwner = this;  
-        }
+            capBullets.get(i).Corrupt(this);
     }
     
     private void Shoot()

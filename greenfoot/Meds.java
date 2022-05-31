@@ -14,14 +14,16 @@ public class Meds extends Actor
         	Greenfoot.playSound("MedsOk.wav");
             getWorld().removeObject(this);
         }
-        else if(isTouching(EnemyBasic.class))
-        {
-        	Greenfoot.playSound("MedsFail.wav");
-        	getWorld().removeObject(this);
-        }
         else if (isAtEdge())
-        {
             getWorld().removeObject(this);
+        else
+        {
+        	EnemyBasic enemy = (EnemyBasic) getOneIntersectingObject(EnemyBasic.class);
+        	if(enemy != null && enemy.currentState != EnemyBasic.State.Stay && enemy.currentState != EnemyBasic.State.Destroy)
+        	{
+        		Greenfoot.playSound("MedsFail.wav");
+        		getWorld().removeObject(this);
+        	}
         }
     }
 }

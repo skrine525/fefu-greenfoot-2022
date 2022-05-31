@@ -2,11 +2,9 @@ import greenfoot.*;
 
 public class Bullet extends Actor
 {
-    public EnemyType3 corruptOwner;            // Определяет, кто притягивает пулю
-    private boolean canCorrupt = true;          // Определяет возможность завербовать пулю
-
-    // Константы
-    final static int SPEED = 10;        // Скорость полета
+    private EnemyType3 corruptOwner;           // Определяет, кто притягивает пулю
+    private boolean canCorrupt = true;         // Определяет возможность завербовать пулю
+    private int speed = 10;                    // Скорость полета
 
     public Bullet()
     {
@@ -27,6 +25,20 @@ public class Bullet extends Actor
     public boolean CanCorrupt()
     {
         return canCorrupt;
+    }
+
+    public void Corrupt(EnemyType3 owner)
+    {
+        if(corruptOwner == null)
+        {
+            corruptOwner = owner;
+            speed = 5;
+        }
+    }
+
+    public EnemyBasic GetCorruptOwner()
+    {
+        return corruptOwner;
     }
 
     private void CheckIntersects()
@@ -50,20 +62,20 @@ public class Bullet extends Actor
             corruptOwner = null;
 
         if (corruptOwner == null)
-            move(SPEED);
+            move(speed);
         else 
         {
             // Необходимо исключение, потому что corruptOwner может быть не в мире
             try
             {
                 int angle = (int) GameSystem.GetAngle(getX(), getY(), corruptOwner.getX(), corruptOwner.getY());
-                move(5);
+                move(speed);
                 RotateTo(angle, 2);
             }
             catch(IllegalStateException e)
             {
                 corruptOwner = null;
-                move(SPEED);
+                move(speed);
             }
         }
     }

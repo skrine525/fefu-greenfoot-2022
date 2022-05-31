@@ -85,7 +85,7 @@ public class Spaceship extends Actor {
 
             isHit = true;
             invincibilityFrame = INVINCIBILITY_FRAME_COUNT;
-            Greenfoot.playSound("Blast.wav");
+            Greenfoot.playSound("SpaceshipHit.wav");
 
             return true;
         }
@@ -104,8 +104,12 @@ public class Spaceship extends Actor {
         if(hitpoints > 0)
         {
             int x = getX() + deltaX;
-            if(25 < x && x < 375)
-                setLocation(x, getY());
+            if(x < getImage().getWidth() / 2)
+                x = getImage().getWidth() / 2;
+            else if(x > getWorld().getWidth() - getImage().getWidth() / 2)
+                x = getWorld().getWidth() - getImage().getWidth() / 2;
+
+            setLocation(x, getY());
         }
     }
 
@@ -151,7 +155,7 @@ public class Spaceship extends Actor {
             else
             {
                 if(blastAnimationFrame == 0)
-                    Greenfoot.playSound("Blast.wav");
+                    Greenfoot.playSound("SpaceshipHit.wav");
 
                 int imageIndex = (int) (blastAnimationFrame / (BLAST_ANIMATION_SPEED));
                 if(imageIndex < BLAST_IMAGE_COUNT)

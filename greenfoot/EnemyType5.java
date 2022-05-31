@@ -27,7 +27,7 @@ public class EnemyType5 extends EnemyBasic
         if(hitpoints > 0)
         {
             setImage(hitImages[IMAGE_COUNT - hitpoints]);
-            Greenfoot.playSound("Blast.wav");
+            Greenfoot.playSound("EnemyHit.wav");
         }
         else
         {
