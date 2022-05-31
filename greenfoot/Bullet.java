@@ -14,7 +14,7 @@ public class Bullet extends Actor
 
     public void act()
     {
-        if (owner != null && owner.currentState != EnemyBasic.State.Action)
+        if (owner != null && owner.onManeuver != true)
             owner = null;
 
         if (owner == null)

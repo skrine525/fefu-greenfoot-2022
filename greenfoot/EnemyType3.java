@@ -7,6 +7,7 @@ public class EnemyType3 extends EnemyBasic
     private int frame1;
     private int cooldown;
     private int shootingFrame;
+    public boolean onManeuver = false;
     private List<Bullet> corBullets;            // Список пуль для "вербовки"
     private List<Bullet> capBullets;            // Список пуль для притяжения
     Bullet corBullet;
@@ -81,7 +82,10 @@ public class EnemyType3 extends EnemyBasic
             if(getY() < 280) //350
                 move(5);
             else
+            {
+                onManeuver = true;
                 state = 1;
+            }
         }
         else if(state == 1)
         {
@@ -115,7 +119,10 @@ public class EnemyType3 extends EnemyBasic
                 CorruptBullets();
             }
             else
+            {
                 state = 3;
+                onManeuver = false;
+            }
         }
         else
         {
