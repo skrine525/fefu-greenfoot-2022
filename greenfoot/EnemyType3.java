@@ -33,6 +33,8 @@ public class EnemyType3 extends EnemyBasic
         {
             turn(3);
             move(5);
+            if (getRotation() > 100 && getRotation() < 155)
+                    RandomShoot();
         }
         else
         {
@@ -55,6 +57,8 @@ public class EnemyType3 extends EnemyBasic
             {
                 move(5);
                 turn(5);
+                if (getRotation() > 80 && getRotation() < 145)
+                    RandomShoot();
             }
             else
             {

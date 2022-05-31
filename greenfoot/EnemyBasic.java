@@ -166,10 +166,13 @@ public class EnemyBasic extends Actor
         }
     }
 
-    // Анимации появления
-
-    private void EnterType1Left()
+    // Играемся с процентами
+    public void RandomShoot()
     {
-        
+        if (Greenfoot.getRandomNumber(1000) <= 5)
+        {
+            Greenfoot.playSound("EnemyShoot.wav");
+            getWorld().addObject(new EnemyBullet(getRotation(), 5), getX(), getY());
+        }
     }
 }

@@ -7,7 +7,7 @@ public class Spaceship extends Actor {
         private Spaceship spaceship;                                                    // Ссылка на Spaceship
 
         // Константы
-        private static final int HITBOX_WIDTH = 49;                                     // Ширина хитбокса
+        private static final int HITBOX_WIDTH = 39;                                     // Ширина хитбокса
         private static final int HITBOX_HEIGHT = 32;                                    // Высота хитбокса
         private static final int XPOS_OFFSET = 0;                                       // Смещение хитбокса по оси X относительно центра Spacehip'а
         private static final int YPOS_OFFSET = 8;                                       // Смещение хитбокса по оси Y относительно центра Spacehip'а

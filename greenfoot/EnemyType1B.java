@@ -22,6 +22,8 @@ public class EnemyType1B extends EnemyType1
         {
             move(5);
             turn(2);
+            if (getRotation() > 45 && getRotation() < 110)
+                RandomShoot();
         }
         else if (frame <= 80)
         {
@@ -59,6 +61,8 @@ public class EnemyType1B extends EnemyType1
             {
                 move(5);
                 turn(5);
+                if (getRotation() > 75 && getRotation() < 110)
+                    RandomShoot();
             }
             else
             {
