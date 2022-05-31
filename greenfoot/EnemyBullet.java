@@ -2,14 +2,16 @@ import greenfoot.*;
 
 public class EnemyBullet extends Actor
 {
-    public EnemyBullet(int rot)
+    private int speed;
+    public EnemyBullet(int rot, int newSpeed)
     {
+        speed = newSpeed;
         setRotation(rot);
     }
 
     public void act()
     {
-        move(5);
+        move(speed);
         Spaceship player = (Spaceship) getOneIntersectingObject(Spaceship.class);
         if(player != null && player.Hit())
             getWorld().removeObject(this);

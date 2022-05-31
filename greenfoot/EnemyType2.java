@@ -4,9 +4,12 @@ public class EnemyType2 extends EnemyBasic
 {
     private int actionActNumber; 
     private int direction;
-    private int frame1 = 0;
     private Spaceship player;
-
+    private int frame1;
+    private int lastX;
+    private GreenfootImage enemySprite = new GreenfootImage("Enemy2.png");
+    private GreenfootImage emptySprite = new GreenfootImage(2,2);
+    private boolean outOfArea = false;
     public EnemyType2()
     {
         super(20);
@@ -70,7 +73,37 @@ public class EnemyType2 extends EnemyBasic
     @Override
     protected void OnAction(long frame)
     {
-        if (frame == 0)
+        if (outOfArea)
+        {
+            if (frame1 <= 30)
+            {
+                frame1++;
+                if (frame1 == 31)
+                {
+                    setLocation(399-lastX,0);
+                    setImage(enemySprite);
+                    setRotation(90);
+                }
+            }
+            else if(getX() != matrixCell.x && getY() != matrixCell.y)
+            {
+                RotateTo((int) GameSystem.GetAngle(getX(), getY(), matrixCell.x, matrixCell.y), 3);
+                MoveTo(matrixCell.x, matrixCell.y, 5);
+            }
+            else if(getRotation() != 90)
+            {
+                MoveTo(matrixCell.x, matrixCell.y, 5);
+                RotateTo(90, 5);
+            }
+            else
+            {
+                currentState = State.Stay;
+                frame1 = 0;
+                outOfArea = false;
+            }
+            
+        }
+        else if (frame == 0)
         {
             turnTowards(200,300);
             move(5);
@@ -104,8 +137,13 @@ public class EnemyType2 extends EnemyBasic
             Spaceship player = (Spaceship) getOneIntersectingObject(Spaceship.class);
             if (player != null && player.Hit())
                 currentState = State.Destroy;
-            else if (isAtEdge()) 
-                Destroy();
+            else if (isAtEdge())
+            {
+                setImage(emptySprite);
+                outOfArea = true;
+                lastX = getX();
+                frame1 = 0;
+            }                
         }
     }
 }

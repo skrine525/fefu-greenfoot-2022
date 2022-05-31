@@ -5,6 +5,8 @@ public class EnemyType3 extends EnemyBasic
 {   
     private int state;
     private int frame1;
+    private int cooldown;
+    private int shootingFrame;
     private List<Bullet> corBullets;            // Список пуль для "вербовки"
     private List<Bullet> capBullets;            // Список пуль для притяжения
     Bullet corBullet;
@@ -69,13 +71,14 @@ public class EnemyType3 extends EnemyBasic
         {
             turnTowards(Greenfoot.getRandomNumber(150)+125,350);
             move(5);
+            shootingFrame = 21;
             state = 0;
             frame1 = 0;
         }
 
         if(state == 0)
         {
-            if(getY() < 350)
+            if(getY() < 280) //350
                 move(5);
             else
                 state = 1;
@@ -89,6 +92,16 @@ public class EnemyType3 extends EnemyBasic
                 CaptureBullets();
                 move(2);
                 turn(2);
+                if (getRotation() > 67 && getRotation() < 73)
+                {
+                    shootingFrame = 0;
+                    cooldown = 0;
+                }
+                if (shootingFrame <= 40)
+                {
+                    Shoot();
+                    shootingFrame++;
+                }
             }
             else
                 state = 2;
@@ -99,6 +112,7 @@ public class EnemyType3 extends EnemyBasic
             {
                 move(2);
                 turn(2);
+                CorruptBullets();
             }
             else
                 state = 3;
@@ -109,6 +123,7 @@ public class EnemyType3 extends EnemyBasic
             {
                 RotateTo((int) GameSystem.GetAngle(getX(), getY(), matrixCell.x, matrixCell.y), 3);
                 MoveTo(matrixCell.x, matrixCell.y, 5);
+                CorruptBullets();
             }
             else if(getRotation() != 90)
             {
@@ -139,6 +154,22 @@ public class EnemyType3 extends EnemyBasic
             if (capBullets.get(i).owner == null)
                 capBullets.get(i).owner = this;  
         }
+    }
+    
+    private void Shoot()
+    {
+       if (cooldown == 0)
+           getWorld().addObject(new EnemyBullet(getRotation(), 3), getX(), getY());     
+       Cooldown();
+    }
+
+    private void Cooldown()
+    {
+
+        if(cooldown != 0)
+            cooldown--; 
+        else
+            cooldown = 21;
     }
     
     @Override
