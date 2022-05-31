@@ -2,7 +2,8 @@ import greenfoot.*;
 
 public class Bullet extends Actor
 {
-    public EnemyType3 owner;            // Определяет, кто притягивает пулю
+    public EnemyType3 corruptOwner;            // Определяет, кто притягивает пулю
+    private boolean canCorrupt = true;          // Определяет возможность завербовать пулю
 
     // Константы
     final static int SPEED = 10;        // Скорость полета
@@ -10,21 +11,28 @@ public class Bullet extends Actor
     public Bullet()
     {
         setRotation(270);
+
+        if(Greenfoot.getRandomNumber(100) < 10)
+            canCorrupt = false;
+        else
+            canCorrupt = true;
     }
 
     public void act()
     {
-        if (owner != null && owner.onManeuver != true)
-            owner = null;
+        Movement();
+        CheckIntersects();
+    }
 
-        if (owner == null)
-            move(SPEED);
-        else 
-        {
-            move(5);
-            RotateTo((int) GameSystem.GetAngle(getX(), getY(), owner.getX(), owner.getY()), 2);
-        }
+    public boolean CanCorrupt()
+    {
+        return canCorrupt;
+    }
+
+    private void CheckIntersects()
+    {
         EnemyBasic enemy = (EnemyBasic) getOneIntersectingObject(EnemyBasic.class);
+
         if(enemy != null && enemy.currentState != EnemyBasic.State.Destroy)
         {
             getWorld().removeObject(this);
@@ -33,6 +41,30 @@ public class Bullet extends Actor
         else if (isAtEdge())
         {
             getWorld().removeObject(this);
+        }
+    }
+
+    private void Movement()
+    {
+        if (corruptOwner != null && !corruptOwner.onManeuver)
+            corruptOwner = null;
+
+        if (corruptOwner == null)
+            move(SPEED);
+        else 
+        {
+            // Необходимо исключение, потому что corruptOwner может быть не в мире
+            try
+            {
+                int angle = (int) GameSystem.GetAngle(getX(), getY(), corruptOwner.getX(), corruptOwner.getY());
+                move(5);
+                RotateTo(angle, 2);
+            }
+            catch(IllegalStateException e)
+            {
+                corruptOwner = null;
+                move(SPEED);
+            }
         }
     }
 

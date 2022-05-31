@@ -19,7 +19,7 @@ public class Spaceship extends Actor {
             GreenfootImage image = new GreenfootImage(HITBOX_WIDTH, HITBOX_HEIGHT);
             setImage(image);
 
-            // Для теста
+            // Для теста визуализация
             // image.setColor(Color.RED);
             // image.fillRect(0, 0, image.getWidth() - 1, image.getHeight() - 1);
             // image.setTransparency(100);

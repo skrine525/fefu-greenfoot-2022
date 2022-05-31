@@ -10,8 +10,9 @@ public class EnemyType3 extends EnemyBasic
     public boolean onManeuver = false;
     private List<Bullet> corBullets;            // Список пуль для "вербовки"
     private List<Bullet> capBullets;            // Список пуль для притяжения
-    Bullet corBullet;
-    Bullet capBullet;
+    private Bullet corBullet;
+    private Bullet capBullet;
+
     public EnemyType3()
     {
         super(50);
@@ -152,8 +153,11 @@ public class EnemyType3 extends EnemyBasic
         for (int i = 0; i < corBullets.size(); i++)
         {
             corBullet = corBullets.get(i);
-            getWorld().addObject(new CorruptedBullet(corBullet.getRotation()), corBullet.getX(), corBullet.getY());
-            getWorld().removeObject(corBullet);
+            if(corBullet.CanCorrupt())
+            {
+                getWorld().addObject(new CorruptedBullet(corBullet.getRotation()), corBullet.getX(), corBullet.getY());
+                getWorld().removeObject(corBullet);
+            }
         }
     }
     
@@ -162,8 +166,8 @@ public class EnemyType3 extends EnemyBasic
         capBullets = getObjectsInRange(200, Bullet.class);
         for (int i = 0; i < capBullets.size(); i++)
         {
-            if (capBullets.get(i).owner == null)
-                capBullets.get(i).owner = this;  
+            if (capBullets.get(i).corruptOwner == null)
+                capBullets.get(i).corruptOwner = this;  
         }
     }
     

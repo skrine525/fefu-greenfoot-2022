@@ -6,9 +6,9 @@ public class PressSpaceLabel extends Actor
     private boolean isPressed = false;
     private Menu menu;
 
-    public PressSpaceLabel(Menu menu)
+    public PressSpaceLabel(Menu menu, GreenfootImage image)
     {
-        setImage("Text/PressSpace.png");
+        setImage(image);
         this.menu = menu;
     }
 

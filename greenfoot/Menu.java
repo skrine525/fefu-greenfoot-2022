@@ -14,8 +14,8 @@ public class Menu extends World
         state = 0;
         setBackground("Menu/Control.png");
 
-        pressSpaceLabel = new PressSpaceLabel(this);
-        addObject(pressSpaceLabel, 199, 350);
+        pressSpaceLabel = new PressSpaceLabel(this, new GreenfootImage("Text/Play.png"));
+        addObject(pressSpaceLabel, 199, 299);
     }
 
     public Menu(int score)
@@ -33,7 +33,7 @@ public class Menu extends World
         gameOverSound.setVolume(40);
         gameOverSound.play();
 
-        pressSpaceLabel = new PressSpaceLabel(this);
+        pressSpaceLabel = new PressSpaceLabel(this, new GreenfootImage("Text/Replay.png"));
         addObject(pressSpaceLabel, 199, 350);
     }
 
