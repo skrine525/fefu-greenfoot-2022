@@ -20,9 +20,9 @@ public class Spaceship extends Actor {
             setImage(image);
 
             // Для теста
-            image.setColor(Color.RED);
-            image.fillRect(0, 0, image.getWidth() - 1, image.getHeight() - 1);
-            image.setTransparency(100);
+            // image.setColor(Color.RED);
+            // image.fillRect(0, 0, image.getWidth() - 1, image.getHeight() - 1);
+            // image.setTransparency(100);
         }
 
         // Возвращает ссылку на Spaceship
@@ -42,16 +42,19 @@ public class Spaceship extends Actor {
     private GreenfootImage[] blastImages;                               // Изображения взрыва
     private GreenfootImage spaceshipImage;                              // Изображение корабля
     private Spaceship.Hitbox hitbox;                                    // Хитбокс игрока
-    private boolean isDestroyed = false;                                // Уничтожен ли
+    private boolean isHit = false;                                      // Поврежден ли
     private int shootCooldown = 0;                                      // Количество кадров до следующего выстрела
     private int hitpoints = 3;                                          // Количество жизней
     private int moveSpeed = 3;                                          // Горизонатльная скорость
-    private int animationFrame = 0;                                     // Количество кадров для обработки анимации взрыва
-    private int animationStopFrame = 0;                                 // Номер кадра, с которого заканчивается анимация взрыва
+    private int blastAnimationFrame = 0;                                // Количество кадров для обработки анимации взрыва
+    private int blastAnimationStopFrame = 0;                            // Номер кадра, с которого заканчивается анимация взрыва
+    private int invincibilityFrame = 0;                                 // Количество кадров, которое дает непобедимость игроку
+    private double hitAnimationNumber = 0;                              // Переменная для анимации мигания через косинус
 
     // Константы
     private static final int BLAST_IMAGE_COUNT = 6;                     // Количество изображений взрыва
     private static final int BLAST_ANIMATION_SPEED = 5;                 // Скорость смены кадров анимации взрыва
+    private static final int INVINCIBILITY_FRAME_COUNT = 240;           // Количество кадров, при котором игрок остается непобедимым после возрождения
     public static final int HITPOINT_MAX = 3;                           // Максимальный ХП
 
     public Spaceship(World world, int x, int y)
@@ -71,20 +74,24 @@ public class Spaceship extends Actor {
     {
         UserInput();                                // Обработка пользовательского ввода
         ShootCooldown();                            // Просчёт КД между выстрелами
-        BlastAnimation();                           // Анимация взрыва
+        HitProccess();                              // Обрабатывание урона по игроку
         hitbox.MoveToSpaceship();                   // Перемещение хитбокса вслед за игроком
     }
 
     // Наносение урона
     public boolean Hit()
     {
-        if(isDestroyed)
+        if(isHit)
             return false;
         else
         {
             hitpoints = Math.max(hitpoints - 1, 0);
-            isDestroyed = true;
             ((Gameplay) getWorld()).ShowPlayerHP(hitpoints);
+
+            isHit = true;
+            invincibilityFrame = INVINCIBILITY_FRAME_COUNT;
+            Greenfoot.playSound("Blast.wav");
+
             return true;
         }
     }
@@ -92,7 +99,7 @@ public class Spaceship extends Actor {
     // Движение корабля
     public void Move(int deltaX)
     {
-        if(!isDestroyed)
+        if(hitpoints > 0)
         {
             int x = getX() + deltaX;
             if(25 < x && x < 375)
@@ -100,57 +107,66 @@ public class Spaceship extends Actor {
         }
     }
 
-    // Getter переменной isDestroyed
-    public boolean IsDestroyed()
+    // Getter переменной isHit
+    public boolean IsHit()
     {
-        return isDestroyed;
+        return isHit;
     }
 
     // Выстрел
     protected void Shoot() {
-        if(!isDestroyed && shootCooldown == 0)
+        if(!isHit && shootCooldown == 0)
         {
-            Greenfoot.playSound("Pew.wav");
+            Greenfoot.playSound("SpaceshipShoot.wav");
             getWorld().addObject(new Bullet(), getX(), getY() - 25);
             shootCooldown = 20;
         }
     }
 
-    // Анимация взрыва
-    private void BlastAnimation()
+    // Обрабатывает состояние, когда по игроку проходит урон
+    private void HitProccess()
     {
-        if(isDestroyed)
+        if(isHit)
         {
-            if(animationFrame == 0)
-                Greenfoot.playSound("SpaceshipBlast.wav");
+            if(hitpoints > 0)
+            {
+                if(invincibilityFrame > 0)
+                {
+                    invincibilityFrame--;
 
-            int imageIndex = (int) (animationFrame / (BLAST_ANIMATION_SPEED));
-            if(imageIndex < BLAST_IMAGE_COUNT)
-                setImage(blastImages[imageIndex]);
+                    // Меняем прозрачность изображения для эффекта мигания
+                    int transparency = 155 + (int) (100 * Math.cos(hitAnimationNumber));
+                    hitAnimationNumber += Math.PI / 25;
+                    getImage().setTransparency(transparency);
+                }
+                else
+                {
+                    isHit = false;
+                    hitAnimationNumber = 0;
+                    getImage().setTransparency(255);
+                }
+            }
             else
             {
-                if(animationStopFrame == 0)
-                    animationStopFrame = animationFrame + 120;
-                else if(animationFrame == animationStopFrame)
-                {
-                    if(hitpoints > 0)
-                    {
-                        animationStopFrame = 0;
-                        isDestroyed = false;
-                        animationFrame = -1;
+                if(blastAnimationFrame == 0)
+                    Greenfoot.playSound("Blast.wav");
 
-                        setImage(spaceshipImage);
-                        setLocation(199, getY());
-                    }
-                    else
+                int imageIndex = (int) (blastAnimationFrame / (BLAST_ANIMATION_SPEED));
+                if(imageIndex < BLAST_IMAGE_COUNT)
+                    setImage(blastImages[imageIndex]);
+                else
+                {
+                    if(blastAnimationStopFrame == 0)
+                        blastAnimationStopFrame = blastAnimationFrame + 120;
+                    else if(blastAnimationFrame == blastAnimationStopFrame)
                     {
                         Gameplay gameplay = (Gameplay) getWorld();
                         gameplay.StopGame();
                     }
                 }
-            }
 
-            animationFrame++;
+                blastAnimationFrame++;
+            }
         }
     }
 

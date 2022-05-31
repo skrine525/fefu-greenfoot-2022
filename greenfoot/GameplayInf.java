@@ -72,7 +72,7 @@ public class GameplayInf extends Gameplay
         	}
             else if(canSpawn)
             {
-                if(GetPlayer().IsDestroyed())
+                if(GetPlayer().IsHit())
                     spawnStartFrame = (int) frame + 20;
                 else if(frame >= spawnStartFrame)
                 {
@@ -85,7 +85,7 @@ public class GameplayInf extends Gameplay
             }
         	else if(spawnCount <= 0)
         	{
-                if(!GetPlayer().IsDestroyed())
+                if(!GetPlayer().IsHit())
                 {
                     EnemyMatrix.SortedEnemiesByState sortedEnemies = enemyMatrix.GetSortedEnemiesByState();
                     if(sortedEnemies.GetEnemiesCount() == 0)
@@ -93,6 +93,7 @@ public class GameplayInf extends Gameplay
                         canHandleStage = false;
                         stageNumber++;
                         stageStartFrame = (int) frame + 60;
+                        SetBackgroundSoundVolume(25);                           // Уменьшаем громкость фоновой музыки
                     }
                     else
                     {
@@ -120,7 +121,7 @@ public class GameplayInf extends Gameplay
         	}
             else
             {
-                if(!GetPlayer().IsDestroyed())
+                if(!GetPlayer().IsHit())
                 {
                     EnemyMatrix.SortedEnemiesByState sortedEnemies = enemyMatrix.GetSortedEnemiesByState();
 
@@ -161,7 +162,10 @@ public class GameplayInf extends Gameplay
         else
         {
             if(frame == stageStartFrame)
+            {
             	stageLabel.Show(stageNumber);							// Отображаем метку стадии
+                Greenfoot.playSound("Stage.wav");                       // Проигрываем звук начала стадии
+            }
             else if(frame >= stageStartFrame + 120){
                 spawnStartFrame = (int) frame + 20;
                 spawnCountMax = 12 + 4 * (stageNumber - 1);
@@ -171,6 +175,10 @@ public class GameplayInf extends Gameplay
                 canHandleStage = true;
 
                 stageLabel.Hide();										// Скрываем метку стадии
+
+                // Включаем фоновую музыку
+                SetBackgroundSoundVolume(40);
+                PlayBackgroundSound();
             }
         }
 

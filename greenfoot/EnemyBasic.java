@@ -12,7 +12,7 @@ public class EnemyBasic extends Actor
     private int pointsForHit;
 
     // Константы
-    private static final int BLAST_IMAGE_COUNT = 4;                                          // Количество кадров в анимации взрыва
+    private static final int BLAST_IMAGE_COUNT = 5;                                          // Количество кадров в анимации взрыва
     private static final int BLAST_ANIMATION_SPEED = 5;                                      // Скорость смены кадров анимации взрыва
 
     // Конструктор противника
@@ -124,7 +124,7 @@ public class EnemyBasic extends Actor
     protected void OnDestroy(long frame)
     {
         if(frame == 0)
-            Greenfoot.playSound("EnemyBlast.wav");
+            Greenfoot.playSound("Blast.wav");
 
         int imageIndex = (int) (frame / (BLAST_IMAGE_COUNT + 1));
         if(imageIndex < BLAST_IMAGE_COUNT)

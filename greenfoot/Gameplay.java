@@ -10,6 +10,7 @@ public class Gameplay extends World
     protected HitpointLabel hitpointLabel;                                                       // Метка жизней игрока
     private Spaceship player;                                                                    // Ссылка на игрока
     private long frame = 0;                                                                      // Переменная количества кадров
+    private GreenfootSound backgroundSound;                                                      // Объект фоновой музыки
     
     // Конструктор мира
     public Gameplay()
@@ -23,6 +24,8 @@ public class Gameplay extends World
         setBackground(backgroundImages[0]);                                                     // Устанавливаем фон мира
         enemyMatrix = new EnemyMatrix(3, 8, 59, 59, 40);                                        // Инициализация матрицы врагов
         spawner = new Spawner(this, enemyMatrix);                                               // Инициализация спавнера
+
+        backgroundSound = new GreenfootSound("BackgroundSound.wav");                            // Инициализируем объект фоновой музыки
 
         scoreLabel = new ScoreLabel(8);                                                         // Инициализируем метку очков
         addObject(scoreLabel, scoreLabel.getImage().getWidth() / 2, 10);                                                          // Добавляем метку очков в мир
@@ -75,6 +78,27 @@ public class Gameplay extends World
     {
         Menu menu = new Menu(score);
         Greenfoot.setWorld(menu);
+        StopBackgroundSound();
+    }
+
+    // Включает фоновую музыку
+    public void PlayBackgroundSound()
+    {
+        if(!backgroundSound.isPlaying())
+            backgroundSound.playLoop();
+    }
+
+    // Выключает фоновую музыку
+    public void StopBackgroundSound()
+    {
+        if(backgroundSound.isPlaying())
+            backgroundSound.stop();
+    }
+
+    // Устанавливает громкость фоновой музыки
+    public void SetBackgroundSoundVolume(int volume)
+    {
+        backgroundSound.setVolume(volume);
     }
     
     protected void OnSpawn(long frame)
