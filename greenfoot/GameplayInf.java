@@ -21,6 +21,7 @@ public class GameplayInf extends Gameplay
     private int actionEnymyCount = 0;							// Количество врагов, которое осталось перевести в Action
     private int actionStartFrame = 0;							// Номер кадра, с которого начинается Action врагов
     private boolean canAction = false;							// Переменная, разрешающая изменение состояния на Action
+    private boolean actionDisableForEnemyType3 = false;         // Переменная, отключающая возможность действия для EnemyType3
 
     // Прочее
     private StageLabel stageLabel;                              // Метка номера стадии
@@ -34,7 +35,7 @@ public class GameplayInf extends Gameplay
         super();
 
         stageLabel = new StageLabel();                                                          // Инициализируем метку номера стадии
-        addObject(stageLabel, getWidth() / 2, getHeight() / 2);                                 // Добавляем метку номера стадии в мир
+        addObject(stageLabel, 199, getHeight() / 2);                                            // Добавляем метку номера стадии в мир
     }
 
     @Override
@@ -43,20 +44,22 @@ public class GameplayInf extends Gameplay
         if(canHandleStage){
         	if(canAction)
         	{
-        		ArrayList<EnemyBasic> stayingEnemies = new ArrayList<EnemyBasic>();
-            	for(EnemyBasic enemy : enemyMatrix.GetEnemies())
-            	{
-            		if(enemy.currentState == EnemyBasic.State.Stay)
-            			stayingEnemies.add(enemy);
-            	}
+                EnemyMatrix.SortedEnemiesByState sortedEnemies = enemyMatrix.GetSortedEnemiesByState();
 
-            	if(stayingEnemies.size() > 0)
+        		ArrayList<EnemyBasic> actionableEnemies = new ArrayList<EnemyBasic>();
+                for(EnemyBasic enemy : sortedEnemies.GetEnemiesInStay())
+                {
+                    if(!actionDisableForEnemyType3 || !(enemy instanceof EnemyType3))
+                        actionableEnemies.add(enemy);
+                }
+
+            	if(actionableEnemies.size() > 0)
             	{
             		if(frame >= actionStartFrame)
 		            {
 		            	
-	            		int enemyIndex = Greenfoot.getRandomNumber(stayingEnemies.size());
-	            		stayingEnemies.get(enemyIndex).currentState = EnemyBasic.State.Action;
+	            		int enemyIndex = Greenfoot.getRandomNumber(actionableEnemies.size());
+	            		actionableEnemies.get(enemyIndex).currentState = EnemyBasic.State.Action;
 	            		actionStartFrame = (int) frame + 30;
 
 		            	actionEnymyCount--;
@@ -69,24 +72,36 @@ public class GameplayInf extends Gameplay
         	}
         	else if(spawnCount <= 0)
         	{
-        		boolean enemiesDontExist = true;
-        		for(EnemyBasic enemy : enemyMatrix.GetEnemies())
-            	{
-            		if(enemy != null)
-            		{
-            			enemiesDontExist = false;
-            			break;
-            		}
-            	}
+        		EnemyMatrix.SortedEnemiesByState sortedEnemies = enemyMatrix.GetSortedEnemiesByState();
 
-            	if(enemiesDontExist)
+            	if(sortedEnemies.GetEnemiesCount() == 0)
             	{
             		canHandleStage = false;
             		stageNumber++;
             		stageStartFrame = (int) frame + 60;
             	}
-                else if(AreAllMatrixEnemiesStanding())
-                    DoAction(frame);
+                else
+                {
+                    if(sortedEnemies.GetEnemiesInAction().size() > 0)
+                    {
+                        boolean canDoAction = true;
+                        for(EnemyBasic enemy : sortedEnemies.GetEnemiesInAction())
+                        {
+                            if(!(enemy instanceof EnemyType3))
+                            {
+                                canDoAction = false;
+                                break;
+                            }
+                        }
+
+                        if(canDoAction)
+                        {
+                            DoAction(frame, 1, true);
+                        }
+                    }
+                    else if(sortedEnemies.GetEnemiesInStay().size() == sortedEnemies.GetEnemiesCount())
+                        DoAction(frame, 3, false);
+                }   
         	}
             else if(canSpawn)
             {
@@ -95,17 +110,36 @@ public class GameplayInf extends Gameplay
             		if(SpawnConvoy())
 				        spawnCountToDoAction--;	// Уменьшаем на единицу каждый спавн
 				    else
-                        DoAction(frame);
+                        DoAction(frame, 3, false);
                 	canSpawn = false;
             	}
             }
             else
             {
-                if(AreAllMatrixEnemiesStanding())
+                EnemyMatrix.SortedEnemiesByState sortedEnemies = enemyMatrix.GetSortedEnemiesByState();
+
+                if(sortedEnemies.GetEnemiesInAction().size() > 0)
+                {
+                    boolean canDoAction = true;
+                    for(EnemyBasic enemy : sortedEnemies.GetEnemiesInAction())
+                    {
+                        if(!(enemy instanceof EnemyType3))
+                        {
+                            canDoAction = false;
+                            break;
+                        }
+                    }
+
+                    if(canDoAction)
+                    {
+                        DoAction(frame, 1, true);
+                    }
+                }
+                else if(sortedEnemies.GetEnemiesInStay().size() == sortedEnemies.GetEnemiesCount())
                 {
                     if(spawnCountToDoAction <= 0)
                     {
-                    	DoAction(frame);
+                    	DoAction(frame, 3, false);
                     	spawnCountToDoAction = ACTION_COUNT_IN_STAGE_MIN + Greenfoot.getRandomNumber(65536) % (ACTION_COUNT_IN_STAGE_MAX - ACTION_COUNT_IN_STAGE_MIN + 1);
                     }
                     else
@@ -192,28 +226,11 @@ public class GameplayInf extends Gameplay
     }
 
     // Запускает Action
-    private void DoAction(long frame)
+    private void DoAction(long frame, int count, boolean disableEnemyType3)
     {
         canAction = true;
         actionStartFrame = (int) frame + 60;
-        actionEnymyCount = 3;
-    }
-
-    // Проверяет, все ли враги в матрице имеют состояние покоя, если да - true, иначе - false
-    private boolean AreAllMatrixEnemiesStanding()
-    {
-        int rows = enemyMatrix.getRows();
-        int columns = enemyMatrix.getColumns();
-        for(int i = 0; i < rows; i++)
-        {
-            for(int j = 0; j < columns; j++)
-            {
-                EnemyMatrix.Cell cell = enemyMatrix.getCell(i, j);
-                if(cell.enemy != null && cell.enemy.currentState != EnemyBasic.State.Stay)
-                    return false;
-            }
-        }
-
-        return true;
+        actionEnymyCount = count;
+        actionDisableForEnemyType3 = disableEnemyType3;
     }
 }

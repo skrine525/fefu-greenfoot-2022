@@ -3,6 +3,7 @@ import java.util.*;
 
 public class EnemyMatrix
 {
+    // Реализаця ячейки матрицы
     public class Cell{
         private int startX, startY;
         public int x, y;
@@ -27,11 +28,76 @@ public class EnemyMatrix
         }
     }
 
+    // Списки врагов в матрицу по состоянию
+    public class SortedEnemiesByState
+    {
+        private EnemyMatrix matrix;
+        private ArrayList<EnemyBasic> stay_list, enter_list, action_list, destroy_list;
+        private int enemiesCount;
+
+        public SortedEnemiesByState(EnemyMatrix matrix)
+        {
+            this.matrix = matrix;
+            enemiesCount = 0;
+            stay_list = new ArrayList<EnemyBasic>();
+            enter_list = new ArrayList<EnemyBasic>();
+            action_list = new ArrayList<EnemyBasic>();
+            destroy_list = new ArrayList<EnemyBasic>();
+
+            int rows = matrix.getRows();
+            int columns = matrix.getColumns();
+            for(int i = 0; i < rows; i++)
+            {
+                for(int j = 0; j < columns; j++)
+                {
+                    EnemyMatrix.Cell cell = matrix.getCell(i, j);
+                    if(cell.enemy != null)
+                    {
+                        switch(cell.enemy.currentState)
+                        {
+                            case Stay: stay_list.add(cell.enemy); break;
+                            case Enter: enter_list.add(cell.enemy); break;
+                            case Action: action_list.add(cell.enemy); break;
+                            case Destroy: destroy_list.add(cell.enemy); break;
+                        }
+                        enemiesCount++;
+                    }
+                }
+            }
+        }
+
+        public ArrayList<EnemyBasic> GetEnemiesInStay()
+        {
+            return stay_list;
+        }
+
+        public ArrayList<EnemyBasic> GetEnemiesInEnter()
+        {
+            return enter_list;
+        }
+
+        public ArrayList<EnemyBasic> GetEnemiesInAction()
+        {
+            return action_list;
+        }
+
+        public ArrayList<EnemyBasic> GetEnemiesInDestroy()
+        {
+            return destroy_list;
+        }
+
+        public int GetEnemiesCount()
+        {
+            return enemiesCount;
+        }
+    }
+
     private Cell[][] matrix;
     private int rows, columns, beginX, beginY;
     private long frame = 0;
     private int animationType, animationDelta, animationPos, animationDir;
 
+    // Конструктор EnemyMatrix
     public EnemyMatrix(int rows, int columns, int beginX, int beginY, int distance)
     {
         this.rows = rows;
@@ -57,6 +123,7 @@ public class EnemyMatrix
         animationPos = 0;
     }
 
+    // Возвращает количество пустых ячеек  матрицу
     public int GetEmptyCellCount()
     {
         int count = 0;
@@ -71,6 +138,7 @@ public class EnemyMatrix
         return count;
     }
 
+    // Возвращает список врагов
     public ArrayList<EnemyBasic> GetEnemies()
     {
         ArrayList<EnemyBasic> enemies = new ArrayList<EnemyBasic>();
@@ -85,21 +153,31 @@ public class EnemyMatrix
         return enemies;
     }
 
+    // Возвращает объект отсортированных врагов по состоянию
+    public SortedEnemiesByState GetSortedEnemiesByState()
+    {
+        return new SortedEnemiesByState(this);
+    }
+
+    // Возвращает ячейку
     public Cell getCell(int row, int column)
     {
         return matrix[row][column];
     }
 
+    // Возвращает количество строк
     public int getRows()
     {
         return rows;
     }
 
+    // Возвращает количество столбцов
     public int getColumns()
     {
         return columns;
     }
 
+    // Добавляет врага в матрицу, если есть место
     public void AddEnemy(EnemyBasic enemy)
     {
         int count = GetEmptyCellCount();
@@ -120,6 +198,7 @@ public class EnemyMatrix
         }
     }
 
+    // Обработка матрицы каждый кадр
     public void Act()
     {
         switch(animationType)

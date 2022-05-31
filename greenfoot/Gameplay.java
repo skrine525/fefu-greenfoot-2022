@@ -2,13 +2,13 @@ import greenfoot.*;
 
 public class Gameplay extends World
 {
-    public Spaceship player;                                                                     // Ссылка на игрока
     protected EnemyMatrix enemyMatrix;                                                           // Матрица врагов
     protected GreenfootImage backgroundImages[];                                                 // Массив изображений фона
     protected Spawner spawner;                                                                   // Контроллер спавна
     protected int score = 0;                                                                     // Количество очков
     protected ScoreLabel scoreLabel;                                                             // Метка счетчика очков
     protected HitpointLabel hitpointLabel;                                                       // Метка жизней игрока
+    private Spaceship player;                                                                    // Ссылка на игрока
     private long frame = 0;                                                                      // Переменная количества кадров
     
     // Конструктор мира
@@ -27,7 +27,7 @@ public class Gameplay extends World
 
         scoreLabel = new ScoreLabel(8);                                                         // Инициализируем метку очков
         addObject(scoreLabel, 50, 10);                                                          // Добавляем метку очков в мир
-        ShowScore();                                                                            // Отображаем очки на экране
+        scoreLabel.Show(score);                                                                 // Отображаем очки на экране
 
         hitpointLabel = new HitpointLabel(Spaceship.HITPOINT_MAX);                              // Инициализируем метку жизней
         addObject(hitpointLabel, 359, 10);                                                      // Добавляем метку жизней в мир
@@ -38,8 +38,7 @@ public class Gameplay extends World
         OnSpawn(frame);                                                                         // Обрабатывает логику спавна
         spawner.Act();                                                                          // Обрабатывает систему спавна
         enemyMatrix.Act();                                                                      // Обрабатывает логику матрицы
-        ShowScore();
-        frame++;
+        frame++;                                                                                // Увеичиваем переменную счетчика кадров
     }
     
     // Возвращает объект игрока
@@ -52,6 +51,7 @@ public class Gameplay extends World
     public void AddScore(int score)
     {
         this.score += score;
+        scoreLabel.Show(this.score);
     }
 
     // Выводит на экран количество очков пользователя
@@ -100,11 +100,5 @@ public class Gameplay extends World
         {
             backgroundImages[i] = new GreenfootImage("Background/Background" + (i + 1) + ".png");
         }
-    }
-    
-    // Отображение очков на экране
-    private void ShowScore()
-    {
-       scoreLabel.Show(score);
     }
 }
