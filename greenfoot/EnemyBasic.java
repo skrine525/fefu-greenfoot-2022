@@ -12,7 +12,7 @@ public class EnemyBasic extends Actor
     private int pointsForHit;
 
     // Константы
-    private static final int BLAST_IMAGE_COUNT = 5;                                          // Количество кадров в анимации взрыва
+    private static final int BLAST_IMAGE_COUNT = 4;                                          // Количество кадров в анимации взрыва
     private static final int BLAST_ANIMATION_SPEED = 5;                                      // Скорость смены кадров анимации взрыва
 
     // Конструктор противника

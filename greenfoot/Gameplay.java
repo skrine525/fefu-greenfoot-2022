@@ -18,7 +18,7 @@ public class Gameplay extends World
         super(400, 600, 1);                                                                     // Создание мира 400x600
 
         // Очередь отрисовки объектов
-        setPaintOrder(ScoreLabel.class, HitpointLabel.class, StageLabel.class);
+        setPaintOrder(ScoreLabel.class, HitpointLabel.class, StageLabel.class, Spaceship.class, EnemyBasic.class, Meds.class);
 
         LoadBackgroundImages();                                                                 // Подгружаем изображения фона
         setBackground(backgroundImages[0]);                                                     // Устанавливаем фон мира

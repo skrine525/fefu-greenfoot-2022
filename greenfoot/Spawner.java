@@ -19,13 +19,14 @@ public class Spawner
     private ArrayList<SpawnQueue> spawnQueue;
 
     // Константы стандартного шанса появления типа врага
-    public static final int DEFAULT_CHANCE_ENEMYTYPE1 = 25;       // EnemyType1
-    public static final int DEFAULT_CHANCE_ENEMYTYPE2 = 20;       // EnemyType2
-    public static final int DEFAULT_CHANCE_ENEMYTYPE3 = 30;       // EnemyType3
-    public static final int DEFAULT_CHANCE_ENEMYTYPE4 = 25;       // EnemyType4
+    public static final int DEFAULT_CHANCE_ENEMYTYPE1 = 30;       // EnemyType1
+    public static final int DEFAULT_CHANCE_ENEMYTYPE2 = 25;       // EnemyType2
+    public static final int DEFAULT_CHANCE_ENEMYTYPE3 = 28;       // EnemyType3
+    public static final int DEFAULT_CHANCE_ENEMYTYPE4 = 16;       // EnemyType4
+    public static final int DEFAULT_CHANCE_ENEMYTYPE5 = 1;        // EnemyType5
 
 
-    public int chanceEnemyType1, chanceEnemyType2, chanceEnemyType3, chanceEnemyType4;
+    public int chanceEnemyType1, chanceEnemyType2, chanceEnemyType3, chanceEnemyType4, chanceEnemyType5;
     
     public Spawner(World world, EnemyMatrix enemyMatrix)
     {
@@ -37,6 +38,7 @@ public class Spawner
         chanceEnemyType2 = DEFAULT_CHANCE_ENEMYTYPE2;
         chanceEnemyType3 = DEFAULT_CHANCE_ENEMYTYPE3;
         chanceEnemyType4 = DEFAULT_CHANCE_ENEMYTYPE4;
+        chanceEnemyType5 = DEFAULT_CHANCE_ENEMYTYPE5;
     }
 
     public void StartSpawn(SpawnType type, int count, int cooldown, boolean addToMatrix)
@@ -80,11 +82,12 @@ public class Spawner
 
     private void SpawnType1Left(boolean addToMatrix)
     {
-        ChanceSpawner spawner = new ChanceSpawner(4, 100);
+        ChanceSpawner spawner = new ChanceSpawner(5, 100);
         spawner.AddSpawnClass(EnemyType1.class, chanceEnemyType1);
         spawner.AddSpawnClass(EnemyType2.class, chanceEnemyType2);
         spawner.AddSpawnClass(EnemyType3.class, chanceEnemyType3);
         spawner.AddSpawnClass(EnemyType4.class, chanceEnemyType4);
+        spawner.AddSpawnClass(EnemyType5.class, chanceEnemyType5);
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
@@ -96,11 +99,12 @@ public class Spawner
 
     private void SpawnType1Right(boolean addToMatrix)
     {
-        ChanceSpawner spawner = new ChanceSpawner(4, 100);
+        ChanceSpawner spawner = new ChanceSpawner(5, 100);
         spawner.AddSpawnClass(EnemyType1A.class, chanceEnemyType1);
         spawner.AddSpawnClass(EnemyType2A.class, chanceEnemyType2);
         spawner.AddSpawnClass(EnemyType3A.class, chanceEnemyType3);
         spawner.AddSpawnClass(EnemyType4A.class, chanceEnemyType4);
+        spawner.AddSpawnClass(EnemyType5A.class, chanceEnemyType5);
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
@@ -111,11 +115,12 @@ public class Spawner
 
     private void SpawnType2Left(boolean addToMatrix)
     {
-        ChanceSpawner spawner = new ChanceSpawner(4, 100);
+        ChanceSpawner spawner = new ChanceSpawner(5, 100);
         spawner.AddSpawnClass(EnemyType1B.class, chanceEnemyType1);
         spawner.AddSpawnClass(EnemyType2B.class, chanceEnemyType2);
         spawner.AddSpawnClass(EnemyType3B.class, chanceEnemyType3);
         spawner.AddSpawnClass(EnemyType4B.class, chanceEnemyType4);
+        spawner.AddSpawnClass(EnemyType5B.class, chanceEnemyType5);
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
@@ -125,11 +130,12 @@ public class Spawner
 
     private void SpawnType2Right(boolean addToMatrix)
     {
-        ChanceSpawner spawner = new ChanceSpawner(4, 100);
+        ChanceSpawner spawner = new ChanceSpawner(5, 100);
         spawner.AddSpawnClass(EnemyType1C.class, chanceEnemyType1);
         spawner.AddSpawnClass(EnemyType2C.class, chanceEnemyType2);
         spawner.AddSpawnClass(EnemyType3C.class, chanceEnemyType3);
         spawner.AddSpawnClass(EnemyType4C.class, chanceEnemyType4);
+        spawner.AddSpawnClass(EnemyType5C.class, chanceEnemyType5);
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
@@ -140,11 +146,12 @@ public class Spawner
 
     private void SpawnType3Left(boolean addToMatrix)
     {
-        ChanceSpawner spawner = new ChanceSpawner(4, 100);
+        ChanceSpawner spawner = new ChanceSpawner(5, 100);
         spawner.AddSpawnClass(EnemyType1D.class, chanceEnemyType1);
         spawner.AddSpawnClass(EnemyType2D.class, chanceEnemyType2);
         spawner.AddSpawnClass(EnemyType3D.class, chanceEnemyType3);
         spawner.AddSpawnClass(EnemyType4D.class, chanceEnemyType4);
+        spawner.AddSpawnClass(EnemyType5D.class, chanceEnemyType5);
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 
@@ -155,11 +162,12 @@ public class Spawner
 
     private void SpawnType3Right(boolean addToMatrix)
     {
-        ChanceSpawner spawner = new ChanceSpawner(4, 100);
+        ChanceSpawner spawner = new ChanceSpawner(5, 100);
         spawner.AddSpawnClass(EnemyType1E.class, chanceEnemyType1);
         spawner.AddSpawnClass(EnemyType2E.class, chanceEnemyType2);
         spawner.AddSpawnClass(EnemyType3E.class, chanceEnemyType3);
         spawner.AddSpawnClass(EnemyType4E.class, chanceEnemyType4);
+        spawner.AddSpawnClass(EnemyType5E.class, chanceEnemyType5);
         EnemyBasic enemy = (EnemyBasic) spawner.Spawn();
         enemy.currentState = EnemyBasic.State.Enter;
 

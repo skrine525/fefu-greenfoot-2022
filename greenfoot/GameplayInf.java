@@ -181,10 +181,6 @@ public class GameplayInf extends Gameplay
                 PlayBackgroundSound();
             }
         }
-
-        // Для тестирования
-    	showText(String.valueOf(spawnCountToDoAction), getWidth() - 20, getHeight() - 20);
-        showText(String.valueOf(spawnCount), 20, getHeight() - 20);
     }
 
     // Спавнит рандомный конвой

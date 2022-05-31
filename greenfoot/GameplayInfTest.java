@@ -8,7 +8,8 @@ public class GameplayInfTest extends GameplayInf
 
         spawner.chanceEnemyType1 = 0;
         spawner.chanceEnemyType2 = 0;
-        spawner.chanceEnemyType3 = 100;
+        spawner.chanceEnemyType3 = 0;
         spawner.chanceEnemyType4 = 0;
+        spawner.chanceEnemyType5 = 100;
     }
 }

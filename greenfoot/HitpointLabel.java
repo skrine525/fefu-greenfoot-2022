@@ -12,7 +12,7 @@ public class HitpointLabel extends Actor
         this.length = length;
 
         LoadImage();   // Подгружаем изображения цифр
-        imageWidth = length * hpImage.getWidth();
+        imageWidth = length * (hpImage.getWidth() + 1);
 
         Show(length);
     }
@@ -24,7 +24,7 @@ public class HitpointLabel extends Actor
         for(int i = 0; i < length; i++)
         {
             if((i + 1) <= number)
-            	image.drawImage(hpImage, (length - i - 1) * (hpImage.getWidth() - 1), 0);
+            	image.drawImage(hpImage, (length - i - 1) * (hpImage.getWidth() + 1), 0);
         }
         
         setImage(image);  // Применяем сформированное изображение
@@ -32,7 +32,7 @@ public class HitpointLabel extends Actor
 
     private void LoadImage()
     {
-        hpImage = new GreenfootImage("Spaceship.png");
-        hpImage.scale(hpImage.getWidth() / 2, hpImage.getHeight() / 2);
+        hpImage = new GreenfootImage("Meds.png");
+        hpImage.scale((int) (hpImage.getWidth() * 1.5), (int) (hpImage.getHeight() * 1.5));
     }
 }
