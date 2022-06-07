@@ -74,10 +74,7 @@ public class EnemyBasic extends Actor
             int x = getX() + (int) (Math.signum(vX) * Math.round(Math.abs(vX)));
             int y = getY() + (int) (Math.signum(vY) * Math.round(Math.abs(vY)));
 
-            if(GameSystem.GetDistance(x, y, distX, distY) <= delta)
-                setLocation(distX, distY);
-            else
-                setLocation(x, y);
+            setLocation(x, y);
         }
     }
 

@@ -18,7 +18,7 @@ public class GameplayInf extends Gameplay
     private boolean isPairedSpawn = false;						// Переменная, указывающая на парность спавна
 
     // Действие
-    private int actionEnymyCount = 0;							// Количество врагов, которое осталось перевести в Action
+    private int actionEnemyCount = 0;							// Количество врагов, которое осталось перевести в Action
     private int actionStartFrame = 0;							// Номер кадра, с которого начинается Action врагов
     private boolean canAction = false;							// Переменная, разрешающая изменение состояния на Action
     private boolean actionDisableForEnemyType3 = false;         // Переменная, отключающая возможность действия для EnemyType3
@@ -62,8 +62,8 @@ public class GameplayInf extends Gameplay
 	            		actionableEnemies.get(enemyIndex).currentState = EnemyBasic.State.Action;
 	            		actionStartFrame = (int) frame + 30;
 
-		            	actionEnymyCount--;
-		            	if(actionEnymyCount <= 0)
+		            	actionEnemyCount--;
+		            	if(actionEnemyCount <= 0)
 		            		canAction = false;
 		            }
             	}
@@ -243,7 +243,7 @@ public class GameplayInf extends Gameplay
     {
         canAction = true;
         actionStartFrame = (int) frame + 60;
-        actionEnymyCount = count;
+        actionEnemyCount = count;
         actionDisableForEnemyType3 = disableEnemyType3;
     }
 }

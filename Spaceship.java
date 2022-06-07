@@ -50,9 +50,9 @@ public class Spaceship extends Actor {
     private static final int BLAST_IMAGE_COUNT = 6;                     // Количество изображений взрыва
     private static final int BLAST_ANIMATION_SPEED = 5;                 // Скорость смены кадров анимации взрыва
     private static final int INVINCIBILITY_FRAME_COUNT = 240;           // Количество кадров, при котором игрок остается непобедимым после возрождения
-    public static final int HITPOINT_MAX = 3;                           // Максимальный ХП
+    public static final int HITPOINT_MAX = 5;                           // Максимальный ХП
 
-    public Spaceship(World world, int x, int y)
+    public Spaceship(Gameplay world, int x, int y)
     {
         super();
 
@@ -63,6 +63,8 @@ public class Spaceship extends Actor {
         hitbox = new Spaceship.Hitbox(this);        // Инициализируем хитбокс
         world.addObject(hitbox, getX(), getY());    // Добавляем хитбокс в мир
         hitbox.MoveToSpaceship();                   // Применяем смещение хитбокса
+
+        world.ShowPlayerHP(hitpoints);              // Отображаем начальное количество ХП
     }
 
     public void act()
