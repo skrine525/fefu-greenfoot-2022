@@ -103,56 +103,56 @@ public class EnemyType5 extends EnemyBasic
     @Override
     protected void OnAction(long frame)
     {
-        // if(frame == 0)
-        // {
-        //     isDone = false;
-        //     if (getX() <= 199)
-        //     {
-        //         setRotation(60);
-        //         direction = 1;
-        //     }
-        //     else
-        //     {
-        //         setRotation(120);
-        //         direction = -1;
-        //     }
-        //     move(4);
-        // }
-        // else if((getY() <= 300) && (!isDone))
-        // {
-        //     move(4);
-        // }
-        // else if((shootingFrame <= 50) || (!isDone))
-        // {     
-        //     if (!isDone) 
-        //     {
-        //         isDone = true;
-        //         shootingFrame = 0;
-        //     }
-        //     move(4);
-        //     if (shootingFrame <= 20)
-        //         Shoot();
-        //     shootingFrame++;
-        //     turn(direction * 4);
-        // }
-        // else
-        // {
-        //     if(matrixCell != null)
-        //     {
-        //         if(getX() != matrixCell.x && getY() != matrixCell.y)
-        //         {
-        //             RotateTo((int) GameSystem.GetAngle(getX(), getY(), matrixCell.x, matrixCell.y), 3);
-        //             MoveTo(matrixCell.x, matrixCell.y, 5);
-        //         }
-        //         else if(getRotation() != 90)
-        //         {
-        //             MoveTo(matrixCell.x, matrixCell.y, 5);
-        //             RotateTo(90, 5);
-        //         }
-        //         else
-        //             currentState = State.Stay;
-        //     }
-        // }
+        if(frame == 0)
+        {
+            isDone = false;
+            if (getX() <= 199)
+            {
+                setRotation(60);
+                direction = 1;
+            }
+            else
+            {
+                setRotation(120);
+                direction = -1;
+            }
+            move(4);
+        }
+        else if((getY() <= 300) && (!isDone))
+        {
+            move(4);
+        }
+        else if((shootingFrame <= 50) || (!isDone))
+        {     
+            if (!isDone) 
+            {
+                isDone = true;
+                shootingFrame = 0;
+            }
+            move(4);
+            if (shootingFrame <= 20)
+                Shoot();
+            shootingFrame++;
+            turn(direction * 4);
+        }
+        else
+        {
+            if(matrixCell != null)
+            {
+                if(getX() != matrixCell.x && getY() != matrixCell.y)
+                {
+                    RotateTo((int) GameSystem.GetAngle(getX(), getY(), matrixCell.x, matrixCell.y), 3);
+                    MoveTo(matrixCell.x, matrixCell.y, 5);
+                }
+                else if(getRotation() != 90)
+                {
+                    MoveTo(matrixCell.x, matrixCell.y, 5);
+                    RotateTo(90, 5);
+                }
+                else
+                    currentState = State.Stay;
+            }
+        }
     }
 
     private void Shoot()

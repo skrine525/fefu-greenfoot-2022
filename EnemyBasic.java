@@ -140,17 +140,6 @@ public class EnemyBasic extends Actor
     protected void OnAction(long frame)
     {
         // Да-да, он без кода. Необходима переопределять в субклассах
-
-        // Для теста
-        if(frame <= 100)
-        {
-            move(5);
-        }
-        else{
-            currentState = State.Stay;
-            setRotation(90);
-            setLocation(matrixCell.x, matrixCell.y);
-        }
     }
 
     // Подгружает изображения взрыва в массив
